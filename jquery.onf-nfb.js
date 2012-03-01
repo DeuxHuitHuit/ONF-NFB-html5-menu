@@ -21,59 +21,74 @@
 		ONF_NFB_plugin_root = '/',
 		ONF_NFB_url = (LG == 'fr' ? 'http://www.onf.ca' : 'http://www.nbf.ca'),
 		ONF_NFB_icon = ONF_NFB_plugin_root + 'img/nfb_logo_onf.gif';
+		ONF_NFB_search_url = '',
 		top_defaults = {
 			target: '#onf-top',
 			opacity: 0.8,
 			opacityHover: 1,
-			links: {
-				fr: [
-				     {title: 'Explorer', 	url: 'http://www.onf.ca/explorer-tous-les-films/', 	callback: null, preventDefault:false, target: null},
-				     {title: 'Sélections',	url: 'http://onf.ca/selections/', 					callback: null, preventDefault:false, target: null},
-				     {title: 'Chaînes', 	url: 'http://www.onf.ca/chaines/', 					callback: null, preventDefault:false, target: null},
-				     {title: 'Blogue',		url: 'http://blogue.onf.ca/', 						callback: null, preventDefault:false, target: null},
-				     {title: 'Interactif', 	url: 'http://www.onf.ca/interactif/', 				callback: null, preventDefault:false, target: null}
-				],
-				en : [
-				     {title: 'Explore', 	url: 'http://www.nfb.ca/explore-all-films/',	 	callback: null, preventDefault:false, target: null},
-				     {title: 'Playlists',	url: 'http://www.nfb.ca/playlists/',				callback: null, preventDefault:false, target: null},
-				     {title: 'Channels', 	url: 'http://www.nfb.ca/channels/',					callback: null, preventDefault:false, target: null},
-				     {title: 'Blog',		url: 'http://blog.nfb.ca/', 						callback: null, preventDefault:false, target: null},
-				     {title: 'Interactive',	url: 'http://www.nfb.ca/interactive/', 				callback: null, preventDefault:false, target: null}
-				]
-			},
+			links: [
+			     {title: {fr:'Explorer', en:'Explore'}, 
+			      url: {fr:'http://www.onf.ca/explorer-tous-les-films/', en:'http://www.nfb.ca/explore-all-films/'},
+			      callback: null, preventDefault:false, target: null, cssClass: null, tagName: null
+			     },
+			     {title: {fr:'Sélections', en:'Playlists'},	
+			      url: {fr:'http://onf.ca/selections/', en: 'http://www.nfb.ca/playlists/'},
+			      callback: null, preventDefault:false, target: null, cssClass: null, tagName: null
+			     },
+			     {title: {fr:'Chaînes', en: 'Channels'},
+			      url: {fr:'http://www.onf.ca/chaines/', en: 'http://www.nfb.ca/channels/'},					
+			     callback: null, preventDefault:false, target: null, cssClass: null, tagName: null
+			     },
+			     {title: {fr:'Blogue',  en:'Blog'},
+			      url: {fr:'http://blogue.onf.ca/', en: 'http://blog.nfb.ca/'},
+			      callback: null, preventDefault:false, target: null, cssClass: null, tagName: null
+			     },
+			     {title: {fr:'Interactif', en: 'Interactive'},
+			      url: {fr:'http://www.onf.ca/interactif/', en: 'http://www.nfb.ca/interactive/'},
+			      callback: null, preventDefault:false, target: null, cssClass: null, tagName: null
+			     }
+			],
 			search: {
 				fr: 'Recherche',
 				en: 'Search'
 			},
-			help: {
-				fr: {title: 'Aide', 		url: '', callback: null, preventDefault:false, target: '_blank'},
-				en: {title: 'Help', 		url: '', callback: null, preventDefault:false, target: '_blank'}
+			help: {title: {fr:'Aide', en:'Help'}, 
+				  url: '', callback: null, preventDefault:false, target: '_blank', cssClass: null, tagName: null
 			},
-			translate: {
-				fr: [{title: 'English', 	url: '', callback: null, preventDefault:false, target: null}],
-				en: [{title: 'Français',	url: '', callback: null, preventDefault:false, target: null}]
-			}
+			translate: [
+		       {title: {fr:'English', en:'Français'},
+		    	url: '', callback: null, preventDefault:false, target: null, cssClass: null, tagName: null
+		    	}
+			]
 		},
 		bot_defaults = {
 			target: '#onf-bot',
 			opacity: 0.8,
 			opacityHover: 1,
-			links: {
-				fr: [
-				     {title: '', url: '', callback: $.noop, preventDefault:false, target: null}
-				],
-				en : [
-				     {title: '', url: '', callback: $.noop, preventDefault:false, target: null}
-				]
-			},
+			links: [
+			     {title: {fr:'Accueil',en:'Home'},		url: null, 
+			      callback: null, preventDefault:true, target: null, cssClass: null, tagName: null
+			     },
+			     {title: {fr:'À propos',en:'About'},	url: null,
+			      callback: null, preventDefault:true, target: null, cssClass: null, tagName: null
+			     },
+			     {title: {fr:'Films reliés',en:'Related movies'},url: null,
+			      callback: null, preventDefault:true, target: null, cssClass: null, tagName: null
+			     },
+			     {title: {fr:'Équipe',en:'Credits'},	url: null, 
+			      callback: null, preventDefault:true, target: null, cssClass: null, tagName: null
+			     }
+			],
 			share: {
 				fr: 'Partagez',
 				en: 'Share',
-				facebook: 'http://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(document.location),
-				twitter: 'http://www.twitter.com/intent/tweet?text=%23ONFi ' + encodeURIComponent(document.title) + ' ' + encodeURIComponent(document.location),
-				stumpleupon: 'http://www.stumbleupon.com/submit?url='+ encodeURIComponent(document.location) + '&title=' + encodeURIComponent(document.title),
-				digg: 'http://digg.com/submit?phase=2&url='+ encodeURIComponent(document.location) +'&bodytext=' + encodeURIComponent(document.title),
-				delicious: 'http://www.delicious.com/post?v=2&url='+ encodeURIComponent(document.location) +'&title=' + encodeURIComponent(document.title)
+				links: {
+					facebook: 'http://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(document.location),
+					twitter: 'http://www.twitter.com/intent/tweet?text=%23ONFi ' + encodeURIComponent(document.title) + ' ' + encodeURIComponent(document.location),
+					stumpleupon: 'http://www.stumbleupon.com/submit?url='+ encodeURIComponent(document.location) + '&title=' + encodeURIComponent(document.title),
+					digg: 'http://digg.com/submit?phase=2&url='+ encodeURIComponent(document.location) +'&bodytext=' + encodeURIComponent(document.title),
+					delicious: 'http://www.delicious.com/post?v=2&url='+ encodeURIComponent(document.location) +'&title=' + encodeURIComponent(document.title)
+				}
 			},
 			volume: {
 				fr: 'Volume',
@@ -88,6 +103,18 @@
 		}
 		return o;
 	};
+	function _getObjectValue(o) {
+		if ($.isPlainObject(o)) {
+			return o[LG];
+		}
+		return _getValue(o);
+	};
+	function _getDefaultValue(o, d) {
+		if (!!o) {
+			return o;
+		}
+		return d;
+	};
 	function preventDefault(e) {
 		if (!!e && $.isFunction(e.preventDefault)) {
 			e.preventDefault();
@@ -99,13 +126,20 @@
 			linkObj = t.data('link');
 		
 		if (!!linkObj) {
+			// call callback
 			if ($.isFunction(linkObj.callback)) {
 				linkObj.callback.call(t, e);
 			}
+			// prevent default behavior
 			if (!!linkObj.preventDefault) {
 				return preventDefault(e);
 			}
 		}
+		
+		// log the click
+		// @todo: log
+		
+		// raise event
 		
 		return true;
 	};
@@ -128,12 +162,16 @@
 	};
 	function _createLink(l) {
 		var a = $('<a></a>');
-		a.text(l.title);
-		a.attr('href', l.url);
+		a.text(_getObjectValue(l.title));
+		a.attr('href', _getObjectValue(l.url));
 		a.data('link', l);
-		if (l.target) {
-			a.attr('target', l.target);
+		if (!!l.target) {
+			a.attr('target', _getValue(l.target));
 		}
+		if (!!l.cssClass) {
+			a.attr('class', _getObjectValue(l.cssClass));
+		}
+		a.click(_linkCallback);
 		return a;
 	};
 	
@@ -215,7 +253,6 @@
 	
 	
 	/* Menu bottom */
-	
 	
 	function shareToggle(e, isIn) {
 		var ow = 165,
