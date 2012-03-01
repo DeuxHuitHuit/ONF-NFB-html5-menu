@@ -21,16 +21,16 @@ NFB's jQuery menu plugin has been created in order to facilite NFB's menu into H
 
 ## Mode d'emploi / How to use
 
-1. Ajouter la référence vers la feuille de style dans la section <head>
+1. Ajouter la référence vers la feuille de style dans la section \<head\>
 2. Ajouter la référence vers le script jQuery juste avant la balise \</body\>
-3. S'assurer que l'attribut @lang de la balise <html> soit déclarée
+3. S'assurer que l'attribut @lang de la balise \<html\> soit déclarée
 4. Appeler la/les méthodes qui crée les menus
 
 Pour plus de détails, consultez [la wiki](https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu/wiki/Doc-FR).
 
-1. Add the stylesheet reference in the <head> section
-2. Add the jQuery script reference just before the </body> tag
-3. Be sure that the @lang attribute is declared on the <html> tag
+1. Add the stylesheet reference in the \<head\> section
+2. Add the jQuery script reference just before the \</body\> tag
+3. Be sure that the @lang attribute is declared on the \<html\> tag
 4. Call the methods that creates each menus
 
 For more information, please see the [wiki](https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu/wiki).
