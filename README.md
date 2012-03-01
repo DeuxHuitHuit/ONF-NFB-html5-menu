@@ -5,6 +5,7 @@
 - Wiki: <https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu/wiki>
 - Github Repository: <https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu>
 - Issues: <https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu/issues>
+- Official hosting: <//html5.onf.ca/v1.0/>
 
 ## Vue d'ensemble / Overview
 
@@ -37,3 +38,8 @@ For more information, please see the [wiki](https://github.com/DeuxHuitHuit/ONF-
 Veuillez rapporter tous les bogues rencontrer via [l'interface de GitHub](https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu/issues/new).
 
 Please report all bugs via [GitHub's interface](https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu/issues/new).
+
+#### Copyrights 
+
+- [ONF](http://www.onf.ca)/[NFB](http://www.nfb.ca)
+- [Deux Huit Huit](http://www.deuxhuithuit.com)
