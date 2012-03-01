@@ -5,7 +5,7 @@
 - Wiki: <https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu/wiki>
 - Github Repository: <https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu>
 - Issues: <https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu/issues>
-- Official hosting: <//html5.onf.ca/v1.0/>
+- Official hosting: <http://html5.onf.ca/v1.0/>
 
 ## Vue d'ensemble / Overview
 
@@ -21,17 +21,36 @@ NFB's jQuery menu plugin has been created in order to facilite NFB's menu into H
 
 ## Mode d'emploi / How to use
 
-1. Ajouter la référence vers la feuille de style
-2. Ajouter la référence vers le script jQuery
-3. Appeler la/les méthodes qui crée les menus
+1. Ajouter la référence vers la feuille de style dans la section <head>
+2. Ajouter la référence vers le script jQuery juste avant la balise </body>
+3. S'assurer que l'attribut @lang de la balise <html> soit déclarée
+4. Appeler la/les méthodes qui crée les menus
 
 Pour plus de détails, consultez [la wiki](https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu/wiki/Doc-FR).
 
-1. Add the stylesheet reference
-2. Add the jQuery script reference
-3. Call the methods that creates each menus
+1. Add the stylesheet reference in the <head> section
+2. Add the jQuery script reference just before the </body> tag
+3. Be sure that the @lang attribute is declared on the <html> tag
+4. Call the methods that creates each menus
 
 For more information, please see the [wiki](https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu/wiki).
+
+## Compatiblité / Compatibility
+
+- Niveau A (HTML 5 + CSS 3)
+
+	- Google Chrome
+	- Firefox 5+
+	- Opera 10+
+	- Safari 5+
+	- Internet Explorer 9+
+	
+- Niveau C (HTML 5 seulement / HTML 5 only)
+
+	- Firefox 3, 4
+	- Opera 9
+	- Safari 4
+	- Internet Explorer 7, 8
 
 ### Bogues / Bugs
 

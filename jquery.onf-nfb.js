@@ -8,44 +8,37 @@
 ;(function ($, undefined) {
 	
 	/** GLOBAL VARIABLES **/
-	/*$.unsupported = !$.browser || ($.browser.msie && parseInt($.browser.version, 10) < 9);
-	
-	$.mobile = !!navigator.userAgent && (
-					(navigator.userAgent.match(/iPhone/i)) || 
-					(navigator.userAgent.match(/iPod/i)) || 
-					(navigator.userAgent.match(/iPad/i)) || 
-					(navigator.userAgent.match(/Android/i)) ||
-					(navigator.userAgent.match(/mobile/i)) ||
-					(navigator.userAgent.match(/phone/i))
-					);*/
 	
 	// console support
 	if (!window.console) {
 		console.log = console.warn = console.error = console.info = $.noop;
 	}
+
 	
 	/** Private VARIABLES **/
 	var stats_loggers = [],
 		LG = $('html').attr('lang'),
-		ONF_NBF_url = (LG == 'fr' ? 'http://www.onf.ca' : 'http://www.nbf.ca'),
+		ONF_NFB_plugin_root = '/',
+		ONF_NFB_url = (LG == 'fr' ? 'http://www.onf.ca' : 'http://www.nbf.ca'),
+		ONF_NFB_icon = ONF_NFB_plugin_root + 'img/nfb_logo_onf.gif';
 		top_defaults = {
 			target: '#onf-top',
 			opacity: 0.8,
 			opacityHover: 1,
 			links: {
 				fr: [
-				     {title: 'Explorer', 	url: 'http://www.onf.ca/explorer-tous-les-films/', 	callback: null, preventDefault:false},
-				     {title: 'Sélections',	url: 'http://onf.ca/selections/', 					callback: null, preventDefault:false},
-				     {title: 'Chaînes', 	url: 'http://www.onf.ca/chaines/', 					callback: null, preventDefault:false},
-				     {title: 'Blogue',		url: 'http://blogue.onf.ca/', 						callback: null, preventDefault:false},
-				     {title: 'Interactif', 	url: 'http://www.onf.ca/interactif/', 				callback: null, preventDefault:false}
+				     {title: 'Explorer', 	url: 'http://www.onf.ca/explorer-tous-les-films/', 	callback: null, preventDefault:false, target: null},
+				     {title: 'Sélections',	url: 'http://onf.ca/selections/', 					callback: null, preventDefault:false, target: null},
+				     {title: 'Chaînes', 	url: 'http://www.onf.ca/chaines/', 					callback: null, preventDefault:false, target: null},
+				     {title: 'Blogue',		url: 'http://blogue.onf.ca/', 						callback: null, preventDefault:false, target: null},
+				     {title: 'Interactif', 	url: 'http://www.onf.ca/interactif/', 				callback: null, preventDefault:false, target: null}
 				],
 				en : [
-				     {title: 'Explore', 	url: 'http://www.nfb.ca/explore-all-films/',	 	callback: null, preventDefault:false},
-				     {title: 'Playlists',	url: 'http://www.nfb.ca/playlists/',				callback: null, preventDefault:false},
-				     {title: 'Channels', 	url: 'http://www.nfb.ca/channels/',					callback: null, preventDefault:false},
-				     {title: 'Blog',		url: 'http://blog.nfb.ca/', 						callback: null, preventDefault:false},
-				     {title: 'Interactive',	url: 'http://www.nfb.ca/interactive/', 				callback: null, preventDefault:false}
+				     {title: 'Explore', 	url: 'http://www.nfb.ca/explore-all-films/',	 	callback: null, preventDefault:false, target: null},
+				     {title: 'Playlists',	url: 'http://www.nfb.ca/playlists/',				callback: null, preventDefault:false, target: null},
+				     {title: 'Channels', 	url: 'http://www.nfb.ca/channels/',					callback: null, preventDefault:false, target: null},
+				     {title: 'Blog',		url: 'http://blog.nfb.ca/', 						callback: null, preventDefault:false, target: null},
+				     {title: 'Interactive',	url: 'http://www.nfb.ca/interactive/', 				callback: null, preventDefault:false, target: null}
 				]
 			},
 			search: {
@@ -53,12 +46,12 @@
 				en: 'Search'
 			},
 			help: {
-				fr: {title: 'Aide', 		url: '', callback: null, preventDefault:false},
-				en: {title: 'Help', 		url: '', callback: null, preventDefault:false}
+				fr: {title: 'Aide', 		url: '', callback: null, preventDefault:false, target: '_blank'},
+				en: {title: 'Help', 		url: '', callback: null, preventDefault:false, target: '_blank'}
 			},
 			translate: {
-				fr: [{title: 'English', 	url: '', callback: null, preventDefault:false}],
-				en: [{title: 'Français',	url: '', callback: null, preventDefault:false}]
+				fr: [{title: 'English', 	url: '', callback: null, preventDefault:false, target: null}],
+				en: [{title: 'Français',	url: '', callback: null, preventDefault:false, target: null}]
 			}
 		},
 		bot_defaults = {
@@ -67,10 +60,10 @@
 			opacityHover: 1,
 			links: {
 				fr: [
-				     {title: '', url: '', callback: $.noop, preventDefault:false}
+				     {title: '', url: '', callback: $.noop, preventDefault:false, target: null}
 				],
 				en : [
-				     {title: '', url: '', callback: $.noop, preventDefault:false}
+				     {title: '', url: '', callback: $.noop, preventDefault:false, target: null}
 				]
 			},
 			share: {
@@ -88,7 +81,7 @@
 			}
 		};
 	
-	/** Private functions **/
+	/** Private common functions **/
 	function _getValue(o) {
 		if ($.isFunction(o)) {
 			return o.call();
@@ -132,6 +125,16 @@
 	};
 	function _hoverOut(e) {
 		_hover.call(this, e);
+	};
+	function _createLink(l) {
+		var a = $('<a></a>');
+		a.text(l.title);
+		a.attr('href', l.url);
+		a.data('link', l);
+		if (l.target) {
+			a.attr('target', l.target);
+		}
+		return a;
 	};
 	
 	
