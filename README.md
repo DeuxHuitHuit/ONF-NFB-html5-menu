@@ -14,7 +14,8 @@ NFB's jQuery menu plugin has been created in order to facilite NFB's menu into H
 
 ## Dépendances / Dependancies
 
-- [jQuery 1.7+](http://code.jquery.com/jquery-latest.min.js)
+- [jQuery 1.7+](http://code.jquery.com/jquery-latest.min.js) ou sur / or on [Google CDN](//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js)
+- [jQuery Cookie](https://github.com/carhartl/jquery-cookie) *uniquement pour la valeur du mute / Only for the mute value*
 - [LESS](http://lesscss.org/) *uniquement pour l'environnement de developpement / Only for development*
 
 ## Mode d'emploi / How to use
@@ -23,7 +24,7 @@ NFB's jQuery menu plugin has been created in order to facilite NFB's menu into H
 2. Ajouter la référence vers le script jQuery
 3. Appeler la/les méthodes qui crée les menus
 
-Pour plus de détails, consultez [la wiki](https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu/wiki).
+Pour plus de détails, consultez [la wiki](https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu/wiki/Doc-FR).
 
 1. Add the stylesheet reference
 2. Add the jQuery script reference

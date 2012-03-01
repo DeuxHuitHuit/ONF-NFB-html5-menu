@@ -1,3 +1,165 @@
 /**
+ * ONF-NFB Menu LESS Stylesheet
+ *
  * @author: DeuxHuitHuit
+ * 
 **/
+
+/* Variables */
+@bg-color: 		#000;
+@opacity:		0.8;
+@typo-color:	#fff;
+@border-color:	#333;
+@link-color:	#fff;
+@link-active: 	#fff;
+
+@top-height:	31px;
+@bot-height:	25px;
+
+@img-path: "img/";
+
+@font-arial: Arial, Helvetica, sans-serif;
+
+/* Functions */
+.absolute (@zindex: 10) {
+	position:absolute;
+	display:block;
+	z-index: @zindex;
+}
+.opacity(@val: 0.5) {
+	opacity:@val;
+	-moz-opacity:@val;
+	/*~filter:alpha(opacity=@val * 10);*/
+}
+.upper {
+	text-transform: uppercase;
+}
+.sq(@side) {
+	width:@side;
+	height:@side;
+	display:block;
+}
+#onf-share-spr(@pos) {
+	background-image: url("@{img-path}social.gif");
+	background-position: -(17px * @pos) 0;
+	float:left;
+}
+
+
+
+
+/* TOP MENU */
+#onf-top { /* default container */
+	.absolute(100);
+	top:0;
+	left:0;
+	height:@top-height;
+	width:100%;
+	background-color: @bg-color;
+	//.opacity(@opacity);
+}
+
+#onf-top-wrap {
+	color: @typo-color;
+	
+}
+	
+/* BOTTOM MENU */
+#onf-bot { /* default container */
+	.absolute(100);
+	bottom:0;
+	left:0;
+	height:@bot-height;
+	width:100%;
+	background-color: @bg-color;
+	color:@typo-color;
+	//.opacity(@opacity);
+}
+
+#onf-bot-wrap {
+	
+	color: @typo-color;
+	
+	#onf-bot-border {
+		border-right: 1px solid @border-color;
+	}
+	
+	#onf-link() {
+		display: inline-block;
+		margin: 6px 0 0 0;
+		padding: 4px 10px 4px 10px;
+		color:@link-color;
+		.upper;
+		font-family: @font-arial;
+		font-size: 12px;
+		line-height: 12px;
+		height: 12px;
+	}
+	
+	a {
+		#onf-link;
+		
+		&.vol {
+			padding-left: 20px;
+			margin-left: 4px;
+			background-image: url("@{img-path}toolbar.gif");
+			background-position: 3px -12px;
+			background-repeat: no-repeat;
+			display:inline-block !important;
+			
+			&.muted {
+				background-position: 3px -27px;
+			}		
+		}
+		
+		&.onf-social {
+			.sq(16px);
+			display:inline-block !important;
+			margin:0 2px 0 0;
+			padding:0;
+		}
+		
+		&:hover, &:active {
+			color: @link-active;
+		}
+	}
+	
+	#onf-share {
+		
+		#onf-link;
+		#onf-bot-border;
+		
+		background-image: url("@{img-path}toolbar.gif");
+		background-position: 3px 4px;
+		background-repeat: no-repeat;
+		
+		display: inline-block;
+		
+		overflow: hidden;
+		width: 65px;
+		padding-left: 20px;
+		padding-right: 10px;
+		position:relative;
+		
+		span {
+			display: inline-block;
+			margin-right: 10px;
+		}
+	}
+	
+	#onf-share-opts {
+		width: 90px;
+		height: 16px;
+		line-height: 10px;
+		display:inline-block;
+		position:absolute;
+		left: 95px;
+		top:1px;
+	}
+	
+	#onf-fb {#onf-share-spr(0);}
+	#onf-tw {#onf-share-spr(1);}
+	#onf-su {#onf-share-spr(2);}
+	#onf-di {#onf-share-spr(3);}
+	#onf-de {#onf-share-spr(4);}
+}

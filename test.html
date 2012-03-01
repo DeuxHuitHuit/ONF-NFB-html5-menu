@@ -2,15 +2,17 @@
 <html lang="fr"><!-- Le plugin vient chercher la langue ici par défaut / The plugin read the culture from here by default -->
 <head>
 	<meta charset="utf-8" />
-	<title>ONG-NFB Menus Test Page</title>
+	<title>ONF-NFB Menus Test Page</title>
+	
+	<link rel="shortcut icon" href="http://www.onf.ca/favicon.ico" type="image/x-icon" />
 	
 	<!-- Utilisez ceci en production / Use this in production -->
-	<!--link rel="stylesheet" type="text/css" href="jquery.onf-nfb.css" /-->
+	<!--link rel="stylesheet" type="text/css" href="/jquery.onf-nfb.css" /-->
 	
 	<!-- Leaner CSS -->
-	<link rel="stylesheet/less" type="text/css" href="jquery.onf-nfb.less" />
-	<script>less = { env: 'development' }; </script>
-	<script src="less-1.2.2.min.js"></script>
+	<link rel="stylesheet/less" type="text/css" href="/jquery.onf-nfb.less" />
+	<script>less = { env: 'development' };</script>
+	<script src="/less-1.2.2.min.js"></script>
 	<script>less.watch();</script>
 </head>
 <body>
@@ -18,6 +20,7 @@
 		<div id="onf-top"></div>
 		
 		<div id="content">
+			<br />
 			<h1>Ceci est mon titre</h1>
 			<p>Ceci est mon contenu</p>
 		</div>
@@ -25,12 +28,34 @@
 		<div id="onf-bot"></div>
 	</div>
 	
+	<!-- jQuery -->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	
+	<!-- ONF-NFB lib -->
+	<script src="/jquery.onf-nfb.js"></script>
+	
 	<!-- Script d'enregistrement / Hook-up script -->
 	<script>
 		// in a nutshell
 		(function ($) {
 		
+			// on ready
+			$(function () {
+				// date
+				var now = new Date();
 			
+				// top menu
+				$.onf_nfb.menu.top();
+				
+				// bottom menu
+				$.onf_nfb.menu.bot();
+				
+				// stats test
+				$.onf_nfb.stats.log('test cat', 'test action');
+				
+				// output time taken
+				console.log ('[time] ' + ((new Date()) - now));
+			});
 		
 		})(jQuery);
 	</script>
