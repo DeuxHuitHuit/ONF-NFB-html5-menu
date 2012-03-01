@@ -22,7 +22,7 @@ NFB's jQuery menu plugin has been created in order to facilite NFB's menu into H
 ## Mode d'emploi / How to use
 
 1. Ajouter la référence vers la feuille de style dans la section <head>
-2. Ajouter la référence vers le script jQuery juste avant la balise </body>
+2. Ajouter la référence vers le script jQuery juste avant la balise \</body\>
 3. S'assurer que l'attribut @lang de la balise <html> soit déclarée
 4. Appeler la/les méthodes qui crée les menus
 
