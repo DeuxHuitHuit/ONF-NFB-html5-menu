@@ -16,7 +16,7 @@ NFB's jQuery menu plugin has been created in order to facilite NFB's menu into H
 ## Dépendances / Dependancies
 
 - [jQuery 1.7+](http://code.jquery.com/jquery-latest.min.js) ou sur / or on [Google CDN](//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js)
-- [jQuery Cookie](https://github.com/carhartl/jquery-cookie) *uniquement pour la valeur du mute / Only for the mute value*
+- [jQuery Cookie](https://github.com/carhartl/jquery-cookie) *uniquement pour la valeur du volume (sourdine) / Only for the volume (mute) value*
 - [LESS](http://lesscss.org/) *uniquement pour l'environnement de developpement / Only for development*
 
 ## Mode d'emploi / How to use
