@@ -13,6 +13,19 @@
 	if (!window.console) {
 		console.log = console.warn = console.error = console.info = $.noop;
 	}
+	
+	// forEach support
+	// @see http://www.tutorialspoint.com/javascript/array_foreach.htm
+	if (!Array.prototype.forEach) {
+	  Array.prototype.forEach = function(fun) {
+	    var len = this.length,
+	    thisp = arguments[1];
+	    if (typeof fun != "function") throw new TypeError('First parameter must be a function');
+	    for (var i = 0; i < len; i++) {
+	      if (i in this) fun.call(thisp, this[i], i, this);
+	    }
+	  };
+	}
 
 	
 	/** Private VARIABLES **/
@@ -21,7 +34,8 @@
 		ONF_NFB_plugin_root = '/',
 		ONF_NFB_url = (LG == 'fr' ? 'http://www.onf.ca' : 'http://www.nbf.ca'),
 		ONF_NFB_icon = ONF_NFB_plugin_root + 'img/nfb_logo_onf.gif';
-		ONF_NFB_search_url = '',
+		ONF_NFB_search_url = 'http://search.nfb.ca/search?entqr=0&output=xml_no_dtd&sort=date%3AD%3AL%3Ad1&client=beta_onfb&ud=1&oe=UTF-8&ie=UTF-8&proxystylesheet=beta_onfb&proxyreload=1&hl=' + LG + '&lr=lang_'+LG+'&site=beta_onfb&q=',
+		isFullscreen = false,
 		top_defaults = {
 			target: '#onf-top',
 			opacity: 0.8,
@@ -29,23 +43,23 @@
 			links: [
 			     {title: {fr:'Explorer', en:'Explore'}, 
 			      url: {fr:'http://www.onf.ca/explorer-tous-les-films/', en:'http://www.nfb.ca/explore-all-films/'},
-			      callback: null, preventDefault:false, target: null, cssClass: null, tagName: null
+			      callback: null, preventDefault:false, target: null, cssClass: null, tag: 'explore'
 			     },
 			     {title: {fr:'Sélections', en:'Playlists'},	
 			      url: {fr:'http://onf.ca/selections/', en: 'http://www.nfb.ca/playlists/'},
-			      callback: null, preventDefault:false, target: null, cssClass: null, tagName: null
+			      callback: null, preventDefault:false, target: null, cssClass: null, tag: 'playlist'
 			     },
 			     {title: {fr:'Chaînes', en: 'Channels'},
 			      url: {fr:'http://www.onf.ca/chaines/', en: 'http://www.nfb.ca/channels/'},					
-			     callback: null, preventDefault:false, target: null, cssClass: null, tagName: null
+			     callback: null, preventDefault:false, target: null, cssClass: null, tag: 'channels'
 			     },
 			     {title: {fr:'Blogue',  en:'Blog'},
 			      url: {fr:'http://blogue.onf.ca/', en: 'http://blog.nfb.ca/'},
-			      callback: null, preventDefault:false, target: null, cssClass: null, tagName: null
+			      callback: null, preventDefault:false, target: null, cssClass: null, tag: 'blog'
 			     },
 			     {title: {fr:'Interactif', en: 'Interactive'},
 			      url: {fr:'http://www.onf.ca/interactif/', en: 'http://www.nfb.ca/interactive/'},
-			      callback: null, preventDefault:false, target: null, cssClass: null, tagName: null
+			      callback: null, preventDefault:false, target: null, cssClass: 'active', tag: 'interative'
 			     }
 			],
 			search: {
@@ -53,12 +67,18 @@
 				en: 'Search'
 			},
 			help: {title: {fr:'Aide', en:'Help'}, 
-				  url: '', callback: null, preventDefault:false, target: '_blank', cssClass: null, tagName: null
+				url: {fr:'http://www.onf.ca/a-propos/faq/', en:'http://www.nfb.ca/about/faq/'}, 
+				callback: null, preventDefault:false, target: '_blank', cssClass: null, tag: 'help'
 			},
 			translate: [
-		       {title: {fr:'English', en:'Français'},
-		    	url: '', callback: null, preventDefault:false, target: null, cssClass: null, tagName: null
-		    	}
+		       {
+		    	title: 'Français',
+		    	url: 'http://interactif.onf.ca/', callback: null, preventDefault:false, target: null, cssClass: null, tag: 'lang-fr'
+		       },
+		       {
+		    	title: 'English',
+		    	url: 'http://interactive.nfb.ca/', callback: null, preventDefault:false, target: null, cssClass: null, tag: 'lang-en'
+		       }
 			]
 		},
 		bot_defaults = {
@@ -67,16 +87,16 @@
 			opacityHover: 1,
 			links: [
 			     {title: {fr:'Accueil',en:'Home'},		url: null, 
-			      callback: null, preventDefault:true, target: null, cssClass: 'onf-bot-cont onf-bot-border', tagName: null
+			      callback: null, preventDefault:true, target: null, cssClass: 'onf-bot-cont onf-bot-border', tag: 'home'
 			     },
 			     {title: {fr:'À propos',en:'About'},	url: null,
-			      callback: null, preventDefault:true, target: null, cssClass: 'onf-bot-cont onf-bot-border', tagName: null
+			      callback: null, preventDefault:true, target: null, cssClass: 'onf-bot-cont onf-bot-border', tag: 'about'
 			     },
 			     {title: {fr:'Films reliés',en:'Related movies'},url: null,
-			      callback: null, preventDefault:true, target: null, cssClass: 'onf-bot-cont onf-bot-border', tagName: null
+			      callback: null, preventDefault:true, target: null, cssClass: 'onf-bot-cont onf-bot-border', tag: 'related'
 			     },
 			     {title: {fr:'Équipe',en:'Credits'},	url: null, 
-			      callback: null, preventDefault:true, target: null, cssClass: 'onf-bot-cont', tagName: null
+			      callback: null, preventDefault:true, target: null, cssClass: 'onf-bot-cont', tag: 'credits'
 			     }
 			],
 			share: {
@@ -93,6 +113,10 @@
 			volume: {
 				fr: 'Volume',
 				en: 'Volume'
+			},
+			fullscreen: {
+				fr: 'Plein écran',
+				en: 'Fullscreen'
 			}
 		};
 	
@@ -114,7 +138,10 @@
 	};
 	function _linkCallback(e) {
 		var t = $(this),
-			linkObj = t.data('link');
+			linkObj = t.data('link'),
+			tag = linkObj.tag || t.attr('data-tag');
+		
+		console.log ('[click] ' + tag);
 		
 		if (!!linkObj) {
 			// call callback
@@ -169,6 +196,96 @@
 		a.click(_linkCallback);
 		return a;
 	};
+	function isFullScreen() {
+		return document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen || isFullscreen;
+	}
+	function toggleFullScreen(e) {
+		if (isFullScreen()) {
+			return exitFullScreen(e);
+		}
+		return goFullScreen(e);
+	};
+	function getFullScreen() {
+		var el = document.documentElement
+	    , rfs = // for newer Webkit and Firefox
+	           el.requestFullScreen
+	        || el.webkitRequestFullScreen
+	        || el.webkitEnterFullScreen
+	        || el.mozRequestFullScreen
+	        || el.msRequestFullScreen;
+		return rfs;
+	};
+	function sendF11() {
+		// for Internet Explorer
+		try {
+			var wscript = new ActiveXObject("WScript.Shell");
+			if (wscript!=null) {
+		     wscript.SendKeys("{F11}");
+			}
+		} catch (ex) {
+			console.log('[wscript] ' + ex.message);
+		}
+	};
+	function goFullScreen(e) {
+		// @see: http://stackoverflow.com/questions/1125084/how-to-make-in-javascript-full-screen-windows-stretching-all-over-the-screen
+		// @see: http://johndyer.name/native-fullscreen-javascript-api-plus-jquery-plugin/
+		var rfs = getFullScreen();
+		
+		if(rfs!=undefined && $.isFunction(rfs)) {
+		  rfs.call(document.documentElement);
+		} else if(window.ActiveXObject!=undefined){
+		  // for Internet Explorer
+		  sendF11();
+		}
+		
+		isFullscreen = true;
+		
+		//@todo: log it
+		
+		return preventDefault(e);
+	};
+	function exitFullScreen(e) {
+		var el = document
+	    , efs = // for newer Webkit and Firefox
+	           el.exitFullScreen
+	        || el.cancelFullScreen
+	        || el.webkitExitFullScreen
+	        || el.webkitCancelFullScreen
+	        || el.mozExitFullScreen
+	        || el.mozCancelFullScreen
+	        || el.msExitFullScreen;
+		
+		if(efs!=undefined && $.isFunction(efs)) {
+		  efs.call(el);
+		} else if(window.ActiveXObject!=undefined){
+		  sendF11();
+		}
+		
+		isFullscreen = false;
+		
+		return preventDefault(e);
+	};
+	function supportsFullScreen() {
+		return !!getFullScreen() || window.ActiveXObject!=undefined;
+	};
+	function mute(e) {
+		var vol = $('#onf-volume'),
+			isMuted = false;
+		
+		vol.toggleClass('muted');
+		
+		// @todo: log
+		
+		isMuted = vol.hasClass('muted');
+		
+		if (!!$.cookie) {
+			$.cookie('muted', isMuted ? 1 : null, { expires: 7, path: '/' });
+		}
+		
+		// @todo event
+		
+		return preventDefault(e);
+	};
 	
 	
 	/** Public functions **/
@@ -179,13 +296,13 @@
 			delay = _getValue(this.minDelay);
 		}
 		function log() {
-			for (i in stats_loggers) {
+			stats_loggers.forEach(function (obj, key) {
 				try {
-					stats_loggers[i].log(cat, action, label, value);
+					obj.log(cat, action, label, value);
 				} catch (ex) {
-					console.error('[stats] ' + logger.name + ': ' + ex.message);
+					console.error('[stats] ' + obj.name + ': ' + ex.message);
 				}
-			}
+			});
 		};
 		// do not wait for the execution of the log
 		setTimeout(log, delay);
@@ -195,7 +312,7 @@
 	};
 	function statsInit() {
 		var nbf_logger = {
-				name: 'ONF-NBF logger',
+				name: 'ONF-NFB logger',
 				log: function (cat, action, label, value) {
 					if (!!window.ntptEventTag && $.isFunction(ntptEventTag)) {
 						var c = cat + ' > ' + action;
@@ -231,16 +348,24 @@
 	
 	/* Menu top */
 	function search(e) {
+		var query = $('#onf-top-search-txt').val();
+		
+		if (!!query && query.length > 0) {
+			document.location = ONF_NFB_search_url + encodeURIComponent(query);
+		}
 		
 		return preventDefault(e);
 	};
 	function searchToggle(e, show) {
 		var pnl = $('#onf-top-search-pnl'),
-			lbl = $('#onf-top-search-lbl')
+			lbl = $('#onf-top-search-lbl');
 			
-		// improve logic here !!
-		pnl.fadeTo(400, show ? 1 : 0);
-		lbl.fadeTo(400, show ? 0 : 1);
+		pnl[show ? 'fadeIn' : 'fadeOut'].call(pnl, 400);
+		lbl[show ? 'fadeOut': 'fadeIn' ].call(lbl, 400);
+		
+		if (show) {
+			pnl.find('input[type=text]').eq(0).focus();
+		}
 		
 		return preventDefault(e);
 	};
@@ -268,7 +393,7 @@
 			opacityEnabled = Math.abs(_getValue(opts.opacity) - _getValue(opts.opacityHover)) > 0,
 			logo = $('<a id="onf-top-logo"></a>'),
 			search_wrap = $('<span id="onf-top-search"></span>'),
-			search_lbl = $('<a href="#" id="onf-top-search-lbl"></span>'),
+			search_lbl = $('<a href="#" id="onf-top-search-lbl"></a>'),
 			search_pnl = $('<div id="onf-top-search-pnl"></div>'),
 			search_txt = $('<input id="onf-top-search-txt" type="text" />'),
 			search_btn = $('<input id="onf-top-search-btn" type="button" value="" />'),
@@ -281,9 +406,9 @@
 		wrap.append(logo);
 		
 		// create menu items
-		for (var i in opts.links) {
-			wrap.append(_createLink(opts.links[i]));
-		}
+		opts.links.forEach(function (obj,key) {
+			wrap.append(_createLink(obj));
+		});
 		
 		// create search function
 		search_lbl.text(_getObjectValue(opts.search));
@@ -298,12 +423,18 @@
 		search_wrap.append(search_lbl).append(search_pnl);
 		
 		wrap.append(search_wrap);
+		$(document.documentElement).mousedown(function (e) { // mouse down won't trap events
+			if (e.target.nodeName != 'INPUT') { searchOut(e); }
+			return true;
+		});
 		
 		// create right menus items
 		right_wrap.append(_createLink(opts.help));
-		for (var i in opts.translate) {
-			right_wrap.append(_createLink(opts.translate[i]));
-		}
+		opts.translate.forEach(function (obj, key) {
+			if (obj.tag != 'lang-' + LG) { // do not show current lang
+				right_wrap.append(_createLink(obj));
+			}
+		});
 		wrap.append(right_wrap);
 		
 		// finally add the wrap to our container
@@ -322,8 +453,8 @@
 	
 	/* Menu bottom */
 	function shareToggle(e, isIn) {
-		var ow = 165,
-			w = 65,
+		var ow = 155,
+			w = 55,
 			share = $('#onf-bot-share');
 		
 		if (isIn) {
@@ -343,7 +474,6 @@
 		return shareToggle.call(this, e, false);
 	};
 	
-	
 	function menuBot(bot_options) {
 		var opts = $.extend(true, opts, bot_defaults),
 			target = $(opts.target),
@@ -352,27 +482,30 @@
 			right_wrap = $('<span id="onf-bot-right"></span>'),
 			share_wrap = $('<span id="onf-bot-share"></span>'),
 			share_opts = $('<span id="onf-share-opts"></span>'),
-			vol_btn = $('<a href="#" id="onf-volume"></a>');
+			vol_btn = $('<a href="#" id="onf-volume"></a>'),
+			fs_btn = $('<a href="#" id="onf-fullscreen"></a>');
 		
 		// create menu item
-		for (var i in opts.links) {
-			wrap.append(_createLink(opts.links[i]));
-		}
+		opts.links.forEach(function (obj, key) {
+			wrap.append(_createLink(obj));
+		});
 		
 		// create share menu items
 		share_wrap.append($('<span>' + _getObjectValue(opts.share) + '</span>'));
 		for (var i in opts.share.links) {
-			var l = opts.share.links[i], 
-				a = $('<a></a>');
-			
-			a.attr('href', _getValue(l) );
-			a.attr('data-name', i);
-			a.attr('id', 'onf-' + i);
-			a.attr('class', 'onf-social');
-			a.attr('target', '_blank');
-			a.click($.noop);
-			
-			share_opts.append(a);
+			if (opts.share.links.hasOwnProperty(i)) {
+				var l = opts.share.links[i], 
+					a = $('<a></a>');
+				
+				a.attr('href', _getValue(l) );
+				a.attr('data-tag', i);
+				a.attr('id', 'onf-' + i);
+				a.attr('class', 'onf-social');
+				a.attr('target', '_blank');
+				a.click($.noop);
+				
+				share_opts.append(a);
+			}
 		}
 		share_wrap.mouseenter(share_in);
 		target.mouseleave(share_out);
@@ -381,8 +514,18 @@
 		
 		// create volume menu item
 		vol_btn.text(_getObjectValue(opts.volume));
-		vol_btn.click(function () {});
+		vol_btn.click(mute);
+		if (!!$.cookie && !!$.cookie('muted')) {
+			vol_btn.addClass('muted');
+		}
 		right_wrap.append(vol_btn);
+		
+		// create the fullscreen menu item
+		if (supportsFullScreen()) {
+			fs_btn.text(_getObjectValue(opts.fullscreen));
+			fs_btn.click(toggleFullScreen);
+			right_wrap.append(fs_btn);
+		}
 		
 		// add the righ_wrap to the wrap
 		wrap.append(right_wrap);

@@ -14,10 +14,16 @@ Le plugin jQuery des menu de l'ONF sont là pour faciliter l'intégration des me
 NFB's jQuery menu plugin has been created in order to facilite NFB's menu into HTML 5 webapps.
 
 ## Dépendances / Dependancies
+### Obligatoire / Mandatory
 
 - [jQuery 1.7+](http://code.jquery.com/jquery-latest.min.js) ou sur / or on [Google CDN](//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js)
+
+### Facultatives / Optional
+
 - [jQuery Cookie](https://github.com/carhartl/jquery-cookie) *uniquement pour la valeur du volume (sourdine) / Only for the volume (mute) value*
 - [LESS](http://lesscss.org/) *uniquement pour l'environnement de developpement / Only for development*
+- ntpagetag.js *uniquement pour les stats ONF / Only for NFB stats*
+- [Google Analytics Async Tracking Code](http://www.google.com/analytics/) *uniquement pour les stats GA / Only for GA stats* 
 
 ## Mode d'emploi / How to use
 

@@ -13,9 +13,10 @@
 @link-color:	#fff;
 @link-active: 	#fff;
 @input-color:	#333;
+@hover-color:	#ffcc66;
 
-@top-height:	31px;
-@bot-height:	28px;
+@top-height:	30px;
+@bot-height:	30px;
 @search-height: 19px;
 
 @img-path: 		"img/";
@@ -23,6 +24,7 @@
 @font-arial: 	Arial, Helvetica, sans-serif;
 
 @z-index: 		100;
+@font-size:		11px;
 
 /* Functions */
 .absolute (@zindex: 10) {
@@ -81,7 +83,7 @@
 	  .sq(19px);
 	  display: inline-block;
 	  margin: 7px 7px 0 7px;
-	  padding:0;
+	  padding: 0;
 	  background: transparent url("@{img-path}nfb_logo_onf.gif") no-repeat 0px 0px;
 	  .border-radius(0);
 	}
@@ -90,22 +92,28 @@
 		vertical-align:top;
 		color: @link-color;
 		display: inline-block;
-		font-size: 11px;
-		line-height: 11px;
-		height: 11px;
+		font-size: @font-size;
+		line-height: @font-size;
+		height: @font-size;
 		padding: 5px 10px;
 		margin:5px 6px;
 		text-decoration:none;
 		.border-radius;
+		outline:none;
 		
 		&:hover {
-			background-color:orange;
-			color: @bg-color;
+			background-color:@hover-color;
+			color: @bg-color !important;
 		}
 		
 		&:active {
-			background-color:dark-orange;
-			color: @bg-color;
+			background-color:darken(@hover-color, 15%);
+			color: @bg-color !important;
+			outline:none;
+		}
+		
+		&.active {
+			color: @hover-color;
 		}
 	}
 	
@@ -119,7 +127,7 @@
 		#onf-top-search-pnl {
 			position:absolute;
 			left:15px;
-			top:-3px;
+			top:0px;
 			display:block;
 			display:none;
 			height: @search-height;
@@ -134,7 +142,7 @@
 				.border-radius(2px);
 				line-height:@search-height;
 				height:@search-height;
-				font-size:11px;
+				font-size:@font-size;
 			}
 			
 			#onf-top-search-txt {
@@ -181,6 +189,7 @@
 	overflow:hidden;
 	color: @typo-color;
 	font-family: @font-arial;
+	vertical-align:top;
 	
 	.onf-bot-border {
 		border-right: 1px solid @border-color;
@@ -188,14 +197,16 @@
 	
 	#onf-link() {
 		display: inline-block;
-		margin: 6px 0 0 0;
+		margin: 4px 0 0 0;
 		padding: 4px 10px 4px 10px;
 		color:@link-color;
-		.upper;
-		font-size: 12px;
-		line-height: 12px;
-		height: 12px;
+		font-size: @font-size;
+		line-height: @font-size;
+		height: @font-size;
 		text-decoration:none;
+		font-weight: bold;
+		outline:none;
+		vertical-align:top;
 	}
 	
 	a {
@@ -208,10 +219,20 @@
 			background-position: 3px -12px;
 			background-repeat: no-repeat;
 			display:inline-block !important;
+			.onf-bot-border;
 			
 			&.muted {
 				background-position: 3px -27px;
 			}		
+		}
+		
+		&#onf-fullscreen {
+			padding-left: 20px;
+			margin-left: 4px;
+			background-image: url("@{img-path}toolbar.gif");
+			background-position: 3px -43px;
+			background-repeat: no-repeat;
+			display:inline-block !important;
 		}
 		
 		&.onf-social {
@@ -223,6 +244,8 @@
 		
 		&:hover, &:active {
 			color: @link-active;
+			text-decoration: underline;
+			outline:none;
 		}
 	}
 	
@@ -244,7 +267,7 @@
 		display: inline-block;
 		
 		overflow: hidden;
-		width: 65px;
+		width: 55px;
 		padding-left: 20px;
 		padding-right: 10px;
 		position:relative;
