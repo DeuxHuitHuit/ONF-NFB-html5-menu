@@ -12,13 +12,17 @@
 @border-color:	#333;
 @link-color:	#fff;
 @link-active: 	#fff;
+@input-color:	#333;
 
 @top-height:	31px;
-@bot-height:	25px;
+@bot-height:	28px;
+@search-height: 19px;
 
-@img-path: "img/";
+@img-path: 		"img/";
 
-@font-arial: Arial, Helvetica, sans-serif;
+@font-arial: 	Arial, Helvetica, sans-serif;
+
+@z-index: 		100;
 
 /* Functions */
 .absolute (@zindex: 10) {
@@ -39,6 +43,13 @@
 	height:@side;
 	display:block;
 }
+.border-radius (@radius: 4px) {
+	border-radius: @radius;
+	-webkit-border-radius: @radius;
+	-moz-border-radius: @radius;
+	-o-border-radius: @radius;
+	-ms-border-radius: @radius;
+}
 #onf-share-spr(@pos) {
 	background-image: url("@{img-path}social.gif");
 	background-position: -(17px * @pos) 0;
@@ -49,8 +60,8 @@
 
 
 /* TOP MENU */
-#onf-top { /* default container */
-	.absolute(100);
+#onf-top, .onf-top { /* default container */
+	.absolute(@z-index);
 	top:0;
 	left:0;
 	height:@top-height;
@@ -60,13 +71,102 @@
 }
 
 #onf-top-wrap {
+	position:relative;
 	color: @typo-color;
+	font-family: @font-arial;
+	line-height:@top-height - 5px;
+	overflow:hidden;
 	
+	#onf-top-logo {
+	  .sq(19px);
+	  display: inline-block;
+	  margin: 7px 7px 0 7px;
+	  padding:0;
+	  background: transparent url("@{img-path}nfb_logo_onf.gif") no-repeat 0px 0px;
+	  .border-radius(0);
+	}
+	
+	a {
+		vertical-align:top;
+		color: @link-color;
+		display: inline-block;
+		font-size: 11px;
+		line-height: 11px;
+		height: 11px;
+		padding: 5px 10px;
+		margin:5px 6px;
+		text-decoration:none;
+		.border-radius;
+		
+		&:hover {
+			background-color:orange;
+			color: @bg-color;
+		}
+		
+		&:active {
+			background-color:dark-orange;
+			color: @bg-color;
+		}
+	}
+	
+	#onf-top-search {
+		vertical-align: top;
+		position:relative;
+		
+		#onf-top-search-lbl {
+			
+		}
+		#onf-top-search-pnl {
+			position:absolute;
+			left:15px;
+			top:-3px;
+			display:block;
+			display:none;
+			height: @search-height;
+			margin: 0;
+			padding: 0;
+			width:155px;
+			
+			input {
+				display:inline-block;
+				outline:none;
+				border:none;
+				.border-radius(2px);
+				line-height:@search-height;
+				height:@search-height;
+				font-size:11px;
+			}
+			
+			#onf-top-search-txt {
+				font-style:italic;
+				background-color:#fff;
+				color:@input-color;
+				padding:0;
+				margin:0;
+				width:120px;
+				z-index:@z-index + 1;
+			}
+			#onf-top-search-btn {
+				width:35px;
+				padding:0;
+				margin:0;
+				background: transparent url("@{img-path}search_off.gif") no-repeat 0px 0px;
+				z-index:@z-index;
+				cursor:pointer;
+			}
+		}
+	}
+	
+	#onf-top-right {
+		.absolute(@z-index);
+		right:0;
+		top:0;
+	}
 }
 	
 /* BOTTOM MENU */
-#onf-bot { /* default container */
-	.absolute(100);
+#onf-bot, .onf-bot { /* default container */
+	.absolute(@z-index);
 	bottom:0;
 	left:0;
 	height:@bot-height;
@@ -77,10 +177,12 @@
 }
 
 #onf-bot-wrap {
-	
+	position:relative;
+	overflow:hidden;
 	color: @typo-color;
+	font-family: @font-arial;
 	
-	#onf-bot-border {
+	.onf-bot-border {
 		border-right: 1px solid @border-color;
 	}
 	
@@ -90,16 +192,16 @@
 		padding: 4px 10px 4px 10px;
 		color:@link-color;
 		.upper;
-		font-family: @font-arial;
 		font-size: 12px;
 		line-height: 12px;
 		height: 12px;
+		text-decoration:none;
 	}
 	
 	a {
 		#onf-link;
 		
-		&.vol {
+		&#onf-volume {
 			padding-left: 20px;
 			margin-left: 4px;
 			background-image: url("@{img-path}toolbar.gif");
@@ -124,10 +226,16 @@
 		}
 	}
 	
-	#onf-share {
+	#onf-bot-right {
+	  .absolute(@z-index);
+	  right: 0;
+	  top:0;
+	}
+	
+	#onf-bot-share {
 		
 		#onf-link;
-		#onf-bot-border;
+		.onf-bot-border;
 		
 		background-image: url("@{img-path}toolbar.gif");
 		background-position: 3px 4px;
@@ -157,9 +265,9 @@
 		top:1px;
 	}
 	
-	#onf-fb {#onf-share-spr(0);}
-	#onf-tw {#onf-share-spr(1);}
-	#onf-su {#onf-share-spr(2);}
-	#onf-di {#onf-share-spr(3);}
-	#onf-de {#onf-share-spr(4);}
+	#onf-facebook	 {#onf-share-spr(0);}
+	#onf-twitter	 {#onf-share-spr(1);}
+	#onf-stumpleupon {#onf-share-spr(2);}
+	#onf-digg		 {#onf-share-spr(3);}
+	#onf-delicious	 {#onf-share-spr(4);}
 }
