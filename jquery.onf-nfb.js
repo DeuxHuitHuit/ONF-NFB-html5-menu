@@ -29,17 +29,28 @@
 
 	
 	/** Private VARIABLES **/
-	var stats_loggers = [],
-		LG = $('html').attr('lang'),
-		ONF_NFB_plugin_root = '/',
+	var // constants
+		LG = _getDefaultValue($('html').attr('lang'), 'en'), // defaults to english
 		ONF_NFB_url = (LG == 'fr' ? 'http://www.onf.ca' : 'http://www.nbf.ca'),
-		ONF_NFB_icon = ONF_NFB_plugin_root + 'img/nfb_logo_onf.gif';
-		ONF_NFB_search_url = 'http://search.nfb.ca/search?entqr=0&output=xml_no_dtd&sort=date%3AD%3AL%3Ad1&client=beta_onfb&ud=1&oe=UTF-8&ie=UTF-8&proxystylesheet=beta_onfb&proxyreload=1&hl=' + LG + '&lr=lang_'+LG+'&site=beta_onfb&q=',
-		isFullscreen = false,
+		ONF_NFB_search_url = 'http://search.nfb.ca/search?entqr=0&output=xml_no_dtd&sort=date%3AD%3AL%3Ad1&client=beta_onfb&ud=1&oe=UTF-8&ie=UTF-8&proxystylesheet=beta_onfb&proxyreload=1&hl='+LG+'&lr=lang_'+LG+'&site=beta_onfb&q=',
+		ONF_NFB_share_width = 55,
+		ONF_NFB_event_namespace = 'onf-nfb',
+		ONF_NFB_event_topclick = 'onf-nfb.topclick', // function (e,target,opts,tag)
+		ONF_NFB_event_helpclick = 'onf-nfb.help',	 // function (e,target,opts,tag)
+		ONF_NFB_event_langclick = 'onf-nfb.lang',	 // function (e,target,opts,tag)
+		ONF_NFB_event_search = 'onf-nfb.search',	 // function (e,target,query)
+		ONF_NFB_event_botclick = 'onf-nfb.botclick', // function (e,target,opts,tag)
+		ONF_NFB_event_shareclick = 'onf-nfb.share',  // function (e,target,tag)
+		ONF_NFB_event_volclick = 'onf-nfb.volume',   // function (e,target,muted)
+		ONF_NFB_event_fsclick = 'onf-nfb.fullscreen',// function (e,target,fullscreen)
+		// variables
+		stats_loggers = [],
 		top_defaults = {
 			target: '#onf-top',
 			opacity: 0.8,
 			opacityHover: 1,
+			recursive: false,
+			ready: null, // function (opts)
 			links: [
 			     {title: {fr:'Explorer', en:'Explore'}, 
 			      url: {fr:'http://www.onf.ca/explorer-tous-les-films/', en:'http://www.nfb.ca/explore-all-films/'},
@@ -63,8 +74,8 @@
 			     }
 			],
 			search: {
-				fr: 'Recherche',
-				en: 'Search'
+				title: {fr: 'Recherche', en: 'Search'},
+				callback: null
 			},
 			help: {title: {fr:'Aide', en:'Help'}, 
 				url: {fr:'http://www.onf.ca/a-propos/faq/', en:'http://www.nfb.ca/about/faq/'}, 
@@ -85,6 +96,8 @@
 			target: '#onf-bot',
 			opacity: 0.8,
 			opacityHover: 1,
+			recursive: false,
+			ready: null, // function (opts)
 			links: [
 			     {title: {fr:'Accueil',en:'Home'},		url: null, 
 			      callback: null, preventDefault:true, target: null, cssClass: 'onf-bot-cont onf-bot-border', tag: 'home'
@@ -100,29 +113,29 @@
 			     }
 			],
 			share: {
-				fr: 'Partagez',
-				en: 'Share',
+				title: {fr: 'Partagez', en: 'Share'},
 				links: {
 					facebook: 'http://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(document.location),
 					twitter: 'http://www.twitter.com/intent/tweet?text=%23ONFi ' + encodeURIComponent(document.title) + ' ' + encodeURIComponent(document.location),
 					stumpleupon: 'http://www.stumbleupon.com/submit?url='+ encodeURIComponent(document.location) + '&title=' + encodeURIComponent(document.title),
 					digg: 'http://digg.com/submit?phase=2&url='+ encodeURIComponent(document.location) +'&bodytext=' + encodeURIComponent(document.title),
 					delicious: 'http://www.delicious.com/post?v=2&url='+ encodeURIComponent(document.location) +'&title=' + encodeURIComponent(document.title)
-				}
+				},
+				callback: null
 			},
 			volume: {
-				fr: 'Volume',
-				en: 'Volume'
+				title: {fr: 'Volume', en: 'Volume' },
+				callback: null
 			},
 			fullscreen: {
-				fr: 'Plein écran',
-				en: 'Fullscreen'
+				title: {fr: 'Plein écran', en: 'Fullscreen'},
+				callback: null
 			}
 		};
 	
 	/** Private common functions **/
 	function _getValue(o) {
-		return $.isFunction(o) ? o.call(this) : o;
+		return $.isFunction(o) ? o.call(this, LG) : o;
 	};
 	function _getObjectValue(o) {
 		return $.isPlainObject(o) ? o[LG] : _getValue(o);
@@ -139,27 +152,32 @@
 	function _linkCallback(e) {
 		var t = $(this),
 			linkObj = t.data('link'),
-			tag = linkObj.tag || t.attr('data-tag');
+			event = t.data('event'),
+			target = t.data('target'),
+			tag = linkObj.tag || t.attr('data-tag'),
+			opts = target.data('opts'),
+			ret = true;
 		
 		console.log ('[click] ' + tag);
 		
 		if (!!linkObj) {
 			// call callback
 			if ($.isFunction(linkObj.callback)) {
-				linkObj.callback.call(t, e);
+				linkObj.callback.call(t, e, t, opts, tag);
 			}
 			// prevent default behavior
 			if (!!linkObj.preventDefault) {
-				return preventDefault(e);
+				ret = preventDefault(e);
 			}
 		}
 		
-		// log the click
-		// @todo: log
-		
 		// raise event
+		target.triggerHandler(event, [e,t,opts,tag]);
 		
-		return true;
+		// log event
+		$.onf_nfb.stats.log('menu','click', tag, t.index());
+		
+		return ret;
 	};
 	function _hover(e, _isIn) {
 		var t = $(this),
@@ -178,7 +196,7 @@
 	function _hoverOut(e) {
 		_hover.call(this, e, false);
 	};
-	function _createLink(l) {
+	function _createLink(l, target, event) {
 		var a = $('<a></a>');
 		a.text(_getObjectValue(l.title));
 		if (!!l.url) {
@@ -187,6 +205,8 @@
 			a.attr('href', "#");
 		}
 		a.data('link', l);
+		a.data('target', target);
+		a.data('event', event);
 		if (!!l.target) {
 			a.attr('target', _getValue(l.target));
 		}
@@ -197,7 +217,11 @@
 		return a;
 	};
 	function isFullScreen() {
-		return document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen || isFullscreen;
+		return document.fullScreen
+			|| document.mozFullScreen
+			|| document.webkitIsFullScreen // actual implementation
+			|| document.webkitFullScreen
+			|| document.msFullScreen;
 	}
 	function toggleFullScreen(e) {
 		if (isFullScreen()) {
@@ -206,8 +230,8 @@
 		return goFullScreen(e);
 	};
 	function getFullScreen() {
-		var el = document.documentElement
-	    , rfs = // for newer Webkit and Firefox
+		var el = document.documentElement,
+	    	rfs = // for newer Webkit and Firefox
 	           el.requestFullScreen
 	        || el.webkitRequestFullScreen
 	        || el.webkitEnterFullScreen
@@ -215,58 +239,58 @@
 	        || el.msRequestFullScreen;
 		return rfs;
 	};
-	function sendF11() {
-		// for Internet Explorer
-		try {
-			var wscript = new ActiveXObject("WScript.Shell");
-			if (wscript!=null) {
-		     wscript.SendKeys("{F11}");
-			}
-		} catch (ex) {
-			console.log('[wscript] ' + ex.message);
-		}
-	};
+
 	function goFullScreen(e) {
 		// @see: http://stackoverflow.com/questions/1125084/how-to-make-in-javascript-full-screen-windows-stretching-all-over-the-screen
 		// @see: http://johndyer.name/native-fullscreen-javascript-api-plus-jquery-plugin/
-		var rfs = getFullScreen();
+		var rfs = getFullScreen(),
+			success = false;
 		
 		if(rfs!=undefined && $.isFunction(rfs)) {
 		  rfs.call(document.documentElement);
-		} else if(window.ActiveXObject!=undefined){
-		  // for Internet Explorer
-		  sendF11();
+		  success = true;
 		}
 		
-		isFullscreen = true;
-		
-		//@todo: log it
+		if (success) {
+			// raise event
+			$.event.trigger(ONF_NFB_event_fsclick, [e,this,true]);
+			
+			// log event
+			$.onf_nfb.stats.log('menu','fullscreen', true);
+		}
 		
 		return preventDefault(e);
 	};
 	function exitFullScreen(e) {
-		var el = document
-	    , efs = // for newer Webkit and Firefox
+		var success = false,
+			el = document,
+			efs = // for newer Webkit and Firefox
 	           el.exitFullScreen
 	        || el.cancelFullScreen
 	        || el.webkitExitFullScreen
 	        || el.webkitCancelFullScreen
 	        || el.mozExitFullScreen
 	        || el.mozCancelFullScreen
-	        || el.msExitFullScreen;
+	        || el.msExitFullScreen
+	        || el.msExitCancelScreen;
 		
 		if(efs!=undefined && $.isFunction(efs)) {
 		  efs.call(el);
-		} else if(window.ActiveXObject!=undefined){
-		  sendF11();
+		  success = true;
 		}
 		
-		isFullscreen = false;
+		if (success) {
+			// raise event
+			$.event.trigger(ONF_NFB_event_fsclick, [e,this,false]);
+			
+			// log event
+			$.onf_nfb.stats.log('menu','fullscreen', false);
+		}
 		
 		return preventDefault(e);
 	};
 	function supportsFullScreen() {
-		return !!getFullScreen() || window.ActiveXObject!=undefined;
+		return !!getFullScreen();
 	};
 	function mute(e) {
 		var vol = $('#onf-volume'),
@@ -274,26 +298,40 @@
 		
 		vol.toggleClass('muted');
 		
-		// @todo: log
-		
 		isMuted = vol.hasClass('muted');
 		
+		// save value (add a cookie for muted, delete it for volume)
 		if (!!$.cookie) {
 			$.cookie('muted', isMuted ? 1 : null, { expires: 7, path: '/' });
 		}
 		
-		// @todo event
+		// raise event
+		$.event.trigger(ONF_NFB_event_volclick, [e,vol,isMuted]);
+		
+		// log event
+		$.onf_nfb.stats.log('menu','mute', isMuted);
 		
 		return preventDefault(e);
 	};
+	function registerCallback(event, callback, target) {
+		if ($.isFunction(callback)) {
+			if (!!target && $.isFunction(target.on)) {
+				target.on(event, callback);
+			} else {
+				$(document).on(event, callback);
+			}
+		}
+	};
+	
 	
 	
 	/** Public functions **/
 	
 	/* Stats */
 	function statsLog(cat, action, label, value, delay) {
-		if (!delay || isNaN(delay) || delay < 100) {
-			delay = _getValue(this.minDelay);
+		var minDelay = _getValue(this.minDelay);
+		if (!delay || isNaN(delay) || delay < minDelay) {
+			delay = minDelay;
 		}
 		function log() {
 			stats_loggers.forEach(function (obj, key) {
@@ -351,7 +389,17 @@
 		var query = $('#onf-top-search-txt').val();
 		
 		if (!!query && query.length > 0) {
-			document.location = ONF_NFB_search_url + encodeURIComponent(query);
+			
+			// raise event
+			$.event.trigger(ONF_NFB_event_search, [e,this,query]);
+			
+			// log event
+			$.onf_nfb.stats.log('menu','search', query);
+			
+			// redirect
+			setTimeout(function () {
+				document.location = ONF_NFB_search_url + encodeURIComponent(query);
+			}, $.onf_nfb.stats.minDelay);
 		}
 		
 		return preventDefault(e);
@@ -388,7 +436,7 @@
 	};
 	
 	function menuTop(top_options) {
-		var opts = $.extend(true, opts, top_defaults),
+		var opts = $.extend((!!top_options && !!top_options.recursive ? true : {}), opts, top_defaults, top_options),
 			target = $(opts.target),
 			opacityEnabled = Math.abs(_getValue(opts.opacity) - _getValue(opts.opacityHover)) > 0,
 			logo = $('<a id="onf-top-logo"></a>'),
@@ -402,19 +450,26 @@
 		
 		// create logo
 		logo.attr('href', ONF_NFB_url);
-		
+		logo.click(function (e) {
+			// raise event
+			$.event.trigger(ONF_NFB_event_topclick, [e,this,opts,'logo']);
+			
+			// log event
+			$.onf_nfb.stats.log('menu','click', 'logo');
+			return true;
+		})
 		wrap.append(logo);
 		
 		// create menu items
 		opts.links.forEach(function (obj,key) {
-			wrap.append(_createLink(obj));
+			wrap.append(_createLink(obj,target,ONF_NFB_event_topclick));
 		});
 		
 		// create search function
-		search_lbl.text(_getObjectValue(opts.search));
+		search_lbl.text(_getObjectValue(opts.search.title));
 		search_lbl.click(searchIn);
 		
-		search_txt.attr('placeholder', _getObjectValue(opts.search));
+		search_txt.attr('placeholder', _getObjectValue(opts.search.title));
 		search_txt.keydown(searchKeyDown);
 		search_btn.click(search);
 		
@@ -429,10 +484,10 @@
 		});
 		
 		// create right menus items
-		right_wrap.append(_createLink(opts.help));
+		right_wrap.append(_createLink(opts.help, target, ONF_NFB_event_helpclick));
 		opts.translate.forEach(function (obj, key) {
 			if (obj.tag != 'lang-' + LG) { // do not show current lang
-				right_wrap.append(_createLink(obj));
+				right_wrap.append(_createLink(obj, target, ONF_NFB_event_langclick));
 			}
 		});
 		wrap.append(right_wrap);
@@ -447,22 +502,32 @@
 		if (opacityEnabled) {
 			target.hover(_hoverIn, _hoverOut);
 			_hoverOut.call(target);
+		} else {
+			target.off('mouseenter', _hoverIn).off('mouseleave', _hoverOut);
+		}
+		
+		// register callbacks
+		registerCallback(ONF_NFB_event_search, opts.search.callback);
+		
+		// ready callback
+		if ($.isFunction(opts.ready)) {
+			opts.ready.call(target, opts);
 		}
 	};
 	
 	
 	/* Menu bottom */
 	function shareToggle(e, isIn) {
-		var ow = 155,
-			w = 55,
-			share = $('#onf-bot-share');
+		var share = $('#onf-bot-share'),
+			w = ONF_NFB_share_width,
+			i = share.find('.onf-social').length,
+			ow = w + (20*i);
 		
 		if (isIn) {
 			w = ow;
 		}
 		
 		share.stop(false, false)
-			 .css({display:'inline-block'})
 			 .animate({width:w}, ow * 2);
 		
 		return preventDefault(e);
@@ -475,7 +540,7 @@
 	};
 	
 	function menuBot(bot_options) {
-		var opts = $.extend(true, opts, bot_defaults),
+		var opts = $.extend((!!bot_options && !!bot_options.recursive ? true : {}), opts, bot_defaults, bot_options),
 			target = $(opts.target),
 			opacityEnabled = Math.abs(_getValue(opts.opacity) - _getValue(opts.opacityHover)) > 0,
 			wrap = $('<div id="onf-bot-wrap"></div>'),
@@ -487,11 +552,11 @@
 		
 		// create menu item
 		opts.links.forEach(function (obj, key) {
-			wrap.append(_createLink(obj));
+			wrap.append(_createLink(obj, target, ONF_NFB_event_botclick));
 		});
 		
 		// create share menu items
-		share_wrap.append($('<span>' + _getObjectValue(opts.share) + '</span>'));
+		share_wrap.append($('<span>' + _getObjectValue(opts.share.title) + '</span>'));
 		for (var i in opts.share.links) {
 			if (opts.share.links.hasOwnProperty(i)) {
 				var l = opts.share.links[i], 
@@ -502,7 +567,16 @@
 				a.attr('id', 'onf-' + i);
 				a.attr('class', 'onf-social');
 				a.attr('target', '_blank');
-				a.click($.noop);
+				a.click(function (e) {
+					// raise event
+					$.event.trigger(ONF_NFB_event_shareclick, [e,this,i]);
+					
+					// log event
+					$.onf_nfb.stats.log('menu','share', i);
+					
+					// allow continuation
+					return true;
+				});
 				
 				share_opts.append(a);
 			}
@@ -513,7 +587,7 @@
 		right_wrap.append(share_wrap);
 		
 		// create volume menu item
-		vol_btn.text(_getObjectValue(opts.volume));
+		vol_btn.text(_getObjectValue(opts.volume.title));
 		vol_btn.click(mute);
 		if (!!$.cookie && !!$.cookie('muted')) {
 			vol_btn.addClass('muted');
@@ -522,7 +596,7 @@
 		
 		// create the fullscreen menu item
 		if (supportsFullScreen()) {
-			fs_btn.text(_getObjectValue(opts.fullscreen));
+			fs_btn.text(_getObjectValue(opts.fullscreen.title));
 			fs_btn.click(toggleFullScreen);
 			right_wrap.append(fs_btn);
 		}
@@ -540,6 +614,18 @@
 		if (opacityEnabled) {
 			target.hover(_hoverIn, _hoverOut);
 			_hoverOut.call(target);
+		} else {
+			target.off('mouseenter', _hoverIn).off('mouseleave', _hoverOut);
+		}
+		
+		// register callbacks
+		registerCallback(ONF_NFB_event_shareclick, opts.share.callback, share_opts);
+		registerCallback(ONF_NFB_event_volclick, opts.volume.callback, vol_btn);
+		registerCallback(ONF_NFB_event_fsclick, opts.fullscreen.callback, fs_btn);
+		
+		// ready callback
+		if ($.isFunction(opts.ready)) {
+			opts.ready.call(target, opts);
 		}
 	};
 	
@@ -554,6 +640,17 @@
 		menu: {
 			top: menuTop,
 			bot: menuBot
+		},
+		events: {
+			namespace:	ONF_NFB_event_namespace,
+			topclick: 	ONF_NFB_event_topclick,
+			help:		ONF_NFB_event_helpclick,
+			lang:		ONF_NFB_event_langclick,
+			search:		ONF_NFB_event_search,
+			botclick:	ONF_NFB_event_botclick,
+			share:		ONF_NFB_event_shareclick,
+			volume:		ONF_NFB_event_volclick,
+			fullscreen:	ONF_NFB_event_fsclick
 		}
 	});
 	

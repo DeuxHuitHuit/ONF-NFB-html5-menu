@@ -23,6 +23,9 @@
 			<br />
 			<h1>Ceci est mon titre</h1>
 			<p>Ceci est mon contenu</p>
+			
+			<h2>Test suite</h2>
+			<div id="test-suite"><ul></ul></div>
 		</div>
 		
 		<div id="onf-bot"></div>
@@ -37,6 +40,9 @@
 	<!-- ONF-NFB lib -->
 	<script src="./jquery.onf-nfb.js"></script>
 	
+	<!-- ONF-NFB test suite -->
+	<script src="./jquery.onf-nfb.testsuite.js"></script>
+	
 	<!-- Script d'enregistrement / Hook-up script -->
 	<script>
 		// in a nutshell
@@ -44,20 +50,56 @@
 		
 			// on ready
 			$(function () {
-				// date
-				var now = new Date();
+				// dates
+				var now1 = null, now2 = null, now3 = null;
+			
+				now1 = new Date();
 			
 				// top menu
-				$.onf_nfb.menu.top();
+				$.onf_nfb.menu.top({
+					ready: function () {
+						// output time taken
+						console.log ('[time top] ' + ((new Date()) - now1));
+					}
+				});
+				
+				now2 = new Date();
 				
 				// bottom menu
-				$.onf_nfb.menu.bot();
+				$.onf_nfb.menu.bot({
+					ready: function () {
+						// output time taken
+						console.log ('[time bot] ' + ((new Date()) - now2));
+					}
+				});
+				
+				now3 = new Date();
 				
 				// stats test
 				$.onf_nfb.stats.log('test cat', 'test action');
 				
 				// output time taken
-				console.log ('[time] ' + ((new Date()) - now));
+				console.log ('[time] ' + ((new Date()) - now3));
+				
+				// test suites
+				for (var p in $.onf_nfb.tests) {
+					if ($.isFunction($.onf_nfb.tests[p])) {
+						var li = $('<li></li>'),
+							a = $('<a href="#"></a>');
+							
+						a.data('callback', $.onf_nfb.tests[p]);
+						
+						a.text(p);
+						
+						a.click(function(e){
+							$(this).data('callback').call();
+							e.preventDefault();
+							return false;
+						});
+						
+						$('#test-suite>ul').append(li.append(a));
+					}
+				}
 			});
 		
 		})(jQuery);
