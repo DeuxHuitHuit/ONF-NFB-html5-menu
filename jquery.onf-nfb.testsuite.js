@@ -74,6 +74,25 @@
 		});
 	};
 	
+	function testNoLinks() {	
+		console.log('[test] no Links');
+		// top menu
+		$.onf_nfb.menu.top({
+			links: null,
+			search: null,
+			translate: null,
+			help: null
+		});
+		
+		// bottom menu
+		$.onf_nfb.menu.bot({
+			links: null,
+			share: null,
+			fulscreen: null,
+			vol: null
+		});
+	};
+	
 	function testNoHover() {
 		console.log('[test] noHover');
 		// top menu
@@ -151,6 +170,18 @@
 		});
 	};
 	
+	function testCustomEvent() {
+		console.log('[test] custom events');
+		
+		$(document).on($.onf_nfb.events.namespace, log); // all events
+		
+		$(document).on($.onf_nfb.events.fullscreen, log);
+		
+		$('#onf-top').on($.onf_nfb.events.topclick, log);
+		
+		$('#onf-bot').on($.onf_nfb.events.botclick, log);
+	};
+	
 	
 	/** Global object **/
 	$.onf_nfb = $.extend(true, $.onf_nfb, {
@@ -158,8 +189,10 @@
 			"default": testDefaultImpl,
 			customLinks: testCustomLinks,
 			customLinksRecursive: testCustomLinksRecursive,
+			noLinks: testNoLinks,
 			noHover: testNoHover,
 			translation: testCustomTranslation,
+			customEvent: testCustomEvent,
 			addNewLogger: testAddNewLogger
 		}
 	});

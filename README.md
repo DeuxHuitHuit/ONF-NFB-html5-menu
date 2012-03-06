@@ -1,11 +1,12 @@
 # ONF-NBF jQuery Menus #
 
 - Version: 1.0
-- Date: NOT RELEASED YET: 2012-03-xx
+- Date: 2012-03-06
+- Tag: https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu/tags/v1.0
 - Wiki: <https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu/wiki>
 - Github Repository: <https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu>
 - Issues: <https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu/issues>
-- Official hosting: <http://html5.onf.ca/v1.0/>
+- Official hosting: http://html5.onf.ca/v1.0/
 
 ## Vue d'ensemble / Overview
 
@@ -27,19 +28,26 @@ NFB's jQuery menu plugin has been created in order to facilite NFB's menu into H
 
 ## Mode d'emploi / How to use
 
-1. Ajouter la référence vers la feuille de style dans la section \<head\>
-2. Ajouter la référence vers le script jQuery juste avant la balise \</body\>
+1. Ajouter la référence vers la feuille de style dans la section \<head\> 
+2. Ajouter la référence vers le script jQuery juste avant la balise \</body\> 
 3. S'assurer que l'attribut @lang de la balise \<html\> soit déclarée
 4. Appeler la/les méthodes qui crée les menus
+	- `$.onf_nfb.menu.top({...})`
+	- `$.onf_nfb.menu.bot({...})`
 
 Pour plus de détails, consultez [la wiki](https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu/wiki/Doc-FR).
+Vous pouvez aussi voir des exemples concret dans la [testsuite](https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu/blob/master/jquery.onf-nfb.testsuite.js).
 
 1. Add the stylesheet reference in the \<head\> section
 2. Add the jQuery script reference just before the \</body\> tag
 3. Be sure that the @lang attribute is declared on the \<html\> tag
 4. Call the methods that creates each menus
+	- `$.onf_nfb.menu.top({...})`
+	- `$.onf_nfb.menu.bot({...})`
 
 For more information, please see the [wiki](https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu/wiki).
+You can see live example in the [testsuite](https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu/blob/master/jquery.onf-nfb.testsuite.js).
+
 
 ## Compatiblité / Compatibility
 
@@ -50,6 +58,8 @@ For more information, please see the [wiki](https://github.com/DeuxHuitHuit/ONF-
 	- Opera 10+
 	- Safari 5+
 	- Internet Explorer 9+
+	- Mobile Safari iOs 4+
+	- Android 2.2+ webkit browser
 	
 - Niveau C (HTML 5 seulement / HTML 5 only)
 

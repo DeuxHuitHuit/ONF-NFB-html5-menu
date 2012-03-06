@@ -461,35 +461,46 @@
 		wrap.append(logo);
 		
 		// create menu items
-		opts.links.forEach(function (obj,key) {
-			wrap.append(_createLink(obj,target,ONF_NFB_event_topclick));
-		});
+		if (!!opts.links && !!opts.links.length) {
+			opts.links.forEach(function (obj,key) {
+				wrap.append(_createLink(obj,target,ONF_NFB_event_topclick));
+			});
+		}
 		
 		// create search function
-		search_lbl.text(_getObjectValue(opts.search.title));
-		search_lbl.click(searchIn);
-		
-		search_txt.attr('placeholder', _getObjectValue(opts.search.title));
-		search_txt.keydown(searchKeyDown);
-		search_btn.click(search);
-		
-		search_pnl.append(search_txt).append(search_btn);
-		
-		search_wrap.append(search_lbl).append(search_pnl);
-		
-		wrap.append(search_wrap);
-		$(document.documentElement).mousedown(function (e) { // mouse down won't trap events
-			if (e.target.nodeName != 'INPUT') { searchOut(e); }
-			return true;
-		});
+		if (!!opts.search) {
+			search_lbl.text(_getObjectValue(opts.search.title));
+			search_lbl.click(searchIn);
+			
+			search_txt.attr('placeholder', _getObjectValue(opts.search.title));
+			search_txt.keydown(searchKeyDown);
+			search_btn.click(search);
+			
+			search_pnl.append(search_txt).append(search_btn);
+			
+			search_wrap.append(search_lbl).append(search_pnl);
+			
+			wrap.append(search_wrap);
+			$(document.documentElement).mousedown(function (e) { // mouse down won't trap events
+				if (e.target.nodeName != 'INPUT') { searchOut(e); }
+				return true;
+			});
+			
+			registerCallback(ONF_NFB_event_search, opts.search.callback);
+		}
 		
 		// create right menus items
-		right_wrap.append(_createLink(opts.help, target, ONF_NFB_event_helpclick));
-		opts.translate.forEach(function (obj, key) {
-			if (obj.tag != 'lang-' + LG) { // do not show current lang
-				right_wrap.append(_createLink(obj, target, ONF_NFB_event_langclick));
-			}
-		});
+		if (!!opts.help) {
+			right_wrap.append(_createLink(opts.help, target, ONF_NFB_event_helpclick));
+		}
+		if (!!opts.translate && !!opts.translate.length) {
+			opts.translate.forEach(function (obj, key) {
+				if (obj.tag != 'lang-' + LG) { // do not show current lang
+					right_wrap.append(_createLink(obj, target, ONF_NFB_event_langclick));
+				}
+			});
+		}
+		
 		wrap.append(right_wrap);
 		
 		// finally add the wrap to our container
@@ -505,9 +516,6 @@
 		} else {
 			target.off('mouseenter', _hoverIn).off('mouseleave', _hoverOut);
 		}
-		
-		// register callbacks
-		registerCallback(ONF_NFB_event_search, opts.search.callback);
 		
 		// ready callback
 		if ($.isFunction(opts.ready)) {
@@ -551,54 +559,66 @@
 			fs_btn = $('<a href="#" id="onf-fullscreen"></a>');
 		
 		// create menu item
-		opts.links.forEach(function (obj, key) {
-			wrap.append(_createLink(obj, target, ONF_NFB_event_botclick));
-		});
+		if (!!opts.links && !!opts.links.length) {
+			opts.links.forEach(function (obj, key) {
+				wrap.append(_createLink(obj, target, ONF_NFB_event_botclick));
+			});
+		}
 		
 		// create share menu items
-		share_wrap.append($('<span>' + _getObjectValue(opts.share.title) + '</span>'));
-		for (var i in opts.share.links) {
-			if (opts.share.links.hasOwnProperty(i)) {
-				var l = opts.share.links[i], 
-					a = $('<a></a>');
-				
-				a.attr('href', _getValue(l) );
-				a.attr('data-tag', i);
-				a.attr('id', 'onf-' + i);
-				a.attr('class', 'onf-social');
-				a.attr('target', '_blank');
-				a.click(function (e) {
-					// raise event
-					$.event.trigger(ONF_NFB_event_shareclick, [e,this,i]);
+		if (!!opts.share) {
+			share_wrap.append($('<span>' + _getObjectValue(opts.share.title) + '</span>'));
+			for (var i in opts.share.links) {
+				if (opts.share.links.hasOwnProperty(i)) {
+					var l = opts.share.links[i], 
+						a = $('<a></a>');
 					
-					// log event
-					$.onf_nfb.stats.log('menu','share', i);
+					a.attr('href', _getValue(l) );
+					a.attr('data-tag', i);
+					a.attr('id', 'onf-' + i);
+					a.attr('class', 'onf-social');
+					a.attr('target', '_blank');
+					a.click(function (e) {
+						// raise event
+						$.event.trigger(ONF_NFB_event_shareclick, [e,this,i]);
+						
+						// log event
+						$.onf_nfb.stats.log('menu','share', i);
+						
+						// allow continuation
+						return true;
+					});
 					
-					// allow continuation
-					return true;
-				});
-				
-				share_opts.append(a);
+					share_opts.append(a);
+				}
 			}
+			share_wrap.mouseenter(share_in);
+			target.mouseleave(share_out);
+			share_wrap.append(share_opts);
+			right_wrap.append(share_wrap);
+			
+			registerCallback(ONF_NFB_event_shareclick, opts.share.callback, share_opts);
 		}
-		share_wrap.mouseenter(share_in);
-		target.mouseleave(share_out);
-		share_wrap.append(share_opts);
-		right_wrap.append(share_wrap);
 		
 		// create volume menu item
-		vol_btn.text(_getObjectValue(opts.volume.title));
-		vol_btn.click(mute);
-		if (!!$.cookie && !!$.cookie('muted')) {
-			vol_btn.addClass('muted');
+		if (!!opts.volume) {
+			vol_btn.text(_getObjectValue(opts.volume.title));
+			vol_btn.click(mute);
+			if (!!$.cookie && !!$.cookie('muted')) {
+				vol_btn.addClass('muted');
+			}
+			right_wrap.append(vol_btn);
+			
+			registerCallback(ONF_NFB_event_volclick, opts.volume.callback, vol_btn);
 		}
-		right_wrap.append(vol_btn);
 		
 		// create the fullscreen menu item
-		if (supportsFullScreen()) {
+		if (!!opts.fullscreen && supportsFullScreen()) {
 			fs_btn.text(_getObjectValue(opts.fullscreen.title));
 			fs_btn.click(toggleFullScreen);
 			right_wrap.append(fs_btn);
+			
+			registerCallback(ONF_NFB_event_fsclick, opts.fullscreen.callback, fs_btn);
 		}
 		
 		// add the righ_wrap to the wrap
@@ -617,11 +637,6 @@
 		} else {
 			target.off('mouseenter', _hoverIn).off('mouseleave', _hoverOut);
 		}
-		
-		// register callbacks
-		registerCallback(ONF_NFB_event_shareclick, opts.share.callback, share_opts);
-		registerCallback(ONF_NFB_event_volclick, opts.volume.callback, vol_btn);
-		registerCallback(ONF_NFB_event_fsclick, opts.fullscreen.callback, fs_btn);
 		
 		// ready callback
 		if ($.isFunction(opts.ready)) {
