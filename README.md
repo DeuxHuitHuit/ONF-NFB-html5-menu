@@ -6,9 +6,9 @@
 - Github Repository: <https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu>
 - Tags: <https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu/tags>
 - Issues: <https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu/issues>
-- Official hosting: <http://html5.onf.ca/1.0/>
-	- JS <http://html5.onf.ca/1.0/jquery.onf-nfb.min.js>
-	- CSS <http://html5.onf.ca/1.0/jquery.onf-nfb.css>
+- Official hosting: <http://interactif-mirror2.onf.ca/html5/1.0/>
+	- JS <http://interactif-mirror2.onf.ca/html5/1.0/jquery.onf-nfb.min.js>
+	- CSS <http://interactif-mirror2.onf.ca/html5/1.0/jquery.onf-nfb.css>
 
 ## Vue d'ensemble / Overview
 
