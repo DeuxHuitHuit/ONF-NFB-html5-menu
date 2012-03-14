@@ -35,14 +35,14 @@
 		ONF_NFB_search_url = 'http://search.nfb.ca/search?entqr=0&output=xml_no_dtd&sort=date%3AD%3AL%3Ad1&client=beta_onfb&ud=1&oe=UTF-8&ie=UTF-8&proxystylesheet=beta_onfb&proxyreload=1&hl='+LG+'&lr=lang_'+LG+'&site=beta_onfb&q=',
 		ONF_NFB_share_width = 55,
 		ONF_NFB_event_namespace = 'onf-nfb',
-		ONF_NFB_event_topclick = 'onf-nfb.topclick', // function (e,target,opts,tag)
-		ONF_NFB_event_helpclick = 'onf-nfb.help',	 // function (e,target,opts,tag)
-		ONF_NFB_event_langclick = 'onf-nfb.lang',	 // function (e,target,opts,tag)
-		ONF_NFB_event_search = 'onf-nfb.search',	 // function (e,target,query)
-		ONF_NFB_event_botclick = 'onf-nfb.botclick', // function (e,target,opts,tag)
-		ONF_NFB_event_shareclick = 'onf-nfb.share',  // function (e,target,tag)
-		ONF_NFB_event_volclick = 'onf-nfb.volume',   // function (e,target,muted)
-		ONF_NFB_event_fsclick = 'onf-nfb.fullscreen',// function (e,target,fullscreen)
+		ONF_NFB_event_topclick = 'topclick.onf-nfb', // function (e,orgEvent,target,opts,tag)
+		ONF_NFB_event_helpclick = 'help.onf-nfb',	 // function (e,orgEvent,target,opts,tag)
+		ONF_NFB_event_langclick = 'lang.onf-nfb',	 // function (e,orgEvent,target,opts,tag)
+		ONF_NFB_event_search = 'search.onf-nfb',	 // function (e,orgEvent,target,query)
+		ONF_NFB_event_botclick = 'botclick.onf-nfb', // function (e,orgEvent,target,opts,tag)
+		ONF_NFB_event_shareclick = 'share.onf-nfb',  // function (e,orgEvent,target,tag)
+		ONF_NFB_event_volclick = 'volume.onf-nfb',   // function (e,orgEvent,target,muted)
+		ONF_NFB_event_fsclick = 'fullscreen.onf-nfb',// function (e,orgEvent,target,fullscreen)
 		// variables
 		stats_loggers = [],
 		top_defaults = {
@@ -158,7 +158,7 @@
 			opts = target.data('opts'),
 			ret = true;
 		
-		console.log ('[click] ' + tag);
+		//console.log ('[click] ' + tag);
 		
 		if (!!linkObj) {
 			// call callback
@@ -406,14 +406,12 @@
 	};
 	function searchToggle(e, show) {
 		var pnl = $('#onf-top-search-pnl'),
-			lbl = $('#onf-top-search-lbl');
+			lbl = $('#onf-top-search-lbl'),
+			txt = pnl.find('input[type=text]').eq(0);
 			
 		pnl[show ? 'fadeIn' : 'fadeOut'].call(pnl, 400);
 		lbl[show ? 'fadeOut': 'fadeIn' ].call(lbl, 400);
-		
-		if (show) {
-			pnl.find('input[type=text]').eq(0).focus();
-		}
+		txt[show ? 'focus' : 'blur'].call(txt);
 		
 		return preventDefault(e);
 	};
@@ -447,6 +445,12 @@
 			search_btn = $('<input id="onf-top-search-btn" type="button" value="" />'),
 			right_wrap = $('<div id="onf-top-right"></span>'),
 			wrap = $('<div id="onf-top-wrap"></div>');
+			
+		// target check
+		if (!target || !target.length) {
+			console.error ('[top] the target ' + opts.target + ' could not be found.');
+			return;
+		}
 		
 		// create logo
 		logo.attr('href', ONF_NFB_url);
@@ -457,7 +461,7 @@
 			// log event
 			$.onf_nfb.stats.log('menu','click', 'logo');
 			return true;
-		})
+		});
 		wrap.append(logo);
 		
 		// create menu items
@@ -557,6 +561,12 @@
 			share_opts = $('<span id="onf-share-opts"></span>'),
 			vol_btn = $('<a href="#" id="onf-volume"></a>'),
 			fs_btn = $('<a href="#" id="onf-fullscreen"></a>');
+			
+		// target check
+		if (!target || !target.length) {
+			console.error ('[bot] the target ' + opts.target + ' could not be found.');
+			return;
+		}
 		
 		// create menu item
 		if (!!opts.links && !!opts.links.length) {

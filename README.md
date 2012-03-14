@@ -1,12 +1,14 @@
 # ONF-NBF jQuery Menus #
 
 - Version: 1.0
-- Date: 2012-03-06
-- Tag: https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu/tags/v1.0
+- Date: 2012-03-08
+- Tag: <https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu/tags/v1.0>
 - Wiki: <https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu/wiki>
 - Github Repository: <https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu>
 - Issues: <https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu/issues>
-- Official hosting: http://html5.onf.ca/v1.0/
+- Official hosting: <http://html5.onf.ca/1.0/>
+	- JS <http://html5.onf.ca/1.0/jquery.onf-nfb.min.js>
+	- CSS <http://html5.onf.ca/1.0/jquery.onf-nfb.css>
 
 ## Vue d'ensemble / Overview
 
