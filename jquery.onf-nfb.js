@@ -11,7 +11,8 @@
 	
 	// console support
 	if (!window.console) {
-		console.log = console.warn = console.error = console.info = $.noop;
+		window.console = {};
+		window.console.log = window.console.warn = window.console.error = window.console.info = $.noop;
 	}
 	
 	// forEach support
