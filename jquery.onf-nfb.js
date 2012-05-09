@@ -27,7 +27,7 @@
 	    }
 	  };
 	}
-
+	
 	
 	/** Private VARIABLES **/
 	var // constants
@@ -44,6 +44,17 @@
 		ONF_NFB_event_shareclick = 'share.onf-nfb',  // function (e,orgEvent,target,tag)
 		ONF_NFB_event_volclick = 'volume.onf-nfb',   // function (e,orgEvent,target,muted)
 		ONF_NFB_event_fsclick = 'fullscreen.onf-nfb',// function (e,orgEvent,target,fullscreen)
+		// UA Detection
+		ua = !!window.navigator && !!navigator.userAgent ? navigator.userAgent : false,
+		uas = {
+			unsupported: !$.browser || ($.browser.msie && parseInt($.browser.version, 10) < 9),
+			ipad: !!ua && ua.match(/iPad/i),
+			iphone: !!ua && (ua.match(/iPhone/i)) || (ua.match(/iPod/i)),
+			ios: this.ipad || this.iphone,
+			android: !!ua && (ua.match(/Android/i)),
+			mobile: this.ios || this.android || (!!ua && (ua.match(/mobile/i) || ua.match(/phone/i))) || 
+					!!document.location.toString().match(/.+(\?|#)mobile$/i)
+		},
 		// variables
 		stats_loggers = [],
 		top_defaults = {
@@ -612,7 +623,7 @@
 		}
 		
 		// create volume menu item
-		if (!!opts.volume) {
+		if (!!opts.volume && !uas.mobile) {
 			vol_btn.text(_getObjectValue(opts.volume.title));
 			vol_btn.click(mute);
 			if (!!$.cookie && !!$.cookie('muted')) {

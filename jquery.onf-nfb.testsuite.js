@@ -182,6 +182,16 @@
 		$('#onf-bot').on($.onf_nfb.events.botclick, log);
 	};
 	
+	function testMobile() {
+		console.log('[test] Mobile version');
+		var hash = '#mobile';
+		
+		// assure the hash is ok
+		if (document.location.hash != hash)
+		document.location.hash = hash;
+		document.location.reload();
+	};
+	
 	
 	/** Global object **/
 	$.onf_nfb = $.extend(true, $.onf_nfb, {
@@ -193,7 +203,8 @@
 			noHover: testNoHover,
 			translation: testCustomTranslation,
 			customEvent: testCustomEvent,
-			addNewLogger: testAddNewLogger
+			addNewLogger: testAddNewLogger,
+			mobile: testMobile
 		}
 	});
 	
