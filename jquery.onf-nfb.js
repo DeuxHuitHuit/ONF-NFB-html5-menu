@@ -678,6 +678,10 @@
 			top: menuTop,
 			bot: menuBot
 		},
+		defaults: {
+			top:top_defaults,
+			bot:bot_defaults
+		},
 		events: {
 			namespace:	ONF_NFB_event_namespace,
 			topclick: 	ONF_NFB_event_topclick,
