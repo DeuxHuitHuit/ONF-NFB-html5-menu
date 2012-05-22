@@ -19,10 +19,10 @@
 	// @see http://www.tutorialspoint.com/javascript/array_foreach.htm
 	if (!Array.prototype.forEach) {
 	  Array.prototype.forEach = function(fun) {
-	    var len = this.length,
+	    var len = this.length, i = 0,
 	    thisp = arguments[1];
 	    if (typeof fun != "function") throw new TypeError('First parameter must be a function');
-	    for (var i = 0; i < len; i++) {
+	    for (i = 0; i < len; i++) {
 	      if (i in this) fun.call(thisp, this[i], i, this);
 	    }
 	  };
@@ -43,18 +43,7 @@
 		ONF_NFB_event_botclick = 'botclick.onf-nfb', // function (e,orgEvent,target,opts,tag)
 		ONF_NFB_event_shareclick = 'share.onf-nfb',  // function (e,orgEvent,target,tag)
 		ONF_NFB_event_volclick = 'volume.onf-nfb',   // function (e,orgEvent,target,muted)
-		ONF_NFB_event_fsclick = 'fullscreen.onf-nfb',// function (e,orgEvent,target,fullscreen)
-		// UA Detection
-		ua = !!window.navigator && !!navigator.userAgent ? navigator.userAgent : false,
-		uas = {
-			unsupported: !$.browser || ($.browser.msie && parseInt($.browser.version, 10) < 9),
-			ipad: !!ua && ua.match(/iPad/i),
-			iphone: !!ua && (ua.match(/iPhone/i)) || (ua.match(/iPod/i)),
-			ios: this.ipad || this.iphone,
-			android: !!ua && (ua.match(/Android/i)),
-			mobile: this.ios || this.android || (!!ua && (ua.match(/mobile/i) || ua.match(/phone/i))) || 
-					!!document.location.toString().match(/.+(\?|#)mobile$/i)
-		},
+		ONF_NFB_event_fsclick = 'fullscreen.onf-nfb',// function (e,orgEvent,target,fullscreen)		
 		// variables
 		stats_loggers = [],
 		top_defaults = {
@@ -143,7 +132,20 @@
 				title: {fr: 'Plein écran', en: 'Fullscreen'},
 				callback: null
 			}
+		},
+		// UA Detection
+		ua = !!window.navigator && !!navigator.userAgent ? navigator.userAgent : false,
+		uas = {
+			unsupported: !$.browser || !!($.browser.msie && parseInt($.browser.version, 10) < 9),
+			ipad: !!ua && !!ua.match(/iPad/i),
+			iphone: !!ua && (!!ua.match(/iPhone/i)) || (!!ua.match(/iPod/i)),
+			android: !!ua && (!!ua.match(/Android/i))	
 		};
+	
+	// set up UA shortcuts
+	uas.ios = uas.ipad || uas.iphone;
+	uas.mobile = uas.ios || uas.android || (!!ua && (ua.match(/mobile/i) || ua.match(/phone/i))) || 
+			!!document.location.toString().match(/.+(\?|#)mobile$/i);
 	
 	/** Private common functions **/
 	function _getValue(o) {
@@ -572,7 +574,8 @@
 			share_wrap = $('<span id="onf-bot-share"></span>'),
 			share_opts = $('<span id="onf-share-opts"></span>'),
 			vol_btn = $('<a href="#" id="onf-volume"></a>'),
-			fs_btn = $('<a href="#" id="onf-fullscreen"></a>');
+			fs_btn = $('<a href="#" id="onf-fullscreen"></a>'),
+			i = null;
 			
 		// target check
 		if (!target || !target.length) {
@@ -590,7 +593,7 @@
 		// create share menu items
 		if (!!opts.share) {
 			share_wrap.append($('<span>' + _getObjectValue(opts.share.title) + '</span>'));
-			for (var i in opts.share.links) {
+			for (i in opts.share.links) {
 				if (opts.share.links.hasOwnProperty(i)) {
 					var l = opts.share.links[i], 
 						a = $('<a></a>');
