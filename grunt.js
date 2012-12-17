@@ -3,6 +3,9 @@ module.exports = function(grunt) {
 
 	"use strict";
 	
+	// Modules
+	grunt.loadNpmTasks('grunt-contrib-less');
+	
 	// Project configuration.
 	grunt.initConfig({
 		pkg: '<json:package.json>',
@@ -15,15 +18,15 @@ module.exports = function(grunt) {
 		},
 		min: {
 			dist: {
-			src: ['<banner:meta.banner>', 'src/jquery.*.js'],
-			dest: 'dist/<%= pkg.name %>.min.js'
+				src: ['<banner:meta.banner>', 'src/<%= pkg.name %>.js', 'src/jquery.cookie.js'],
+				dest: 'dist/<%= pkg.name %>.min.js'
 			}
 		},
 		qunit: {
 			files: []
 		},
 		lint: {
-			files: ['grunt.js', 'src/jquery.*.js']
+			files: ['grunt.js', 'src/<%= pkg.name %>.js']
 		},
 		/*watch: {
 			files: '<config:lint.files>',
@@ -58,10 +61,30 @@ module.exports = function(grunt) {
 		server: {
 			port: 8080,
 			base: '.'
+		},
+		less: {
+			development: {
+				options: {
+					paths: ['src']
+				},
+				files: {
+					'src/<%= pkg.name %>.css': 'src/<%= pkg.name %>.less'
+				}
+			},
+			production: {
+				options: {
+					paths: ['dist'],
+					//compress: true,
+					yuicompress: true
+				},
+				files: {
+				  'dist/<%= pkg.name %>.min.css': ['src/<%= pkg.name %>.less' ]
+				}
+			}
 		}
 	});
 
 	// Default task.
-	grunt.registerTask('default', 'lint min');
+	grunt.registerTask('default', 'lint min less');
 
 };
