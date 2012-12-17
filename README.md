@@ -81,15 +81,14 @@ Please report all bugs via [GitHub's interface](https://github.com/DeuxHuitHuit/
 - [ONF](http://www.onf.ca)/[NFB](http://www.nfb.ca)
 - [Deux Huit Huit](http://www.deuxhuithuit.com)
 
-
 #### Change Log
 
-**1.1**
+**1.1 - TBA**
 
 - Stats module overhaul
 - Added support for ComScore
 - Added custom vars for Google Analytics
 
-**1.0**
+**1.0 - 2012-03-14**
 
 - Initial version
