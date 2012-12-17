@@ -1,11 +1,11 @@
-# ONF-NBF jQuery Menus #
+# ONF-NFB jQuery Menus #
 
 - Version: 1.0
 - Date: 2012-03-14
-- Wiki: <https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu/wiki>
-- Github Repository: <https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu>
-- Tags: <https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu/tags>
-- Issues: <https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu/issues>
+- Wiki: <https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu/wiki>
+- Github Repository: <https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu>
+- Tags: <https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu/tags>
+- Issues: <https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu/issues>
 - Official hosting: <http://interactif-mirror2.onf.ca/html5/1.0/>
 	- JS <http://interactif-mirror2.onf.ca/html5/1.0/jquery.onf-nfb.min.js>
 	- CSS <http://interactif-mirror2.onf.ca/html5/1.0/jquery.onf-nfb.css>
@@ -37,8 +37,8 @@ NFB's jQuery menu plugin has been created in order to facilite NFB's menu into H
 	- `$.onf_nfb.menu.top({...})`
 	- `$.onf_nfb.menu.bot({...})`
 
-Pour plus de détails, consultez [la wiki](https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu/wiki/Doc-FR).
-Vous pouvez aussi voir des exemples concret dans la [testsuite](https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu/blob/master/jquery.onf-nfb.testsuite.js).
+Pour plus de détails, consultez [la wiki](https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu/wiki/Doc-FR).
+Vous pouvez aussi voir des exemples concret dans la [testsuite](https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu/blob/master/jquery.onf-nfb.testsuite.js).
 
 1. Add the stylesheet reference in the \<head\> section
 2. Add the jQuery script reference just before the \</body\> tag
@@ -47,8 +47,8 @@ Vous pouvez aussi voir des exemples concret dans la [testsuite](https://github.c
 	- `$.onf_nfb.menu.top({...})`
 	- `$.onf_nfb.menu.bot({...})`
 
-For more information, please see the [wiki](https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu/wiki).
-You can see live example in the [testsuite](https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu/blob/master/jquery.onf-nfb.testsuite.js).
+For more information, please see the [wiki](https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu/wiki).
+You can see live example in the [testsuite](https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu/blob/master/jquery.onf-nfb.testsuite.js).
 
 
 ## Compatiblité / Compatibility
@@ -72,9 +72,9 @@ You can see live example in the [testsuite](https://github.com/DeuxHuitHuit/ONF-
 
 ### Bogues / Bugs
 
-Veuillez rapporter tous les bogues rencontrer via [l'interface de GitHub](https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu/issues/new).
+Veuillez rapporter tous les bogues rencontrer via [l'interface de GitHub](https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu/issues/new).
 
-Please report all bugs via [GitHub's interface](https://github.com/DeuxHuitHuit/ONF-NBF-html5-menu/issues/new).
+Please report all bugs via [GitHub's interface](https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu/issues/new).
 
 #### Copyrights 
 
