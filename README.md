@@ -1,14 +1,14 @@
 # ONF-NFB jQuery Menus #
 
-- Version: 1.0
-- Date: 2012-03-14
+- Version: 1.1
+- Date: TBA
 - Wiki: <https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu/wiki>
 - Github Repository: <https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu>
 - Tags: <https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu/tags>
 - Issues: <https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu/issues>
-- Official hosting: <http://interactif-mirror2.onf.ca/html5/1.0/>
-	- JS <http://interactif-mirror2.onf.ca/html5/1.0/jquery.onf-nfb.min.js>
-	- CSS <http://interactif-mirror2.onf.ca/html5/1.0/jquery.onf-nfb.css>
+- Official hosting: <http://interactif-mirror2.onf.ca/html5/1.1/>
+	- JS <http://interactif-mirror2.onf.ca/html5/1.1/jquery.onf-nfb.min.js>
+	- CSS <http://interactif-mirror2.onf.ca/html5/1.1/jquery.onf-nfb.css>
 
 ## Vue d'ensemble / Overview
 
@@ -80,3 +80,16 @@ Please report all bugs via [GitHub's interface](https://github.com/DeuxHuitHuit/
 
 - [ONF](http://www.onf.ca)/[NFB](http://www.nfb.ca)
 - [Deux Huit Huit](http://www.deuxhuithuit.com)
+
+
+#### Change Log
+
+**1.1**
+
+- Stats module overhaul
+- Added support for ComScore
+- Added custom vars for Google Analytics
+
+**1.0**
+
+- Initial version
