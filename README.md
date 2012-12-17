@@ -3,12 +3,12 @@
 - Version: 1.1
 - Date: TBA
 - Wiki: <https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu/wiki>
-- Github Repository: <https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu>
+- Git Repository: <https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu>
 - Tags: <https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu/tags>
 - Issues: <https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu/issues>
-- Official hosting: <http://interactif-mirror2.onf.ca/html5/1.1/>
+- Official hosting: <http://interactif-mirror2.onf.ca/html5/1.1/jquery.onf-nfb.min.*>
 	- JS <http://interactif-mirror2.onf.ca/html5/1.1/jquery.onf-nfb.min.js>
-	- CSS <http://interactif-mirror2.onf.ca/html5/1.1/jquery.onf-nfb.css>
+	- CSS <http://interactif-mirror2.onf.ca/html5/1.1/jquery.onf-nfb.min.css>
 
 ## Vue d'ensemble / Overview
 
@@ -19,14 +19,19 @@ NFB's jQuery menu plugin has been created in order to facilite NFB's menu into H
 ## Dépendances / Dependancies
 ### Obligatoire / Mandatory
 
-- [jQuery 1.7+](http://code.jquery.com/jquery-latest.min.js) ou sur / or on [Google CDN](//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js)
+- [jQuery 1.7+](http://code.jquery.com/jquery-latest.min.js) ou sur / or on [Google CDN](//ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js)
 
 ### Facultatives / Optional
 
-- [jQuery Cookie](https://github.com/carhartl/jquery-cookie) *uniquement pour la valeur du volume (sourdine) / Only for the volume (mute) value*
-- [LESS](http://lesscss.org/) *uniquement pour l'environnement de developpement / Only for development*
 - ntpagetag.js *uniquement pour les stats ONF / Only for NFB stats*
 - [Google Analytics Async Tracking Code](http://www.google.com/analytics/) *uniquement pour les stats GA / Only for GA stats* 
+- Comescore
+
+#### Dev
+
+- Node.js / npm
+	- npm install
+	- grunt
 
 ## Mode d'emploi / How to use
 
@@ -85,6 +90,7 @@ Please report all bugs via [GitHub's interface](https://github.com/DeuxHuitHuit/
 
 **1.1 - TBA**
 
+- Added grunt.js as build system
 - Stats module overhaul
 - Added support for ComScore
 - Added custom vars for Google Analytics
