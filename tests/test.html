@@ -78,7 +78,8 @@
 				now3 = new Date();
 				
 				// stats test
-				$.onf_nfb.stats.log('test cat', 'test action');
+				$.onf_nfb.stats.trackPageview('/test.html');
+				$.onf_nfb.stats.trackEvent('test cat', 'test action');
 				
 				// output time taken
 				console.log ('[time] ' + ((new Date()) - now3));

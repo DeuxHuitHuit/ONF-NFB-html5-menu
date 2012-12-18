@@ -1,4 +1,4 @@
-/*global ntptEventTag:false,_gaq:false*/
+/*global ntptEventTag:false,ntptLinkTag:false,_gaq:false*/
 /**
  * ONF-NFB Menu Behavior jQuery script
  * 
@@ -358,7 +358,7 @@
 	/* @deprecated */
 	statsLog = function (cat, action, label, value, delay) {
 		console.warn('"stats.log" is deprecated. Please use "stats.trackEvent" instead');
-		trackEvent(cat, action, label, value, delay);
+		$.onf_nfb.stats.trackEvent(cat, action, label, value, delay);
 	},
 	
 	trackEvent = function (cat, action, label, value, delay) {
@@ -367,7 +367,7 @@
 		log = function () {
 			stats_loggers.forEach(function (obj, key) {
 				try {
-					obj.log(cat, action, label, value);
+					obj.trackEvent(cat, action, label, value);
 				} catch (ex) {
 					console.error('[stats] ' + obj.name + ': ' + ex.message);
 				}
@@ -383,44 +383,34 @@
 	},
 	
 	trackPageview = function (url, delay) {
+		var 
+		minDelay = _getValue(this.minDelay),
+		log = function () {
+			stats_loggers.forEach(function (obj, key) {
+				try {
+					obj.trackPageview(url);
+				} catch (ex) {
+					console.error('[stats] ' + obj.name + ': ' + ex.message);
+				}
+			});
+		};
+			
+		if (!delay || isNaN(delay) || delay < minDelay) {
+			delay = minDelay;
+		}
 		
+		// do not wait for the execution of the log
+		setTimeout(log, delay);
 	},
 	
 	statsPushLogger = function (logger) {
 		stats_loggers.push(logger);
 	},
 	statsInit = function () {
-		var nbf_logger = {
-				name: 'ONF-NFB logger',
-				log: function (cat, action, label, value) {
-					if (!!window.ntptEventTag && $.isFunction(ntptEventTag)) {
-						var c = cat + ' > ' + action;
-						if (!!label) {
-							c += ' > ' + label;
-						}
-						if (!isNaN(value)) {
-							c += ' > ' + value;
-						}
-						ntptEventTag('ev=interactif&ntpgi_interactive_page=' + c);
-						return true;
-					}
-					return false;
-				}
-			},
-			ga_logger = {
-				name: 'GA stats logger',
-				log: function (cat, action, label, value) {
-					if (!!window._gaq && $.isFunction(_gaq.push)) {
-						_gaq.push(['_trackEvent', cat, action, label, value]);
-						return true;
-					}
-					return false;
-				}
-			};
-
 		// push our loggers
-		statsPushLogger(nbf_logger);
-		statsPushLogger(ga_logger);
+		$.each($.onf_nfb.defaults.stats.loggers, function () {
+			statsPushLogger(this);
+		});
 	},
 	
 	
@@ -700,15 +690,11 @@
 		}
 	};
 	
-	
-	/** INIT **/
-	statsInit();
-	
 	/** GLOBAL OBJECT **/
 	$.onf_nfb = $.extend(true, $.onf_nfb, {
 		stats: {
 			minDelay: 80,
-			log: statsLog,
+			log: statsLog, // deprecated
 			add: statsPushLogger,
 			trackPageview: trackPageview,
 			trackEvent: trackEvent
@@ -719,7 +705,59 @@
 		},
 		defaults: {
 			top:top_defaults,
-			bot:bot_defaults
+			bot:bot_defaults,
+			stats: {
+				loggers: {
+					ntpt: {
+						name: 'Unica NetInsight',
+						trackEvent: function (cat, action, label, value) {
+							if (!!window.ntptEventTag && $.isFunction(ntptEventTag)) {
+								var c = cat + ' > ' + action;
+								if (!!label) {
+									c += ' > ' + label;
+								}
+								if (!isNaN(value)) {
+									c += ' > ' + value;
+								}
+								ntptEventTag('ev=interactif&ntpgi_interactive_page=' + c);
+								return true;
+							}
+							return false;
+						},
+						trackPageview: function (url) {
+							if (!!window.ntptLinkTag && $.isFunction(ntptLinkTag)) {
+								ntptLinkTag(url);
+							}
+						}
+					},
+					ga: {
+						name: 'Google Analytics',
+						trackEvent: function (cat, action, label, value) {
+							if (!!window._gaq && $.isFunction(_gaq.push)) {
+								_gaq.push(['_trackEvent', cat, action, label, value]);
+								return true;
+							}
+							return false;
+						},
+						trackPageview: function (url) {
+							if (!!window._gaq && $.isFunction(_gaq.push)) {
+								_gaq.push(['_trackPageview', url]);
+								return true;
+							}
+							return false;
+						}
+					},
+					comscore: {
+						name: 'Comscore',
+						trackEvent: function (cat, action, label, value) {
+						
+						},
+						trackPageview: function (url) {
+						
+						}
+					}
+				}
+			}
 		},
 		events: {
 			namespace:	ONF_NFB_event_namespace,
@@ -733,5 +771,8 @@
 			fullscreen:	ONF_NFB_event_fsclick
 		}
 	});
+	
+	/** INIT **/
+	$(statsInit);
 	
 })(jQuery);
