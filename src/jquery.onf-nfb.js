@@ -169,7 +169,7 @@
 		return !!o ? o : d;
 	},
 	LG = _getDefaultValue($('html').attr('lang'), 'en'), // defaults to english
-	EV = LG === 'fr' ? 'interactif' : 'interactive'),
+	EV = (LG === 'fr' ? 'interactif' : 'interactive'),
 	preventDefault = function (e) {
 		if (!!e && $.isFunction(e.preventDefault)) {
 			e.preventDefault();
@@ -737,7 +737,7 @@
 					ga: {
 						name: 'Google Analytics',
 						_addCustomVars: function () {
-							if (!!window._gaq && $.isFunction(_gaq.push))
+							if (!!window._gaq && $.isFunction(_gaq.push)) {
 								_gaq.push(['_setCustomVar', 2, 'ln', LG]); 
 								_gaq.push(['_setCustomVar', 5, 'ev', EV]);
 							}
