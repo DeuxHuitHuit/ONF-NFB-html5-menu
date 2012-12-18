@@ -354,7 +354,14 @@
 	/** Public functions **/
 	
 	/* Stats */
+	
+	/* @deprecated */
 	statsLog = function (cat, action, label, value, delay) {
+		console.warn('"stats.log" is deprecated. Please use "stats.trackEvent" instead');
+		trackEvent(cat, action, label, value, delay);
+	},
+	
+	trackEvent = function (cat, action, label, value, delay) {
 		var 
 		minDelay = _getValue(this.minDelay),
 		log = function () {
@@ -374,6 +381,11 @@
 		// do not wait for the execution of the log
 		setTimeout(log, delay);
 	},
+	
+	trackPageview = function (url, delay) {
+		
+	},
+	
 	statsPushLogger = function (logger) {
 		stats_loggers.push(logger);
 	},
@@ -697,7 +709,9 @@
 		stats: {
 			minDelay: 80,
 			log: statsLog,
-			add: statsPushLogger
+			add: statsPushLogger,
+			trackPageview: trackPageview,
+			trackEvent: trackEvent
 		},
 		menu: {
 			top: menuTop,
