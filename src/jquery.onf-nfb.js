@@ -358,7 +358,7 @@
 	
 	/* @deprecated */
 	statsLog = function (cat, action, label, value, delay) {
-		console.warn('"stats.log" is deprecated. Please use "stats.trackEvent" instead');
+		console.warn('"stats.log" is deprecated and will be removed in 1.2. Please use "stats.trackEvent" instead.');
 		$.onf_nfb.stats.trackEvent(cat, action, label, value, delay);
 	},
 	
@@ -370,7 +370,7 @@
 				try {
 					obj.trackEvent(cat, action, label, value);
 				} catch (ex) {
-					console.error('[stats] ' + obj.name + ': ' + ex.message);
+					console.error('[stats.trackEvent] ' + obj.name + ': ' + ex.message);
 				}
 			});
 		};
@@ -379,7 +379,7 @@
 			delay = minDelay;
 		}
 		
-		// do not wait for the execution of the log
+		// do not wait for the execution
 		setTimeout(log, delay);
 	},
 	
@@ -391,7 +391,7 @@
 				try {
 					obj.trackPageview(url);
 				} catch (ex) {
-					console.error('[stats] ' + obj.name + ': ' + ex.message);
+					console.error('[stats.trackPageview] ' + obj.name + ': ' + ex.message);
 				}
 			});
 		};
@@ -400,7 +400,28 @@
 			delay = minDelay;
 		}
 		
-		// do not wait for the execution of the log
+		// do not wait for the execution
+		setTimeout(log, delay);
+	},
+	
+	trackSocial = function (network, socialAction, opt_target, opt_pagePath, delay) {
+		var 
+		minDelay = _getValue(this.minDelay),
+		log = function () {
+			stats_loggers.forEach(function (obj, key) {
+				try {
+					obj.trackSocial(network, socialAction, opt_target, opt_pagePath);
+				} catch (ex) {
+					console.error('[stats.trackSocial] ' + obj.name + ': ' + ex.message);
+				}
+			});
+		};
+			
+		if (!delay || isNaN(delay) || delay < minDelay) {
+			delay = minDelay;
+		}
+		
+		// do not wait for the execution
 		setTimeout(log, delay);
 	},
 	
@@ -699,7 +720,8 @@
 			log: statsLog, // deprecated
 			add: statsPushLogger,
 			trackPageview: trackPageview,
-			trackEvent: trackEvent
+			trackEvent: trackEvent,
+			trackSocial: trackSocial
 		},
 		menu: {
 			top: menuTop,
@@ -732,6 +754,9 @@
 							if (!!window.ntptLinkTag && $.isFunction(ntptLinkTag)) {
 								ntptLinkTag(url);
 							}
+						},
+						trackSocial: function (network, socialAction, opt_target, opt_pagePath) {
+							// do nothing
 						}
 					},
 					ga: {
@@ -760,8 +785,13 @@
 							}
 							return false;
 						},
-						trackSocial: function () {
+						trackSocial: function (network, socialAction, opt_target, opt_pagePath) {
 							// see: https://developers.google.com/analytics/devguides/collection/gajs/methods/gaJSApiSocialTracking
+							if (!!window._gaq && $.isFunction(_gaq.push)) {
+								_gaq.push(['_trackSocial', network, socialAction, opt_target, opt_pagePath]);
+								return true;
+							}
+							return false;
 						}
 					},
 					comscore: {
@@ -777,7 +807,7 @@
 								});
 							}
 						},
-						trackPageview: function (url) {
+						trackPageview: function (url)git c {
 							if (!!window._comscore && $.isFunction(_comscore.push)) {
 								_comscore.push({ 
 									c1: "2",  // tag type
@@ -786,6 +816,9 @@
 									c4: "" // url
 								});
 							}
+						},
+						trackSocial: function (network, socialAction, opt_target, opt_pagePath) {
+							// do nothing
 						}
 					}
 				}
