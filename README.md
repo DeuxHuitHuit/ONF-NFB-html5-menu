@@ -28,8 +28,8 @@ NFB's jQuery menu plugin has been created in order to facilite NFB's menu into H
 	- [lib/ga_social_tracking_async.js](https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu/blob/dev/lib/ga_social_tracking_async.js) *Social Tracking*
 	- [lib/gatag_async.js](https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu/blob/dev/lib/gatag_async.js) *Async tracker*
 	- [lib/xdomain_gatag_v2.js](https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu/blob/dev/lib/xdomain_gatag_v2.js) *Cross domain*
-	
 - [Comescore Async Tracking Code](_) *uniquement pour les stats GA / Only for GA stats*
+- [lib/jquery.cookie.js](https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu/blob/dev/lib/jquery.cookie.js) *Pour se souvenir des choix des usagers / In order to remember users choices*
 
 ## Développement / Developement
 
