@@ -405,12 +405,12 @@
 	},
 	
 	statsPushLogger = function (logger) {
+		logger.init();
 		stats_loggers.push(logger);
 	},
 	statsInit = function () {
 		// push our loggers
 		$.each($.onf_nfb.defaults.stats.loggers, function () {
-			this.init();
 			statsPushLogger(this);
 		});
 	},
