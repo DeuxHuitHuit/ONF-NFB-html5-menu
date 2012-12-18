@@ -38,7 +38,6 @@
 	
 	/** Private VARIABLES **/
 	var // constants
-	LG = _getDefaultValue($('html').attr('lang'), 'en'), // defaults to english
 	ONF_NFB_url = (LG == 'fr' ? 'http://www.onf.ca' : 'http://www.nbf.ca'),
 	ONF_NFB_search_url = 'http://search.nfb.ca/search?entqr=0&output=xml_no_dtd&sort=date%3AD%3AL%3Ad1&client=beta_onfb&ud=1&oe=UTF-8&ie=UTF-8&proxystylesheet=beta_onfb&proxyreload=1&hl='+LG+'&lr=lang_'+LG+'&site=beta_onfb&q=',
 	ONF_NFB_share_width = 55,
@@ -142,18 +141,20 @@
 	},
 	// UA Detection
 	ua = !!window.navigator && !!navigator.userAgent ? navigator.userAgent : false,
-	uas = {
-		unsupported: !$.browser || !!($.browser.msie && parseInt($.browser.version, 10) < 9),
-		ipad: !!ua && !!ua.match(/iPad/i),
-		iphone: !!ua && (!!ua.match(/iPhone/i)) || (!!ua.match(/iPod/i)),
-		android: !!ua && (!!ua.match(/Android/i)),
+	uas = (function () {
+		var uas = {
+			unsupported: !$.browser || !!($.browser.msie && parseInt($.browser.version, 10) < 9),
+			ipad: !!ua && !!ua.match(/iPad/i),
+			iphone: !!ua && (!!ua.match(/iPhone/i)) || (!!ua.match(/iPod/i)),
+			android: !!ua && (!!ua.match(/Android/i))
+		};
 		// set up UA shortcuts
-		ios: (function () { return uas.ipad || uas.iphone; })(),
-		mobile: (function () {
-			return uas.ios || uas.android || (!!ua && (ua.match(/mobile/i) || ua.match(/phone/i))) || 
+		uas.ios = uas.ipad || uas.iphone;
+		uas.mobile = uas.ios || uas.android || (!!ua && (ua.match(/mobile/i) || ua.match(/phone/i))) || 
 			!!document.location.toString().match(/\.+(\?|#)mobile$/i);
-		})()
-	},
+		
+		return uas;
+	})(),
 	
 	
 	
@@ -167,6 +168,7 @@
 	_getDefaultValue = function (o, d) {
 		return !!o ? o : d;
 	},
+	LG = _getDefaultValue($('html').attr('lang'), 'en'), // defaults to english
 	preventDefault = function (e) {
 		if (!!e && $.isFunction(e.preventDefault)) {
 			e.preventDefault();
@@ -622,17 +624,15 @@
 				return true;
 			};
 			
-			opts.share.links.forEach(function _forEachLink (i) {
-				var l = opts.share.links[i], 
-					a = $('<a></a>');
-				
-				a.attr('href', _getValue(l) );
-				a.attr('data-tag', i);
-				a.attr('id', 'onf-' + i);
-				a.attr('class', 'onf-social');
-				a.attr('target', '_blank');
-				a.data('index', i);
-				a.click(_share_click);
+			$.each(opts.share.links, function _forEachLink (i, l) {
+				var a = $('<a></a>')
+				.attr('href', _getValue(l) )
+				.attr('data-tag', i)
+				.attr('id', 'onf-' + i)
+				.attr('class', 'onf-social')
+				.attr('target', '_blank')
+				.data('index', i)
+				.click(_share_click);
 				
 				share_opts.append(a);
 			});
