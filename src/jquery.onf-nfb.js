@@ -1,3 +1,4 @@
+/*global ntptEventTag:false,_gaq:false*/
 /**
  * ONF-NFB Menu Behavior jQuery script
  * 
@@ -6,6 +7,8 @@
 **/
 
 ;(function ($, undefined) {
+
+	"use strict";
 	
 	/** GLOBAL VARIABLES **/
 	
@@ -18,152 +21,159 @@
 	// forEach support
 	// @see http://www.tutorialspoint.com/javascript/array_foreach.htm
 	if (!Array.prototype.forEach) {
-	  Array.prototype.forEach = function(fun) {
-	    var len = this.length, i = 0,
-	    thisp = arguments[1];
-	    if (typeof fun != "function") throw new TypeError('First parameter must be a function');
-	    for (i = 0; i < len; i++) {
-	      if (i in this) fun.call(thisp, this[i], i, this);
-	    }
-	  };
+		Array.prototype.forEach = function(fun) {
+			var len = this.length, i = 0,
+			thisp = arguments[1];
+			if (typeof fun != "function") {
+				throw new TypeError('First parameter must be a function');
+			}
+			for (i = 0; i < len; i++) {
+				if (i in this) {
+					fun.call(thisp, this[i], i, this);
+				}
+			}
+		};
 	}
 	
 	
 	/** Private VARIABLES **/
 	var // constants
-		LG = _getDefaultValue($('html').attr('lang'), 'en'), // defaults to english
-		ONF_NFB_url = (LG == 'fr' ? 'http://www.onf.ca' : 'http://www.nbf.ca'),
-		ONF_NFB_search_url = 'http://search.nfb.ca/search?entqr=0&output=xml_no_dtd&sort=date%3AD%3AL%3Ad1&client=beta_onfb&ud=1&oe=UTF-8&ie=UTF-8&proxystylesheet=beta_onfb&proxyreload=1&hl='+LG+'&lr=lang_'+LG+'&site=beta_onfb&q=',
-		ONF_NFB_share_width = 55,
-		ONF_NFB_event_namespace = 'onf-nfb',
-		ONF_NFB_event_topclick = 'topclick.onf-nfb', // function (e,orgEvent,target,opts,tag)
-		ONF_NFB_event_helpclick = 'help.onf-nfb',	 // function (e,orgEvent,target,opts,tag)
-		ONF_NFB_event_langclick = 'lang.onf-nfb',	 // function (e,orgEvent,target,opts,tag)
-		ONF_NFB_event_search = 'search.onf-nfb',	 // function (e,orgEvent,target,query)
-		ONF_NFB_event_botclick = 'botclick.onf-nfb', // function (e,orgEvent,target,opts,tag)
-		ONF_NFB_event_shareclick = 'share.onf-nfb',  // function (e,orgEvent,target,tag)
-		ONF_NFB_event_volclick = 'volume.onf-nfb',   // function (e,orgEvent,target,muted)
-		ONF_NFB_event_fsclick = 'fullscreen.onf-nfb',// function (e,orgEvent,target,fullscreen)		
-		// variables
-		stats_loggers = [],
-		top_defaults = {
-			target: '#onf-top',
-			opacity: 0.8,
-			opacityHover: 1,
-			recursive: false,
-			ready: null, // function (opts)
-			links: [
-			     {title: {fr:'Explorer', en:'Explore'}, 
-			      url: {fr:'http://www.onf.ca/explorer-tous-les-films/', en:'http://www.nfb.ca/explore-all-films/'},
-			      callback: null, preventDefault:false, target: null, cssClass: null, tag: 'explore'
-			     },
-			     {title: {fr:'Sélections', en:'Playlists'},	
-			      url: {fr:'http://onf.ca/selections/', en: 'http://www.nfb.ca/playlists/'},
-			      callback: null, preventDefault:false, target: null, cssClass: null, tag: 'playlist'
-			     },
-			     {title: {fr:'Chaînes', en: 'Channels'},
-			      url: {fr:'http://www.onf.ca/chaines/', en: 'http://www.nfb.ca/channels/'},					
-			     callback: null, preventDefault:false, target: null, cssClass: null, tag: 'channels'
-			     },
-			     {title: {fr:'Blogue',  en:'Blog'},
-			      url: {fr:'http://blogue.onf.ca/', en: 'http://blog.nfb.ca/'},
-			      callback: null, preventDefault:false, target: null, cssClass: null, tag: 'blog'
-			     },
-			     {title: {fr:'Interactif', en: 'Interactive'},
-			      url: {fr:'http://www.onf.ca/interactif/', en: 'http://www.nfb.ca/interactive/'},
-			      callback: null, preventDefault:false, target: null, cssClass: 'active', tag: 'interative'
-			     }
-			],
-			search: {
-				title: {fr: 'Recherche', en: 'Search'},
-				callback: null
-			},
-			help: {title: {fr:'Aide', en:'Help'}, 
-				url: {fr:'http://www.onf.ca/a-propos/faq/', en:'http://www.nfb.ca/about/faq/'}, 
-				callback: null, preventDefault:false, target: '_blank', cssClass: null, tag: 'help'
-			},
-			translate: [
-		       {
-		    	title: 'Français',
-		    	url: 'http://interactif.onf.ca/', callback: null, preventDefault:false, target: null, cssClass: null, tag: 'lang-fr'
-		       },
-		       {
-		    	title: 'English',
-		    	url: 'http://interactive.nfb.ca/', callback: null, preventDefault:false, target: null, cssClass: null, tag: 'lang-en'
-		       }
-			]
+	LG = _getDefaultValue($('html').attr('lang'), 'en'), // defaults to english
+	ONF_NFB_url = (LG == 'fr' ? 'http://www.onf.ca' : 'http://www.nbf.ca'),
+	ONF_NFB_search_url = 'http://search.nfb.ca/search?entqr=0&output=xml_no_dtd&sort=date%3AD%3AL%3Ad1&client=beta_onfb&ud=1&oe=UTF-8&ie=UTF-8&proxystylesheet=beta_onfb&proxyreload=1&hl='+LG+'&lr=lang_'+LG+'&site=beta_onfb&q=',
+	ONF_NFB_share_width = 55,
+	ONF_NFB_event_namespace = 'onf-nfb',
+	ONF_NFB_event_topclick = 'topclick.onf-nfb', // function (e,orgEvent,target,opts,tag)
+	ONF_NFB_event_helpclick = 'help.onf-nfb',	 // function (e,orgEvent,target,opts,tag)
+	ONF_NFB_event_langclick = 'lang.onf-nfb',	 // function (e,orgEvent,target,opts,tag)
+	ONF_NFB_event_search = 'search.onf-nfb',	 // function (e,orgEvent,target,query)
+	ONF_NFB_event_botclick = 'botclick.onf-nfb', // function (e,orgEvent,target,opts,tag)
+	ONF_NFB_event_shareclick = 'share.onf-nfb',  // function (e,orgEvent,target,tag)
+	ONF_NFB_event_volclick = 'volume.onf-nfb',   // function (e,orgEvent,target,muted)
+	ONF_NFB_event_fsclick = 'fullscreen.onf-nfb',// function (e,orgEvent,target,fullscreen)		
+	// variables
+	stats_loggers = [],
+	top_defaults = {
+		target: '#onf-top',
+		opacity: 0.8,
+		opacityHover: 1,
+		recursive: false,
+		ready: null, // function (opts)
+		links: [
+			 {title: {fr:'Explorer', en:'Explore'}, 
+			  url: {fr:'http://www.onf.ca/explorer-tous-les-films/', en:'http://www.nfb.ca/explore-all-films/'},
+			  callback: null, preventDefault:false, target: null, cssClass: null, tag: 'explore'
+			 },
+			 {title: {fr:'Sélections', en:'Playlists'},	
+			  url: {fr:'http://onf.ca/selections/', en: 'http://www.nfb.ca/playlists/'},
+			  callback: null, preventDefault:false, target: null, cssClass: null, tag: 'playlist'
+			 },
+			 {title: {fr:'Chaînes', en: 'Channels'},
+			  url: {fr:'http://www.onf.ca/chaines/', en: 'http://www.nfb.ca/channels/'},					
+			 callback: null, preventDefault:false, target: null, cssClass: null, tag: 'channels'
+			 },
+			 {title: {fr:'Blogue',  en:'Blog'},
+			  url: {fr:'http://blogue.onf.ca/', en: 'http://blog.nfb.ca/'},
+			  callback: null, preventDefault:false, target: null, cssClass: null, tag: 'blog'
+			 },
+			 {title: {fr:'Interactif', en: 'Interactive'},
+			  url: {fr:'http://www.onf.ca/interactif/', en: 'http://www.nfb.ca/interactive/'},
+			  callback: null, preventDefault:false, target: null, cssClass: 'active', tag: 'interative'
+			 }
+		],
+		search: {
+			title: {fr: 'Recherche', en: 'Search'},
+			callback: null
 		},
-		bot_defaults = {
-			target: '#onf-bot',
-			opacity: 0.8,
-			opacityHover: 1,
-			recursive: false,
-			ready: null, // function (opts)
-			links: [
-			     {title: {fr:'Accueil',en:'Home'},		url: null, 
-			      callback: null, preventDefault:true, target: null, cssClass: 'onf-bot-cont onf-bot-border', tag: 'home'
-			     },
-			     {title: {fr:'À propos',en:'About'},	url: null,
-			      callback: null, preventDefault:true, target: null, cssClass: 'onf-bot-cont onf-bot-border', tag: 'about'
-			     },
-			     {title: {fr:'Films reliés',en:'Related movies'},url: null,
-			      callback: null, preventDefault:true, target: null, cssClass: 'onf-bot-cont onf-bot-border', tag: 'related'
-			     },
-			     {title: {fr:'Équipe',en:'Credits'},	url: null, 
-			      callback: null, preventDefault:true, target: null, cssClass: 'onf-bot-cont', tag: 'credits'
-			     }
-			],
-			share: {
-				title: {fr: 'Partagez', en: 'Share'},
-				links: {
-					facebook: 'http://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(document.location),
-					twitter: 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(document.title) + '&url=' + encodeURIComponent(document.location),
-					stumpleupon: 'http://www.stumbleupon.com/submit?url='+ encodeURIComponent(document.location) + '&title=' + encodeURIComponent(document.title),
-					digg: 'http://digg.com/submit?phase=2&url='+ encodeURIComponent(document.location) +'&bodytext=' + encodeURIComponent(document.title),
-					delicious: 'http://www.delicious.com/post?v=2&url='+ encodeURIComponent(document.location) +'&title=' + encodeURIComponent(document.title)
-				},
-				callback: null
-			},
-			volume: {
-				title: {fr: 'Volume', en: 'Volume' },
-				callback: null
-			},
-			fullscreen: {
-				title: {fr: 'Plein écran', en: 'Fullscreen'},
-				callback: null
-			}
+		help: {title: {fr:'Aide', en:'Help'}, 
+			url: {fr:'http://www.onf.ca/a-propos/faq/', en:'http://www.nfb.ca/about/faq/'}, 
+			callback: null, preventDefault:false, target: '_blank', cssClass: null, tag: 'help'
 		},
-		// UA Detection
-		ua = !!window.navigator && !!navigator.userAgent ? navigator.userAgent : false,
-		uas = {
-			unsupported: !$.browser || !!($.browser.msie && parseInt($.browser.version, 10) < 9),
-			ipad: !!ua && !!ua.match(/iPad/i),
-			iphone: !!ua && (!!ua.match(/iPhone/i)) || (!!ua.match(/iPod/i)),
-			android: !!ua && (!!ua.match(/Android/i))	
-		};
+		translate: [
+		   {
+			title: 'Français',
+			url: 'http://interactif.onf.ca/', callback: null, preventDefault:false, target: null, cssClass: null, tag: 'lang-fr'
+		   },
+		   {
+			title: 'English',
+			url: 'http://interactive.nfb.ca/', callback: null, preventDefault:false, target: null, cssClass: null, tag: 'lang-en'
+		   }
+		]
+	},
+	bot_defaults = {
+		target: '#onf-bot',
+		opacity: 0.8,
+		opacityHover: 1,
+		recursive: false,
+		ready: null, // function (opts)
+		links: [
+			 {title: {fr:'Accueil',en:'Home'},		url: null, 
+			  callback: null, preventDefault:true, target: null, cssClass: 'onf-bot-cont onf-bot-border', tag: 'home'
+			 },
+			 {title: {fr:'À propos',en:'About'},	url: null,
+			  callback: null, preventDefault:true, target: null, cssClass: 'onf-bot-cont onf-bot-border', tag: 'about'
+			 },
+			 {title: {fr:'Films reliés',en:'Related movies'},url: null,
+			  callback: null, preventDefault:true, target: null, cssClass: 'onf-bot-cont onf-bot-border', tag: 'related'
+			 },
+			 {title: {fr:'Équipe',en:'Credits'},	url: null, 
+			  callback: null, preventDefault:true, target: null, cssClass: 'onf-bot-cont', tag: 'credits'
+			 }
+		],
+		share: {
+			title: {fr: 'Partagez', en: 'Share'},
+			links: {
+				facebook: 'http://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(document.location),
+				twitter: 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(document.title) + '&url=' + encodeURIComponent(document.location),
+				stumpleupon: 'http://www.stumbleupon.com/submit?url='+ encodeURIComponent(document.location) + '&title=' + encodeURIComponent(document.title),
+				digg: 'http://digg.com/submit?phase=2&url='+ encodeURIComponent(document.location) +'&bodytext=' + encodeURIComponent(document.title),
+				delicious: 'http://www.delicious.com/post?v=2&url='+ encodeURIComponent(document.location) +'&title=' + encodeURIComponent(document.title)
+			},
+			callback: null
+		},
+		volume: {
+			title: {fr: 'Volume', en: 'Volume' },
+			callback: null
+		},
+		fullscreen: {
+			title: {fr: 'Plein écran', en: 'Fullscreen'},
+			callback: null
+		}
+	},
+	// UA Detection
+	ua = !!window.navigator && !!navigator.userAgent ? navigator.userAgent : false,
+	uas = {
+		unsupported: !$.browser || !!($.browser.msie && parseInt($.browser.version, 10) < 9),
+		ipad: !!ua && !!ua.match(/iPad/i),
+		iphone: !!ua && (!!ua.match(/iPhone/i)) || (!!ua.match(/iPod/i)),
+		android: !!ua && (!!ua.match(/Android/i)),
+		// set up UA shortcuts
+		ios: (function () { return uas.ipad || uas.iphone; })(),
+		mobile: (function () {
+			return uas.ios || uas.android || (!!ua && (ua.match(/mobile/i) || ua.match(/phone/i))) || 
+			!!document.location.toString().match(/\.+(\?|#)mobile$/i);
+		})()
+	},
 	
-	// set up UA shortcuts
-	uas.ios = uas.ipad || uas.iphone;
-	uas.mobile = uas.ios || uas.android || (!!ua && (ua.match(/mobile/i) || ua.match(/phone/i))) || 
-			!!document.location.toString().match(/.+(\?|#)mobile$/i);
+	
 	
 	/** Private common functions **/
-	function _getValue(o) {
+	_getValue = function (o) {
 		return $.isFunction(o) ? o.call(this, LG) : o;
-	};
-	function _getObjectValue(o) {
+	},
+	_getObjectValue = function (o) {
 		return $.isPlainObject(o) ? o[LG] : _getValue(o);
-	};
-	function _getDefaultValue(o, d) {
+	},
+	_getDefaultValue = function (o, d) {
 		return !!o ? o : d;
-	};
-	function preventDefault(e) {
+	},
+	preventDefault = function (e) {
 		if (!!e && $.isFunction(e.preventDefault)) {
 			e.preventDefault();
 		}
 		return false;
-	};
-	function _linkCallback(e) {
+	},
+	_linkCallback = function (e) {
 		var t = $(this),
 			linkObj = t.data('link'),
 			event = t.data('event'),
@@ -192,8 +202,8 @@
 		$.onf_nfb.stats.log('menu','click', tag, t.index());
 		
 		return ret;
-	};
-	function _hover(e, _isIn) {
+	},
+	_hover = function (e, _isIn) {
 		var t = $(this),
 			opts = t.data('opts'),
 			value = _getValue(opts.opacity);
@@ -203,14 +213,14 @@
 		}
 		
 		t.stop(true, false).animate({opacity:value}, 250);
-	};
-	function _hoverIn(e) {
+	},
+	_hoverIn = function (e) {
 		_hover.call(this, e, true);
-	};
-	function _hoverOut(e) {
+	},
+	_hoverOut = function (e) {
 		_hover.call(this, e, false);
-	};
-	function _createLink(l, target, event) {
+	},
+	_createLink = function (l, target, event) {
 		var a = $('<a></a>');
 		a.text(_getObjectValue(l.title));
 		if (!!l.url) {
@@ -229,38 +239,38 @@
 		}
 		a.click(_linkCallback);
 		return a;
-	};
-	function isFullScreen() {
-		return document.fullScreen
-			|| document.mozFullScreen
-			|| document.webkitIsFullScreen // actual implementation
-			|| document.webkitFullScreen
-			|| document.msFullScreen;
-	}
-	function toggleFullScreen(e) {
+	},
+	isFullScreen = function () {
+		return document.fullScreen ||
+				document.mozFullScreen ||
+				document.webkitIsFullScreen || // actual implementation
+				document.webkitFullScreen ||
+				document.msFullScreen;
+	},
+	toggleFullScreen = function (e) {
 		if (isFullScreen()) {
 			return exitFullScreen(e);
 		}
 		return goFullScreen(e);
-	};
-	function getFullScreen() {
+	},
+	getFullScreen = function () {
 		var el = document.documentElement,
-	    	rfs = // for newer Webkit and Firefox
-	           el.requestFullScreen
-	        || el.webkitRequestFullScreen
-	        || el.webkitEnterFullScreen
-	        || el.mozRequestFullScreen
-	        || el.msRequestFullScreen;
+			rfs = // for newer Webkit and Firefox
+				el.requestFullScreen ||
+				el.webkitRequestFullScreen ||
+				el.webkitEnterFullScreen ||
+				el.mozRequestFullScreen ||
+				el.msRequestFullScreen;
 		return rfs;
-	};
+	},
 
-	function goFullScreen(e) {
+	goFullScreen = function (e) {
 		// @see: http://stackoverflow.com/questions/1125084/how-to-make-in-javascript-full-screen-windows-stretching-all-over-the-screen
 		// @see: http://johndyer.name/native-fullscreen-javascript-api-plus-jquery-plugin/
 		var rfs = getFullScreen(),
 			success = false;
 		
-		if(rfs!=undefined && $.isFunction(rfs)) {
+		if(rfs !== undefined && $.isFunction(rfs)) {
 		  rfs.call(document.documentElement);
 		  success = true;
 		}
@@ -274,23 +284,23 @@
 		}
 		
 		return preventDefault(e);
-	};
-	function exitFullScreen(e) {
+	},
+	exitFullScreen = function (e) {
 		var success = false,
 			el = document,
 			efs = // for newer Webkit and Firefox
-	           el.exitFullScreen
-	        || el.cancelFullScreen
-	        || el.webkitExitFullScreen
-	        || el.webkitCancelFullScreen
-	        || el.mozExitFullScreen
-	        || el.mozCancelFullScreen
-	        || el.msExitFullScreen
-	        || el.msExitCancelScreen;
+				el.exitFullScreen ||
+				el.cancelFullScreen ||
+				el.webkitExitFullScreen ||
+				el.webkitCancelFullScreen ||
+				el.mozExitFullScreen ||
+				el.mozCancelFullScreen ||
+				el.msExitFullScreen ||
+				el.msExitCancelScreen;
 		
-		if(efs!=undefined && $.isFunction(efs)) {
-		  efs.call(el);
-		  success = true;
+		if (efs !== undefined && $.isFunction(efs)) {
+			efs.call(el);
+			success = true;
 		}
 		
 		if (success) {
@@ -302,11 +312,11 @@
 		}
 		
 		return preventDefault(e);
-	};
-	function supportsFullScreen() {
+	},
+	supportsFullScreen = function () {
 		return !!getFullScreen();
-	};
-	function mute(e) {
+	},
+	mute = function (e) {
 		var vol = $('#onf-volume'),
 			isMuted = false;
 		
@@ -326,8 +336,8 @@
 		$.onf_nfb.stats.log('menu','mute', isMuted);
 		
 		return preventDefault(e);
-	};
-	function registerCallback(event, callback, target) {
+	},
+	registerCallback = function (event, callback, target) {
 		if ($.isFunction(callback)) {
 			if (!!target && $.isFunction(target.on)) {
 				target.on(event, callback);
@@ -335,19 +345,17 @@
 				$(document).on(event, callback);
 			}
 		}
-	};
+	},
 	
 	
 	
 	/** Public functions **/
 	
 	/* Stats */
-	function statsLog(cat, action, label, value, delay) {
-		var minDelay = _getValue(this.minDelay);
-		if (!delay || isNaN(delay) || delay < minDelay) {
-			delay = minDelay;
-		}
-		function log() {
+	statsLog = function (cat, action, label, value, delay) {
+		var 
+		minDelay = _getValue(this.minDelay),
+		log = function () {
 			stats_loggers.forEach(function (obj, key) {
 				try {
 					obj.log(cat, action, label, value);
@@ -356,13 +364,18 @@
 				}
 			});
 		};
+			
+		if (!delay || isNaN(delay) || delay < minDelay) {
+			delay = minDelay;
+		}
+		
 		// do not wait for the execution of the log
 		setTimeout(log, delay);
-	};
-	function statsPushLogger(logger) {
+	},
+	statsPushLogger = function (logger) {
 		stats_loggers.push(logger);
-	};
-	function statsInit() {
+	},
+	statsInit = function () {
 		var nbf_logger = {
 				name: 'ONF-NFB logger',
 				log: function (cat, action, label, value) {
@@ -394,12 +407,12 @@
 		// push our loggers
 		statsPushLogger(nbf_logger);
 		statsPushLogger(ga_logger);
-	};
-	statsInit();
+	},
+	
 	
 	
 	/* Menu top */
-	function search(e) {
+	search = function (e) {
 		var query = $('#onf-top-search-txt').val();
 		
 		if (!!query && query.length > 0) {
@@ -417,8 +430,8 @@
 		}
 		
 		return preventDefault(e);
-	};
-	function searchToggle(e, show) {
+	},
+	searchToggle = function (e, show) {
 		var pnl = $('#onf-top-search-pnl'),
 			lbl = $('#onf-top-search-lbl'),
 			txt = pnl.find('input[type=text]').eq(0);
@@ -428,14 +441,14 @@
 		txt[show ? 'focus' : 'blur'].call(txt);
 		
 		return preventDefault(e);
-	};
-	function searchIn(e) {
+	},
+	searchIn = function (e) {
 		return searchToggle.call(this, e, true);
-	};
-	function searchOut(e) {
+	},
+	searchOut = function (e) {
 		return searchToggle.call(this, e, false);
-	};
-	function searchKeyDown(e) {
+	},
+	searchKeyDown = function (e) {
 		switch (e.which) {
 			case 27 : // escape
 				searchOut.call(this);
@@ -445,9 +458,9 @@
 				break;
 		}
 		return true;
-	};
+	},
 	
-	function menuTop(top_options) {
+	menuTop = function (top_options) {
 		var opts = $.extend((!!top_options && !!top_options.recursive ? true : {}), opts, top_defaults, top_options),
 			target = $(opts.target),
 			opacityEnabled = Math.abs(_getValue(opts.opacity) - _getValue(opts.opacityHover)) > 0,
@@ -539,11 +552,11 @@
 		if ($.isFunction(opts.ready)) {
 			opts.ready.call(target, opts);
 		}
-	};
+	},
 	
 	
 	/* Menu bottom */
-	function shareToggle(e, isIn) {
+	shareToggle = function (e, isIn) {
 		var share = $('#onf-bot-share'),
 			w = ONF_NFB_share_width,
 			i = share.find('.onf-social').length,
@@ -557,15 +570,15 @@
 			 .animate({width:w}, ow * 2);
 		
 		return preventDefault(e);
-	};
-	function share_in(e) {
+	},
+	share_in = function (e) {
 		return shareToggle.call(this, e, true);
-	};
-	function share_out(e) {
+	},
+	share_out = function (e) {
 		return shareToggle.call(this, e, false);
-	};
+	},
 	
-	function menuBot(bot_options) {
+	menuBot = function (bot_options) {
 		var opts = $.extend((!!bot_options && !!bot_options.recursive ? true : {}), opts, bot_defaults, bot_options),
 			target = $(opts.target),
 			opacityEnabled = Math.abs(_getValue(opts.opacity) - _getValue(opts.opacityHover)) > 0,
@@ -574,8 +587,7 @@
 			share_wrap = $('<span id="onf-bot-share"></span>'),
 			share_opts = $('<span id="onf-share-opts"></span>'),
 			vol_btn = $('<a href="#" id="onf-volume"></a>'),
-			fs_btn = $('<a href="#" id="onf-fullscreen"></a>'),
-			i = null;
+			fs_btn = $('<a href="#" id="onf-fullscreen"></a>');
 			
 		// target check
 		if (!target || !target.length) {
@@ -593,30 +605,37 @@
 		// create share menu items
 		if (!!opts.share) {
 			share_wrap.append($('<span>' + _getObjectValue(opts.share.title) + '</span>'));
-			for (i in opts.share.links) {
-				if (opts.share.links.hasOwnProperty(i)) {
-					var l = opts.share.links[i], 
-						a = $('<a></a>');
-					
-					a.attr('href', _getValue(l) );
-					a.attr('data-tag', i);
-					a.attr('id', 'onf-' + i);
-					a.attr('class', 'onf-social');
-					a.attr('target', '_blank');
-					a.click(function (e) {
-						// raise event
-						$.event.trigger(ONF_NFB_event_shareclick, [e,this,i]);
-						
-						// log event
-						$.onf_nfb.stats.log('menu','share', i);
-						
-						// allow continuation
-						return true;
-					});
-					
-					share_opts.append(a);
-				}
-			}
+			
+			var
+			_share_click = function (e) {
+				var
+				t = $(this),
+				i = t.data().index;
+				
+				// raise event
+				$.event.trigger(ONF_NFB_event_shareclick, [e,this,i]);
+				
+				// log event
+				$.onf_nfb.stats.log('menu','share', i);
+				
+				// allow continuation
+				return true;
+			};
+			
+			opts.share.links.forEach(function _forEachLink (i) {
+				var l = opts.share.links[i], 
+					a = $('<a></a>');
+				
+				a.attr('href', _getValue(l) );
+				a.attr('data-tag', i);
+				a.attr('id', 'onf-' + i);
+				a.attr('class', 'onf-social');
+				a.attr('target', '_blank');
+				a.data('index', i);
+				a.click(_share_click);
+				
+				share_opts.append(a);
+			});
 			share_wrap.mouseenter(share_in);
 			target.mouseleave(share_out);
 			share_wrap.append(share_opts);
@@ -670,6 +689,9 @@
 	};
 	
 	
+	/** INIT **/
+	statsInit();
+	
 	/** GLOBAL OBJECT **/
 	$.onf_nfb = $.extend(true, $.onf_nfb, {
 		stats: {
@@ -687,7 +709,7 @@
 		},
 		events: {
 			namespace:	ONF_NFB_event_namespace,
-			topclick: 	ONF_NFB_event_topclick,
+			topclick:	ONF_NFB_event_topclick,
 			help:		ONF_NFB_event_helpclick,
 			lang:		ONF_NFB_event_langclick,
 			search:		ONF_NFB_event_search,
