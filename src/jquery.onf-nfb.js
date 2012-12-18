@@ -1,4 +1,4 @@
-/*global ntptEventTag:false,ntptLinkTag:false,_gaq:false*/
+/*global ntptEventTag:false,ntptLinkTag:false,_gaq:false,_comscore:false*/
 /**
  * ONF-NFB Menu Behavior jQuery script
  * 
@@ -169,6 +169,7 @@
 		return !!o ? o : d;
 	},
 	LG = _getDefaultValue($('html').attr('lang'), 'en'), // defaults to english
+	EV = LG === 'fr' ? 'interactif' : 'interactive'),
 	preventDefault = function (e) {
 		if (!!e && $.isFunction(e.preventDefault)) {
 			e.preventDefault();
@@ -409,6 +410,7 @@
 	statsInit = function () {
 		// push our loggers
 		$.each($.onf_nfb.defaults.stats.loggers, function () {
+			this.init();
 			statsPushLogger(this);
 		});
 	},
@@ -710,6 +712,7 @@
 				loggers: {
 					ntpt: {
 						name: 'Unica NetInsight',
+						init: $.noop,
 						trackEvent: function (cat, action, label, value) {
 							if (!!window.ntptEventTag && $.isFunction(ntptEventTag)) {
 								var c = cat + ' > ' + action;
@@ -719,12 +722,13 @@
 								if (!isNaN(value)) {
 									c += ' > ' + value;
 								}
-								ntptEventTag('ev=interactif&ntpgi_interactive_page=' + c);
+								ntptEventTag('ln=' + LG + '&ev='+ EV +'&ntpgi_interactive_page=' + c);
 								return true;
 							}
 							return false;
 						},
 						trackPageview: function (url) {
+							// see: http://fr.scribd.com/doc/87955703/26/ntptEventTag-ntptEventTag
 							if (!!window.ntptLinkTag && $.isFunction(ntptLinkTag)) {
 								ntptLinkTag(url);
 							}
@@ -732,6 +736,15 @@
 					},
 					ga: {
 						name: 'Google Analytics',
+						_addCustomVars: function () {
+							if (!!window._gaq && $.isFunction(_gaq.push))
+								_gaq.push(['_setCustomVar', 2, 'ln', LG]); 
+								_gaq.push(['_setCustomVar', 5, 'ev', EV]);
+							}
+						},
+						init: function () {
+							this._addCustomVars();
+						},
 						trackEvent: function (cat, action, label, value) {
 							if (!!window._gaq && $.isFunction(_gaq.push)) {
 								_gaq.push(['_trackEvent', cat, action, label, value]);
@@ -740,20 +753,39 @@
 							return false;
 						},
 						trackPageview: function (url) {
+							// see: https://developers.google.com/analytics/devguides/collection/gajs/methods/gaJSApiBasicConfiguration
 							if (!!window._gaq && $.isFunction(_gaq.push)) {
 								_gaq.push(['_trackPageview', url]);
 								return true;
 							}
 							return false;
+						},
+						trackSocial: function () {
+							// see: https://developers.google.com/analytics/devguides/collection/gajs/methods/gaJSApiSocialTracking
 						}
 					},
 					comscore: {
 						name: 'Comscore',
+						init: $.noop,
 						trackEvent: function (cat, action, label, value) {
-						
+							if (!!window._comscore && $.isFunction(_comscore.push)) {
+								comscore.push({ 
+									c1: "2",  // tag type
+									c2: "1234567", // comScore Client ID
+									
+									c4: "" // url
+								});
+							}
 						},
 						trackPageview: function (url) {
-						
+							if (!!window._comscore && $.isFunction(_comscore.push)) {
+								comscore.push({ 
+									c1: "2",  // tag type
+									c2: "1234567", // comScore Client ID
+									
+									c4: "" // url
+								});
+							}
 						}
 					}
 				}
