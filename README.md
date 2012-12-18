@@ -23,19 +23,19 @@ NFB's jQuery menu plugin has been created in order to facilite NFB's menu into H
 
 ### Facultatives / Optional
 
-- lib/ntpagetag.js *uniquement pour Unica NetInsight/ Only for Unica NetInsight*
+- [lib/ntpagetag.js](https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu/blob/dev/lib/ntpagetag.js) *uniquement pour Unica NetInsight/ Only for Unica NetInsight*
 - [Google Analytics Async Tracking Code](http://www.google.com/analytics/) *uniquement pour les stats GA / Only for GA stats*
-	- lib/ga_social_tracking_async.js *Social Tracking*
-	- lib/gatag_async.js *Async tracker*
-	- lib/xdomain_gatag_v2.js *Cross domain*
+	- [lib/ga_social_tracking_async.js](https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu/blob/dev/lib/ga_social_tracking_async.js) *Social Tracking*
+	- [lib/gatag_async.js](https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu/blob/dev/lib/gatag_async.js) *Async tracker*
+	- [lib/xdomain_gatag_v2.js](https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu/blob/dev/lib/xdomain_gatag_v2.js) *Cross domain*
 	
 - [Comescore Async Tracking Code](_) *uniquement pour les stats GA / Only for GA stats*
 
 ## Développement / Developement
 
 - Node.js / npm
-	- npm install
-	- grunt
+	- `npm install`
+	- `grunt`
 
 ## Mode d'emploi / How to use
 
@@ -47,7 +47,7 @@ NFB's jQuery menu plugin has been created in order to facilite NFB's menu into H
 	- `$.onf_nfb.menu.bot({...})`
 
 Pour plus de détails, consultez [la wiki](https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu/wiki/Doc-FR).
-Vous pouvez aussi voir des exemples concret dans la [testsuite](https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu/blob/master/jquery.onf-nfb.testsuite.js).
+Vous pouvez aussi voir des exemples concret dans la [testsuite](https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu/blob/master/tests/jquery.onf-nfb.testsuite.js).
 
 1. Add the stylesheet reference in the \<head\> section
 2. Add the jQuery script reference just before the \</body\> tag
@@ -57,7 +57,7 @@ Vous pouvez aussi voir des exemples concret dans la [testsuite](https://github.c
 	- `$.onf_nfb.menu.bot({...})`
 
 For more information, please see the [wiki](https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu/wiki).
-You can see live example in the [testsuite](https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu/blob/master/jquery.onf-nfb.testsuite.js).
+You can see live example in the [testsuite](https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu/blob/master/tests/jquery.onf-nfb.testsuite.js).
 
 
 ## Compatiblité / Compatibility
