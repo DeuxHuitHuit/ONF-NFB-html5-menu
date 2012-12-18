@@ -807,7 +807,7 @@
 								});
 							}
 						},
-						trackPageview: function (url)git c {
+						trackPageview: function (url) {
 							if (!!window._comscore && $.isFunction(_comscore.push)) {
 								_comscore.push({ 
 									c1: "2",  // tag type
