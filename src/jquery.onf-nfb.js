@@ -38,8 +38,6 @@
 	
 	/** Private VARIABLES **/
 	var // constants
-	ONF_NFB_url = (LG == 'fr' ? 'http://www.onf.ca' : 'http://www.nbf.ca'),
-	ONF_NFB_search_url = 'http://search.nfb.ca/search?entqr=0&output=xml_no_dtd&sort=date%3AD%3AL%3Ad1&client=beta_onfb&ud=1&oe=UTF-8&ie=UTF-8&proxystylesheet=beta_onfb&proxyreload=1&hl='+LG+'&lr=lang_'+LG+'&site=beta_onfb&q=',
 	ONF_NFB_share_width = 55,
 	ONF_NFB_event_namespace = 'onf-nfb',
 	ONF_NFB_event_topclick = 'topclick.onf-nfb', // function (e,orgEvent,target,opts,tag)
@@ -49,7 +47,7 @@
 	ONF_NFB_event_botclick = 'botclick.onf-nfb', // function (e,orgEvent,target,opts,tag)
 	ONF_NFB_event_shareclick = 'share.onf-nfb',  // function (e,orgEvent,target,tag)
 	ONF_NFB_event_volclick = 'volume.onf-nfb',   // function (e,orgEvent,target,muted)
-	ONF_NFB_event_fsclick = 'fullscreen.onf-nfb',// function (e,orgEvent,target,fullscreen)		
+	ONF_NFB_event_fsclick = 'fullscreen.onf-nfb',// function (e,orgEvent,target,fullscreen)
 	// variables
 	stats_loggers = [],
 	top_defaults = {
@@ -170,6 +168,8 @@
 	},
 	LG = _getDefaultValue($('html').attr('lang'), 'en'), // defaults to english
 	EV = (LG === 'fr' ? 'interactif' : 'interactive'),
+	ONF_NFB_url = (LG == 'fr' ? 'http://www.onf.ca' : 'http://www.nbf.ca'),
+	ONF_NFB_search_url = 'http://search.nfb.ca/search?entqr=0&output=xml_no_dtd&sort=date%3AD%3AL%3Ad1&client=beta_onfb&ud=1&oe=UTF-8&ie=UTF-8&proxystylesheet=beta_onfb&proxyreload=1&hl='+LG+'&lr=lang_'+LG+'&site=beta_onfb&q=',
 	preventDefault = function (e) {
 		if (!!e && $.isFunction(e.preventDefault)) {
 			e.preventDefault();
@@ -769,7 +769,7 @@
 						init: $.noop,
 						trackEvent: function (cat, action, label, value) {
 							if (!!window._comscore && $.isFunction(_comscore.push)) {
-								comscore.push({ 
+								_comscore.push({ 
 									c1: "2",  // tag type
 									c2: "1234567", // comScore Client ID
 									
@@ -779,7 +779,7 @@
 						},
 						trackPageview: function (url) {
 							if (!!window._comscore && $.isFunction(_comscore.push)) {
-								comscore.push({ 
+								_comscore.push({ 
 									c1: "2",  // tag type
 									c2: "1234567", // comScore Client ID
 									

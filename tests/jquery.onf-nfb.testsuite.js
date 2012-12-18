@@ -26,7 +26,7 @@
 		$.onf_nfb.menu.bot();
 	};
 	
-	function testCustomLinks() {	
+	function testCustomLinks() {
 		console.log('[test] customLinks');
 		// top menu
 		$.onf_nfb.menu.top({
@@ -35,7 +35,7 @@
 					    url: {fr:'http://www.onf.ca/explorer-tous-les-films/', en:'http://www.nfb.ca/explore-all-films/'},
 					    callback: log, preventDefault:false, target: null, cssClass: null, tag: 'test-top'
 					 }
-			       ]
+					]
 		});
 		
 		// bottom menu
@@ -45,7 +45,7 @@
 					    url:null,
 					    callback: log, preventDefault:false, target: null, cssClass: null, tag: 'test-bot'
 					 }
-			       ]
+					]
 		});
 	};
 	
@@ -164,8 +164,12 @@
 		// adding a simple logger
 		$.onf_nfb.stats.add({
 			name: 'test logger',
-			log: function (cat, action, label, value) {
-				console.log(this.name + ': ' + cat + ', ' + action + ', ' + label + ', ' + value);
+			init: $.noop,
+			trackEvent: function (cat, action, label, value) {
+				console.log('[trackEvent] ' + this.name + ': ' + cat + ', ' + action + ', ' + label + ', ' + value);
+			},
+			trackPageview: function (url) {
+				console.log('[trackPageview] ' + this.name + ': ' + url);
 			}
 		});
 	};
@@ -187,9 +191,10 @@
 		var hash = '#mobile';
 		
 		// assure the hash is ok
-		if (document.location.hash != hash)
-		document.location.hash = hash;
-		document.location.reload();
+		if (document.location.hash != hash) {
+			document.location.hash = hash;
+			document.location.reload();
+		}
 	};
 	
 	
