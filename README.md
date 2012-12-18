@@ -6,9 +6,9 @@
 - Git Repository: <https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu>
 - Tags: <https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu/tags>
 - Issues: <https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu/issues>
-- Official hosting: <http://interactif-mirror2.onf.ca/html5/1.1/jquery.onf-nfb.min.*>
-	- JS <http://interactif-mirror2.onf.ca/html5/1.1/jquery.onf-nfb.min.js>
-	- CSS <http://interactif-mirror2.onf.ca/html5/1.1/jquery.onf-nfb.min.css>
+- Official hosting: <http://interactif-mirror2.onf.ca/html5/1.1/dist/jquery.onf-nfb.min.*>
+	- JS <http://interactif-mirror2.onf.ca/html5/1.1/dist/jquery.onf-nfb.min.js>
+	- CSS <http://interactif-mirror2.onf.ca/html5/1.1/dist/jquery.onf-nfb.min.css>
 
 ## Vue d'ensemble / Overview
 
@@ -23,11 +23,15 @@ NFB's jQuery menu plugin has been created in order to facilite NFB's menu into H
 
 ### Facultatives / Optional
 
-- ntpagetag.js *uniquement pour les stats ONF / Only for NFB stats*
-- [Google Analytics Async Tracking Code](http://www.google.com/analytics/) *uniquement pour les stats GA / Only for GA stats* 
-- Comescore
+- lib/ntpagetag.js *uniquement pour Unica NetInsight/ Only for Unica NetInsight*
+- [Google Analytics Async Tracking Code](http://www.google.com/analytics/) *uniquement pour les stats GA / Only for GA stats*
+	- lib/ga_social_tracking_async.js *Social Tracking*
+	- lib/gatag_async.js *Async tracker*
+	- lib/xdomain_gatag_v2.js *Cross domain*
+	
+- [Comescore Async Tracking Code](_) *uniquement pour les stats GA / Only for GA stats*
 
-#### Dev
+## Développement / Developement
 
 - Node.js / npm
 	- npm install
@@ -91,8 +95,8 @@ Please report all bugs via [GitHub's interface](https://github.com/DeuxHuitHuit/
 **1.1 - TBA**
 
 - Added grunt.js as build system
-- Stats module overhaul
-- Added support for ComScore
+- Stats module overhaul (trackPageview, trackEvent)
+- Added support for Comscore
 - Added custom vars for Google Analytics
 
 **1.0 - 2012-03-14**
