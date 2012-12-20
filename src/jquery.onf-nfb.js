@@ -170,6 +170,18 @@
 	EV = (LG === 'fr' ? 'interactif' : 'interactive'),
 	ONF_NFB_url = (LG == 'fr' ? 'http://www.onf.ca' : 'http://www.nbf.ca'),
 	ONF_NFB_search_url = 'http://search.nfb.ca/search?entqr=0&output=xml_no_dtd&sort=date%3AD%3AL%3Ad1&client=beta_onfb&ud=1&oe=UTF-8&ie=UTF-8&proxystylesheet=beta_onfb&proxyreload=1&hl='+LG+'&lr=lang_'+LG+'&site=beta_onfb&q=',
+	
+	_concatParams = function (cat, action, label, value) {
+		var c = cat + ' > ' + action;
+		if (!!label) {
+			c += ' > ' + label;
+		}
+		if (!isNaN(value)) {
+			c += ' > ' + value;
+		}
+		return c;
+	},
+	
 	preventDefault = function (e) {
 		if (!!e && $.isFunction(e.preventDefault)) {
 			e.preventDefault();
@@ -731,19 +743,14 @@
 			top:top_defaults,
 			bot:bot_defaults,
 			stats: {
+				init: statsInit,
 				loggers: {
 					ntpt: {
 						name: 'Unica NetInsight',
 						init: $.noop,
 						trackEvent: function (cat, action, label, value) {
 							if (!!window.ntptEventTag && $.isFunction(ntptEventTag)) {
-								var c = cat + ' > ' + action;
-								if (!!label) {
-									c += ' > ' + label;
-								}
-								if (!isNaN(value)) {
-									c += ' > ' + value;
-								}
+								var c = _concatParams(cat, action, label, value);
 								ntptEventTag('ln=' + LG + '&ev='+ EV +'&ntpgi_interactive_page=' + c);
 								return true;
 							}
@@ -756,15 +763,16 @@
 							}
 						},
 						trackSocial: function (network, socialAction, opt_target, opt_pagePath) {
-							// do nothing
+							// revert to event
+							this.trackEvent(opt_target, network, socialAction);
 						}
 					},
 					ga: {
 						name: 'Google Analytics',
 						_addCustomVars: function () {
 							if (!!window._gaq && $.isFunction(_gaq.push)) {
-								_gaq.push(['_setCustomVar', 2, 'ln', LG]); 
-								_gaq.push(['_setCustomVar', 5, 'ev', EV]);
+								_gaq.push(['_setCustomVar', 2, 'ln', LG, 2]); 
+								_gaq.push(['_setCustomVar', 5, 'ev', EV, 3]);
 							}
 						},
 						init: function () {
@@ -799,11 +807,12 @@
 						init: $.noop,
 						trackEvent: function (cat, action, label, value) {
 							if (!!window._comscore && $.isFunction(_comscore.push)) {
+								var c = _concatParams(cat, action, label, value);
 								_comscore.push({ 
 									c1: "2",  // tag type
-									c2: "1234567", // comScore Client ID
+									c2: "6035506", // comScore Client ID
 									
-									c4: EV + '/' + "" // url
+									c4: EV + '/' + c // url
 								});
 							}
 						},
@@ -811,14 +820,15 @@
 							if (!!window._comscore && $.isFunction(_comscore.push)) {
 								_comscore.push({ 
 									c1: "2",  // tag type
-									c2: "1234567", // comScore Client ID
+									c2: "6035506", // comScore Client ID
 									
-									c4: EV + '/' + "" // url
+									c4: EV + '/' + url // url
 								});
 							}
 						},
 						trackSocial: function (network, socialAction, opt_target, opt_pagePath) {
-							// do nothing
+							// revert to event
+							this.trackEvent(opt_target, network, socialAction);
 						}
 					}
 				}
@@ -836,8 +846,5 @@
 			fullscreen:	ONF_NFB_event_fsclick
 		}
 	});
-	
-	/** INIT **/
-	$(statsInit);
 	
 })(jQuery);
