@@ -752,7 +752,7 @@
 						trackPageview: function (url) {
 							// see: http://fr.scribd.com/doc/87955703/26/ntptEventTag-ntptEventTag
 							if (!!window.ntptLinkTag && $.isFunction(ntptLinkTag)) {
-								ntptLinkTag(url);
+								ntptLinkTag(EV + '/' + url);
 							}
 						},
 						trackSocial: function (network, socialAction, opt_target, opt_pagePath) {
@@ -780,7 +780,7 @@
 						trackPageview: function (url) {
 							// see: https://developers.google.com/analytics/devguides/collection/gajs/methods/gaJSApiBasicConfiguration
 							if (!!window._gaq && $.isFunction(_gaq.push)) {
-								_gaq.push(['_trackPageview', url]);
+								_gaq.push(['_trackPageview', EV + '/' + url]);
 								return true;
 							}
 							return false;
@@ -803,7 +803,7 @@
 									c1: "2",  // tag type
 									c2: "1234567", // comScore Client ID
 									
-									c4: "" // url
+									c4: EV + '/' + "" // url
 								});
 							}
 						},
@@ -813,7 +813,7 @@
 									c1: "2",  // tag type
 									c2: "1234567", // comScore Client ID
 									
-									c4: "" // url
+									c4: EV + '/' + "" // url
 								});
 							}
 						},
