@@ -1,4 +1,4 @@
-/*global ntptEventTag:false,ntptLinkTag:false,_gaq:false,_comscore:false*/
+/*global ntptEventTag:false,ntptLinkTag:false,_gaq:false,COMSCORE:false*/
 /**
  * ONF-NFB Menu Behavior jQuery script
  * 
@@ -104,16 +104,16 @@
 		recursive: false,
 		ready: null, // function (opts)
 		links: [
-			 {title: {fr:'Accueil',en:'Home'},		url: null, 
+			 {title: {fr:'Accueil',en:'Home'},		url: '/index/', 
 			  callback: null, preventDefault:true, target: null, cssClass: 'onf-bot-cont onf-bot-border', tag: 'home'
 			 },
-			 {title: {fr:'À propos',en:'About'},	url: null,
+			 {title: {fr:'À propos',en:'About'},	url: {fr:'/a-propos/', en: '/about/'},
 			  callback: null, preventDefault:true, target: null, cssClass: 'onf-bot-cont onf-bot-border', tag: 'about'
 			 },
-			 {title: {fr:'Films reliés',en:'Related movies'},url: null,
+			 {title: {fr:'Films reliés',en:'Related movies'},url: {fr:'/relies/', en:'/related/'},
 			  callback: null, preventDefault:true, target: null, cssClass: 'onf-bot-cont onf-bot-border', tag: 'related'
 			 },
-			 {title: {fr:'Équipe',en:'Credits'},	url: null, 
+			 {title: {fr:'Équipe',en:'Credits'},	url: {fr:'/equipe/', en: '/credits/'}, 
 			  callback: null, preventDefault:true, target: null, cssClass: 'onf-bot-cont', tag: 'credits'
 			 }
 		],
@@ -214,7 +214,11 @@
 		target.triggerHandler(event, [e,t,opts,tag]);
 		
 		// log event
-		$.onf_nfb.stats.log('menu','click', tag, t.index());
+		if (!!linkObj.url) {
+			$.onf_nfb.stats.trackPageview(_getObjectValue(linkObj.url));
+		} else {
+			$.onf_nfb.stats.trackEvent('menu','click', tag, t.index());
+		}
 		
 		return ret;
 	},
@@ -295,7 +299,7 @@
 			$.event.trigger(ONF_NFB_event_fsclick, [e,this,true]);
 			
 			// log event
-			$.onf_nfb.stats.log('menu','fullscreen', true);
+			$.onf_nfb.stats.trackEvent('menu','fullscreen', true);
 		}
 		
 		return preventDefault(e);
@@ -323,7 +327,7 @@
 			$.event.trigger(ONF_NFB_event_fsclick, [e,this,false]);
 			
 			// log event
-			$.onf_nfb.stats.log('menu','fullscreen', false);
+			$.onf_nfb.stats.trackEvent('menu','fullscreen', false);
 		}
 		
 		return preventDefault(e);
