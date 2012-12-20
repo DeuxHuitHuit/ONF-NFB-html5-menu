@@ -780,6 +780,14 @@
 						params: null,
 						_addCustomVars: function (params) {
 							if (!!window._gaq && $.isFunction(_gaq.push)) {
+								// force values
+								_gaq.push(['_setAccount', 'UA-32257069-1']);
+								_gaq.push (['_gat._anonymizeIp']);
+								_gaq.push(['_setDomainName', '.onf.ca']);
+								_gaq.push(['_setDomainName', '.nfb.ca']);
+								_gaq.push(['_setAllowLinker', true]);
+								
+								// custom vars
 								_gaq.push(['_setCustomVar', 2, 'ln', LG, 2]); 
 								_gaq.push(['_setCustomVar', 5, 'ev', EV, 3]);
 								_gaq.push(['_setCustomVar', 3, 'Interactif', params.name, 3]);
