@@ -170,6 +170,9 @@
 			},
 			trackPageview: function (url) {
 				console.log('[trackPageview] ' + this.name + ': ' + url);
+			},
+			trackSocial: function (network, socialAction, opt_target, opt_pagePath) {
+				console.log('[trackSocial] ' + this.name + ': ' + network + ', ' + socialAction + ', ' + opt_target + ', ' + opt_pagePath);
 			}
 		});
 	};

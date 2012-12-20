@@ -8,14 +8,38 @@
 	
 	<!-- Utilisez ceci en production / Use this in production -->
 	<!--link rel="stylesheet" type="text/css" href="/jquery.onf-nfb.css" /-->
-	
-	<!-- Leaner CSS -->
-	<!-- link rel="stylesheet/less" type="text/css" href="./jquery.onf-nfb.less" />
-	<script>less = { env: 'development' };</script>
-	<script src="./less-1.2.2.min.js"></script>
-	<script>less.watch();</script -->
-	
+
 	<link rel="stylesheet" type="text/css" href="../src/jquery.onf-nfb.css" />
+	
+	<!-- Google Analytics -->
+	<script>
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-32257069-1']);
+	_gaq.push (['_gat._anonymizeIp']);
+	_gaq.push(['_setDomainName', '.onf.ca']);
+	_gaq.push(['_setDomainName', '.nfb.ca']);
+	_gaq.push(['_setAllowLinker', true]);
+	
+	// Do not track the page view right now
+	//_gaq.push(['_trackPageview']);
+	(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+	</script>
+
+	<!-- Comscore -->
+	<script>
+	var _comscore = _comscore || [];
+
+	(function() {
+		var s = document.createElement("script"), el = document.getElementsByTagName("script")[0]; s.async = true;
+		s.src = (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js";
+		el.parentNode.insertBefore(s, el);
+	})();
+	</script>
+	
 </head>
 <body>
 	<div id="wrap">
@@ -41,6 +65,25 @@
 	
 	<!-- ONF-NFB lib -->
 	<script src="../src/jquery.onf-nfb.js"></script>
+	
+	<!-- BEGIN: Unica Page Tag -->
+	<!-- Copyright 2004-2006 Unica Corporation.  All rights reserved. -->
+	<script>
+	var ntpg_lg = 'en', /* do not forget, since ntpg will fail silently on IE 9 */
+		ntpg_app = 'interactive',
+		ntpgi_project = 'test app';
+	</script>
+	<script src="../lib/ntpagetag.js"></script>
+	<!-- END: Unica Page Tag -->
+	
+	<!-- Init Stats Framework, always after loading all content -->
+	<script>
+		//jQuery(function () {
+			jQuery.onf_nfb.stats.init({
+				name: 'Test App'
+			});
+		//});
+	</script>
 	
 	<!-- ONF-NFB test suite -->
 	<script src="./jquery.onf-nfb.testsuite.js"></script>
@@ -78,8 +121,8 @@
 				now3 = new Date();
 				
 				// stats test
-				$.onf_nfb.stats.trackPageview('/test.html');
-				$.onf_nfb.stats.trackEvent('test cat', 'test action');
+				//$.onf_nfb.stats.trackPageview('/test.html');
+				//$.onf_nfb.stats.trackEvent('test cat', 'test action');
 				
 				// output time taken
 				console.log ('[time] ' + ((new Date()) - now3));

@@ -348,7 +348,7 @@
 		$.event.trigger(ONF_NFB_event_volclick, [e,vol,isMuted]);
 		
 		// log event
-		$.onf_nfb.stats.log('menu','mute', isMuted);
+		$.onf_nfb.stats.trackEvent('menu','mute', isMuted);
 		
 		return preventDefault(e);
 	},
@@ -419,10 +419,11 @@
 	trackSocial = function (network, socialAction, opt_target, opt_pagePath, delay) {
 		var 
 		minDelay = _getValue(this.minDelay),
+		action = socialAction || $.onf_nfb.defaults.stats.actions[network] || $.onf_nfb.defaults.stats.actions['default'],
 		log = function () {
 			stats_loggers.forEach(function (obj, key) {
 				try {
-					obj.trackSocial(network, socialAction, opt_target, opt_pagePath);
+					obj.trackSocial(network, action, opt_target, opt_pagePath);
 				} catch (ex) {
 					console.error('[stats.trackSocial] ' + obj.name + ': ' + ex.message);
 				}
@@ -437,14 +438,16 @@
 		setTimeout(log, delay);
 	},
 	
-	statsPushLogger = function (logger) {
-		logger.init();
+	statsPushLogger = function (logger, params) {
+		logger.init(params);		
 		stats_loggers.push(logger);
+		
 	},
-	statsInit = function () {
+	statsInit = function (params) {
 		// push our loggers
 		$.each($.onf_nfb.defaults.stats.loggers, function () {
-			statsPushLogger(this);
+			statsPushLogger(this, params);
+			this.trackPageview(document.location);
 		});
 	},
 	
@@ -460,7 +463,7 @@
 			$.event.trigger(ONF_NFB_event_search, [e,this,query]);
 			
 			// log event
-			$.onf_nfb.stats.log('menu','search', query);
+			$.onf_nfb.stats.trackEvent('menu','search', query);
 			
 			// redirect
 			setTimeout(function () {
@@ -525,7 +528,7 @@
 			$.event.trigger(ONF_NFB_event_topclick, [e,this,opts,'logo']);
 			
 			// log event
-			$.onf_nfb.stats.log('menu','click', 'logo');
+			$.onf_nfb.stats.trackEvent('menu','click', 'logo');
 			return true;
 		});
 		wrap.append(logo);
@@ -655,7 +658,7 @@
 				$.event.trigger(ONF_NFB_event_shareclick, [e,this,i]);
 				
 				// log event
-				$.onf_nfb.stats.log('menu','share', i);
+				$.onf_nfb.stats.trackSocial(i);
 				
 				// allow continuation
 				return true;
@@ -729,6 +732,7 @@
 	$.onf_nfb = $.extend(true, $.onf_nfb, {
 		stats: {
 			minDelay: 80,
+			init: statsInit,
 			log: statsLog, // deprecated
 			add: statsPushLogger,
 			trackPageview: trackPageview,
@@ -743,10 +747,10 @@
 			top:top_defaults,
 			bot:bot_defaults,
 			stats: {
-				init: statsInit,
 				loggers: {
 					ntpt: {
 						name: 'Unica NetInsight',
+						params: null,
 						init: $.noop,
 						trackEvent: function (cat, action, label, value) {
 							if (!!window.ntptEventTag && $.isFunction(ntptEventTag)) {
@@ -769,18 +773,21 @@
 					},
 					ga: {
 						name: 'Google Analytics',
-						_addCustomVars: function () {
+						params: null,
+						_addCustomVars: function (params) {
 							if (!!window._gaq && $.isFunction(_gaq.push)) {
 								_gaq.push(['_setCustomVar', 2, 'ln', LG, 2]); 
 								_gaq.push(['_setCustomVar', 5, 'ev', EV, 3]);
+								_gaq.push(['_setCustomVar', 3, 'Interactif', params.name, 3]);
 							}
 						},
-						init: function () {
-							this._addCustomVars();
+						init: function (params) {
+							this.params = params;
+							this._addCustomVars(this.params);
 						},
 						trackEvent: function (cat, action, label, value) {
 							if (!!window._gaq && $.isFunction(_gaq.push)) {
-								_gaq.push(['_trackEvent', cat, action, label, value]);
+								_gaq.push(['t2._trackEvent', cat, action, label, value]);
 								return true;
 							}
 							return false;
@@ -788,7 +795,7 @@
 						trackPageview: function (url) {
 							// see: https://developers.google.com/analytics/devguides/collection/gajs/methods/gaJSApiBasicConfiguration
 							if (!!window._gaq && $.isFunction(_gaq.push)) {
-								_gaq.push(['_trackPageview', EV + '/' + url]);
+								_gaq.push(['t2._trackPageview', '/' + EV + '/' + this.params.name + '/' +  url]);
 								return true;
 							}
 							return false;
@@ -796,7 +803,7 @@
 						trackSocial: function (network, socialAction, opt_target, opt_pagePath) {
 							// see: https://developers.google.com/analytics/devguides/collection/gajs/methods/gaJSApiSocialTracking
 							if (!!window._gaq && $.isFunction(_gaq.push)) {
-								_gaq.push(['_trackSocial', network, socialAction, opt_target, opt_pagePath]);
+								_gaq.push(['t2._trackSocial', network, socialAction, opt_target, opt_pagePath]);
 								return true;
 							}
 							return false;
@@ -804,11 +811,12 @@
 					},
 					comscore: {
 						name: 'Comscore',
+						params: null,
 						init: $.noop,
 						trackEvent: function (cat, action, label, value) {
-							if (!!window._comscore && $.isFunction(_comscore.push)) {
+							if (!!window.COMSCORE && $.isFunction(COMSCORE.beacon)) {
 								var c = _concatParams(cat, action, label, value);
-								_comscore.push({ 
+								COMSCORE.beacon({ 
 									c1: "2",  // tag type
 									c2: "6035506", // comScore Client ID
 									
@@ -817,8 +825,8 @@
 							}
 						},
 						trackPageview: function (url) {
-							if (!!window._comscore && $.isFunction(_comscore.push)) {
-								_comscore.push({ 
+							if (!!window.COMSCORE && $.isFunction(COMSCORE.beacon)) {
+								COMSCORE.beacon({ 
 									c1: "2",  // tag type
 									c2: "6035506", // comScore Client ID
 									
@@ -831,6 +839,11 @@
 							this.trackEvent(opt_target, network, socialAction);
 						}
 					}
+				},
+				actions: {
+					'default':'share',
+					facebook: 'like',
+					twitter: 'tweet'
 				}
 			}
 		},
