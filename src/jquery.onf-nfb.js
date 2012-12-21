@@ -782,17 +782,19 @@
 						params: null,
 						_addCustomVars: function (params) {
 							if (!!window._gaq && $.isFunction(_gaq.push)) {
+								// see https://developers.google.com/analytics/devguides/collection/gajs/?hl=pl#MultipleCommands
+								
 								// force values
-								_gaq.push(['_setAccount', 'UA-32257069-1']);
-								_gaq.push (['_gat._anonymizeIp']);
-								_gaq.push(['_setDomainName', '.onf.ca']);
-								_gaq.push(['_setDomainName', '.nfb.ca']);
-								_gaq.push(['_setAllowLinker', true]);
+								_gaq.push(['t2._setAccount', 'UA-32257069-1']);
+								_gaq.push(['_gat._anonymizeIp']);
+								_gaq.push(['t2._setDomainName', '.onf.ca']);
+								_gaq.push(['t2._setDomainName', '.nfb.ca']);
+								_gaq.push(['t2._setAllowLinker', true]);
 								
 								// custom vars
-								_gaq.push(['_setCustomVar', 2, 'ln', LG, 2]); 
-								_gaq.push(['_setCustomVar', 5, 'ev', EV, 3]);
-								_gaq.push(['_setCustomVar', 3, 'Interactif', params.name, 3]);
+								_gaq.push(['t2._setCustomVar', 2, 'ln', LG, 2]); 
+								_gaq.push(['t2._setCustomVar', 5, 'ev', EV, 3]);
+								_gaq.push(['t2._setCustomVar', 3, 'Interactif', params.name, 3]);
 							}
 						},
 						init: function (params) {
@@ -801,6 +803,7 @@
 						},
 						trackEvent: function (cat, action, label, value) {
 							if (!!window._gaq && $.isFunction(_gaq.push)) {
+								_gaq.push(['_trackEvent', cat, action, label, value]);
 								_gaq.push(['t2._trackEvent', cat, action, label, value]);
 								return true;
 							}
@@ -809,6 +812,7 @@
 						trackPageview: function (url) {
 							// see: https://developers.google.com/analytics/devguides/collection/gajs/methods/gaJSApiBasicConfiguration
 							if (!!window._gaq && $.isFunction(_gaq.push)) {
+								_gaq.push(['_trackPageview', '/' + EV + '/' + this.params.name + '/' +  url]);
 								_gaq.push(['t2._trackPageview', '/' + EV + '/' + this.params.name + '/' +  url]);
 								return true;
 							}
@@ -817,6 +821,7 @@
 						trackSocial: function (network, socialAction, opt_target, opt_pagePath) {
 							// see: https://developers.google.com/analytics/devguides/collection/gajs/methods/gaJSApiSocialTracking
 							if (!!window._gaq && $.isFunction(_gaq.push)) {
+								_gaq.push(['_trackSocial', network, socialAction, opt_target, opt_pagePath]);
 								_gaq.push(['t2._trackSocial', network, socialAction, opt_target, opt_pagePath]);
 								return true;
 							}
