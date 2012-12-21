@@ -792,8 +792,13 @@
 								_gaq.push(['t2._setAllowLinker', true]);
 								
 								// custom vars
+								_gaq.push(['_setCustomVar', 2, 'ln', LG, 2]); 
 								_gaq.push(['t2._setCustomVar', 2, 'ln', LG, 2]); 
+								
+								_gaq.push(['_setCustomVar', 5, 'ev', EV, 3]);
 								_gaq.push(['t2._setCustomVar', 5, 'ev', EV, 3]);
+								
+								_gaq.push(['_setCustomVar', 3, 'Interactif', params.name, 3]);
 								_gaq.push(['t2._setCustomVar', 3, 'Interactif', params.name, 3]);
 							}
 						},
