@@ -787,8 +787,8 @@
 								// force values
 								_gaq.push(['t2._setAccount', 'UA-32257069-1']);
 								_gaq.push(['_gat._anonymizeIp']);
-								_gaq.push(['t2._setDomainName', '.onf.ca']);
-								_gaq.push(['t2._setDomainName', '.nfb.ca']);
+								//_gaq.push(['t2._setDomainName', '.onf.ca']);
+								//_gaq.push(['t2._setDomainName', '.nfb.ca']);
 								_gaq.push(['t2._setAllowLinker', true]);
 								
 								// custom vars
