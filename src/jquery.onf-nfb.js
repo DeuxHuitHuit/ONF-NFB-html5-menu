@@ -766,9 +766,11 @@
 						},
 						trackPageview: function (url) {
 							// see: http://fr.scribd.com/doc/87955703/26/ntptEventTag-ntptEventTag
-							if (!!window.ntptLinkTag && $.isFunction(ntptLinkTag)) {
-								ntptLinkTag(EV + '/' + url);
-							}
+							//if (!!window.ntptLinkTag && $.isFunction(ntptLinkTag)) {
+								//ntptLinkTag(EV + '/' + url);
+							//} else {
+								this.trackEvent('_link', url);
+							//}
 						},
 						trackSocial: function (network, socialAction, opt_target, opt_pagePath) {
 							// revert to event
