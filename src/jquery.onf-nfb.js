@@ -808,6 +808,8 @@
 						},
 						trackEvent: function (cat, action, label, value) {
 							if (!!window._gaq && $.isFunction(_gaq.push)) {
+								label = !!label ? label.toString() : undefined;
+								value = !!value ? parseInt(value, 10) : undefined;
 								_gaq.push(['_trackEvent', cat, action, label, value]);
 								_gaq.push(['t2._trackEvent', cat, action, label, value]);
 								return true;
