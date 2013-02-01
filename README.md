@@ -1,7 +1,7 @@
 # ONF-NFB jQuery Menus #
 
 - Version: 1.1
-- Date: TBA
+- Date: 2013-02-01
 - Wiki: <https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu/wiki>
 - Git Repository: <https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu>
 - Tags: <https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu/tags>
@@ -12,7 +12,7 @@
 
 ## Vue d'ensemble / Overview
 
-Le plugin jQuery des menu de l'ONF sont là pour faciliter l'intégration des menus dans une application web HTML 5.
+Le plugin jQuery des menu de l'ONF est là pour faciliter l'intégration des menus dans une application web HTML 5.
 
 NFB's jQuery menu plugin has been created in order to facilite NFB's menu into HTML 5 webapps.
 
@@ -92,7 +92,7 @@ Please report all bugs via [GitHub's interface](https://github.com/DeuxHuitHuit/
 
 #### Change Log
 
-**1.1 - TBA**
+**1.1 - 2013-02-01**
 
 - Added grunt.js as build system
 - Stats module overhaul (trackPageview, trackEvent)
