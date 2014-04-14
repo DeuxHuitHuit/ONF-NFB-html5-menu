@@ -518,7 +518,8 @@
 			search_txt = $('<input id="onf-top-search-txt" type="text" />'),
 			search_btn = $('<input id="onf-top-search-btn" type="button" value="" />'),
 			right_wrap = $('<div id="onf-top-right"></span>'),
-			wrap = $('<div id="onf-top-wrap"></div>');
+			wrap = $('<div id="onf-top-wrap"></div>'),
+			hamburger = $('<div id="onf-hamburger"></div>');
 			
 		// target check
 		if (!target || !target.length) {
@@ -579,7 +580,11 @@
 			});
 		}
 		
+		// append righ part
 		wrap.append(right_wrap);
+		
+		// append hamburger
+		wrap.append(hamburger);
 		
 		// finally add the wrap to our container
 		target.empty().append(wrap);
