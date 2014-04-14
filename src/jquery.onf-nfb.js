@@ -519,7 +519,8 @@
 			search_btn = $('<input id="onf-top-search-btn" type="button" value="" />'),
 			right_wrap = $('<div id="onf-top-right"></span>'),
 			wrap = $('<div id="onf-top-wrap"></div>'),
-			hamburger = $('<div id="onf-hamburger"></div>');
+			hamburger = $('<div id="onf-hamburger"></div>'),
+			mobile_wrap = $('<div id="onf-mobile-wrap"></div>');
 			
 		// target check
 		if (!target || !target.length) {
@@ -585,6 +586,9 @@
 		
 		// append hamburger
 		wrap.append(hamburger);
+		
+		// append mobile wrap
+		wrap.append(mobile_wrap);
 		
 		// finally add the wrap to our container
 		target.empty().append(wrap);
