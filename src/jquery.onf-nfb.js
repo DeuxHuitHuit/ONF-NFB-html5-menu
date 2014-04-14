@@ -38,6 +38,7 @@
 	
 	/** Private VARIABLES **/
 	var // constants
+	ONF_NFB_max_width = 768,
 	ONF_NFB_share_width = 55,
 	ONF_NFB_event_namespace = 'onf-nfb',
 	ONF_NFB_event_topclick = 'topclick.onf-nfb', // function (e,orgEvent,target,opts,tag)
@@ -604,7 +605,7 @@
 	/* Menu bottom */
 	shareToggle = function (e, isIn) {
 		var share = $('#onf-bot-share'),
-			w = ONF_NFB_share_width,
+			w = $(window).width() > ONF_NFB_max_width ? ONF_NFB_share_width : 0,
 			i = share.find('.onf-social').length,
 			ow = w + (20*i);
 		
@@ -650,7 +651,7 @@
 		
 		// create share menu items
 		if (!!opts.share) {
-			share_wrap.append($('<span>' + _getObjectValue(opts.share.title) + '</span>'));
+			share_wrap.append($('<span id="onf-share-lbl">' + _getObjectValue(opts.share.title) + '</span>'));
 			
 			var
 			_share_click = function (e) {

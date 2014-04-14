@@ -1,7 +1,7 @@
 # ONF-NFB jQuery Menus #
 
-- Version: 1.1
-- Date: 2013-02-01
+- Version: 1.2
+- Date: 2014-04-15
 - Wiki: <https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu/wiki>
 - Git Repository: <https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu>
 - Tags: <https://github.com/DeuxHuitHuit/ONF-NFB-html5-menu/tags>
