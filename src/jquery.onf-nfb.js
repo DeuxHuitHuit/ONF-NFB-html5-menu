@@ -581,7 +581,7 @@
 			});
 		}
 		
-		// append righ part
+		// append right part
 		wrap.append(right_wrap);
 		
 		// append hamburger
@@ -612,9 +612,13 @@
 	
 	
 	/* Menu bottom */
+	shareWidth = function () {
+		return $(window).width() > ONF_NFB_max_width ? ONF_NFB_share_width : 0;
+	},
+	
 	shareToggle = function (e, isIn) {
 		var share = $('#onf-bot-share'),
-			w = $(window).width() > ONF_NFB_max_width ? ONF_NFB_share_width : 0,
+			w = shareWidth(),
 			i = share.find('.onf-social').length,
 			ow = w + (20*i);
 		
@@ -710,7 +714,7 @@
 			registerCallback(ONF_NFB_event_volclick, opts.volume.callback, vol_btn);
 		}
 		
-		// create the fullscreen menu item
+		// create the full-screen menu item
 		if (!!opts.fullscreen && supportsFullScreen()) {
 			fs_btn.text(_getObjectValue(opts.fullscreen.title));
 			fs_btn.click(toggleFullScreen);
@@ -735,6 +739,11 @@
 		} else {
 			target.off('mouseenter', _hoverIn).off('mouseleave', _hoverOut);
 		}
+		
+		// handle resize
+		$(window).resize(function () {
+			share_wrap.width(shareWidth());
+		});
 		
 		// ready callback
 		if ($.isFunction(opts.ready)) {
