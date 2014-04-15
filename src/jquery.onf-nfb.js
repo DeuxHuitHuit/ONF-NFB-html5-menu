@@ -507,6 +507,12 @@
 		return true;
 	},
 	
+	mobileWrapAnimation = function (mobile_wrap, right) {
+		return function (e) {
+			mobile_wrap.animate({right: right + 'px'}, 300);
+		};
+	},
+	
 	menuTop = function (top_options) {
 		var opts = $.extend((!!top_options && !!top_options.recursive ? true : {}), opts, top_defaults, top_options),
 			target = $(opts.target),
@@ -520,7 +526,7 @@
 			right_wrap = $('<div id="onf-top-right"></span>'),
 			wrap = $('<div id="onf-top-wrap"></div>'),
 			hamburger = $('<div id="onf-hamburger"></div>'),
-			mobile_wrap = $('<div id="onf-mobile-wrap"></div>');
+			mobile_wrap = $('<div id="onf-mobile-wrap"><button></button></div>');
 			
 		// target check
 		if (!target || !target.length) {
@@ -543,7 +549,8 @@
 		// create menu items
 		if (!!opts.links && !!opts.links.length) {
 			opts.links.forEach(function (obj,key) {
-				wrap.append(_createLink(obj,target,ONF_NFB_event_topclick));
+				wrap.append(_createLink(obj, target, ONF_NFB_event_topclick));
+				mobile_wrap.append(_createLink(obj, target, ONF_NFB_event_topclick));
 			});
 		}
 		
@@ -566,17 +573,30 @@
 				return true;
 			});
 			
+			// mobile search
+			mobile_wrap.append(_createLink({
+				url: ONF_NFB_search_url,
+				title: _getObjectValue(opts.search.title),
+				target: '_blank'
+			}, null, ONF_NFB_event_search));
+			
 			registerCallback(ONF_NFB_event_search, opts.search.callback);
 		}
 		
 		// create right menus items
 		if (!!opts.help) {
 			right_wrap.append(_createLink(opts.help, target, ONF_NFB_event_helpclick));
+			if (!opts.help.cssClass) {
+				opts.help.cssClass = '';
+			}
+			opts.help.cssClass += ' onf-help';
+			mobile_wrap.append(_createLink(opts.help, target, ONF_NFB_event_helpclick));
 		}
 		if (!!opts.translate && !!opts.translate.length) {
 			opts.translate.forEach(function (obj, key) {
 				if (obj.tag != 'lang-' + LG) { // do not show current lang
 					right_wrap.append(_createLink(obj, target, ONF_NFB_event_langclick));
+					mobile_wrap.append(_createLink(obj, target, ONF_NFB_event_langclick));
 				}
 			});
 		}
@@ -587,11 +607,11 @@
 		// append hamburger
 		wrap.append(hamburger);
 		
-		// append mobile wrap
-		wrap.append(mobile_wrap);
-		
 		// finally add the wrap to our container
 		target.empty().append(wrap);
+		
+		// append mobile wrap
+		$('body').append(mobile_wrap);
 		
 		// save options
 		target.data('opts', opts);
@@ -603,6 +623,12 @@
 		} else {
 			target.off('mouseenter', _hoverIn).off('mouseleave', _hoverOut);
 		}
+		
+		// handle hamburger click
+		hamburger.click(mobileWrapAnimation(mobile_wrap, 0));
+		
+		// handle hamburger close
+		mobile_wrap.find('button').click(mobileWrapAnimation(mobile_wrap, -115));
 		
 		// ready callback
 		if ($.isFunction(opts.ready)) {
