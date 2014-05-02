@@ -452,7 +452,7 @@
 		// push our loggers
 		$.each($.onf_nfb.defaults.stats.loggers, function () {
 			statsPushLogger(this, params);
-			this.trackPageview(document.location);
+			this.trackPageview(window.location.pathname);
 		});
 	},
 	
