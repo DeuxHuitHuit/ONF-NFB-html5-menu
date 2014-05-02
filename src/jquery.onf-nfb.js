@@ -88,14 +88,14 @@
 			callback: null, preventDefault:false, target: '_blank', cssClass: null, tag: 'help'
 		},
 		translate: [
-		   {
-			title: 'Français',
-			url: 'http://interactif.onf.ca/', callback: null, preventDefault:false, target: null, cssClass: null, tag: 'lang-fr'
-		   },
-		   {
-			title: 'English',
-			url: 'http://interactive.nfb.ca/', callback: null, preventDefault:false, target: null, cssClass: null, tag: 'lang-en'
-		   }
+			{
+				title: 'Français',
+				url: 'http://interactif.onf.ca/', callback: null, preventDefault:false, target: null, cssClass: null, tag: 'lang-fr'
+			},
+			{
+				title: 'English',
+				url: 'http://interactive.nfb.ca/', callback: null, preventDefault:false, target: null, cssClass: null, tag: 'lang-en'
+			}
 		]
 	},
 	bot_defaults = {
@@ -391,7 +391,7 @@
 				}
 			});
 		};
-			
+		
 		if (!delay || isNaN(delay) || delay < minDelay) {
 			delay = minDelay;
 		}
@@ -412,7 +412,7 @@
 				}
 			});
 		};
-			
+		
 		if (!delay || isNaN(delay) || delay < minDelay) {
 			delay = minDelay;
 		}
@@ -444,7 +444,7 @@
 	},
 	
 	statsPushLogger = function (logger, params) {
-		logger.init(params);		
+		logger.init(params);
 		stats_loggers.push(logger);
 		
 	},
