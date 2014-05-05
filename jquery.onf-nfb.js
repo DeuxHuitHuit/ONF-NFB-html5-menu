@@ -32,7 +32,7 @@
 	/** Private VARIABLES **/
 	var // constants
 		LG = _getDefaultValue($('html').attr('lang'), 'en'), // defaults to english
-		ONF_NFB_url = (LG == 'fr' ? 'http://www.onf.ca' : 'http://www.nbf.ca'),
+		ONF_NFB_url = (LG == 'fr' ? 'http://www.onf.ca' : 'http://www.nfb.ca'),
 		ONF_NFB_search_url = 'http://search.nfb.ca/search?entqr=0&output=xml_no_dtd&sort=date%3AD%3AL%3Ad1&client=beta_onfb&ud=1&oe=UTF-8&ie=UTF-8&proxystylesheet=beta_onfb&proxyreload=1&hl='+LG+'&lr=lang_'+LG+'&site=beta_onfb&q=',
 		ONF_NFB_share_width = 55,
 		ONF_NFB_event_namespace = 'onf-nfb',
@@ -363,7 +363,7 @@
 		stats_loggers.push(logger);
 	};
 	function statsInit() {
-		var nbf_logger = {
+		var nfb_logger = {
 				name: 'ONF-NFB logger',
 				log: function (cat, action, label, value) {
 					if (!!window.ntptEventTag && $.isFunction(ntptEventTag)) {
@@ -392,7 +392,7 @@
 			};
 
 		// push our loggers
-		statsPushLogger(nbf_logger);
+		statsPushLogger(nfb_logger);
 		statsPushLogger(ga_logger);
 	};
 	statsInit();
