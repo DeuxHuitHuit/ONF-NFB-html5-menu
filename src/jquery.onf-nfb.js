@@ -168,7 +168,7 @@
 	},
 	LG = _getDefaultValue($('html').attr('lang'), 'en'), // defaults to english
 	EV = (LG === 'fr' ? 'interactif' : 'interactive'),
-	ONF_NFB_url = (LG == 'fr' ? 'http://www.onf.ca' : 'http://www.nbf.ca'),
+	ONF_NFB_url = (LG == 'fr' ? 'http://www.onf.ca' : 'http://www.nfb.ca'),
 	ONF_NFB_search_url = 'http://search.nfb.ca/search?entqr=0&output=xml_no_dtd&sort=date%3AD%3AL%3Ad1&client=beta_onfb&ud=1&oe=UTF-8&ie=UTF-8&proxystylesheet=beta_onfb&proxyreload=1&hl='+LG+'&lr=lang_'+LG+'&site=beta_onfb&q=',
 	
 	_concatParams = function (cat, action, label, value) {
