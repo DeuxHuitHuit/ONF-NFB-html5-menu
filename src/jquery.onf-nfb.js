@@ -57,26 +57,26 @@
 		recursive: false,
 		ready: null, // function (opts)
 		links: [
-			 {title: {fr:'Explorer', en:'Explore'}, 
-			  url: {fr:'http://www.onf.ca/explorer-tous-les-films/', en:'http://www.nfb.ca/explore-all-films/'},
-			  callback: null, preventDefault:false, target: null, cssClass: null, tag: 'explore'
-			 },
-			 {title: {fr:'Sélections', en:'Playlists'},	
-			  url: {fr:'http://onf.ca/selections/', en: 'http://www.nfb.ca/playlists/'},
-			  callback: null, preventDefault:false, target: null, cssClass: null, tag: 'playlist'
-			 },
-			 {title: {fr:'Chaînes', en: 'Channels'},
-			  url: {fr:'http://www.onf.ca/chaines/', en: 'http://www.nfb.ca/channels/'},					
-			 callback: null, preventDefault:false, target: null, cssClass: null, tag: 'channels'
-			 },
-			 {title: {fr:'Blogue',  en:'Blog'},
-			  url: {fr:'http://blogue.onf.ca/', en: 'http://blog.nfb.ca/'},
-			  callback: null, preventDefault:false, target: null, cssClass: null, tag: 'blog'
-			 },
-			 {title: {fr:'Interactif', en: 'Interactive'},
-			  url: {fr:'http://www.onf.ca/interactif/', en: 'http://www.nfb.ca/interactive/'},
-			  callback: null, preventDefault:false, target: null, cssClass: 'active', tag: 'interative'
-			 }
+			{title: {fr:'Explorer', en:'Explore'}, 
+				url: {fr:'http://www.onf.ca/explorer-tous-les-films/', en:'http://www.nfb.ca/explore-all-films/'},
+				callback: null, preventDefault:false, target: null, cssClass: null, tag: 'explore'
+			},
+			{title: {fr:'Sélections', en:'Playlists'},	
+				url: {fr:'http://onf.ca/selections/', en: 'http://www.nfb.ca/playlists/'},
+				callback: null, preventDefault:false, target: null, cssClass: null, tag: 'playlist'
+			},
+			{title: {fr:'Chaînes', en: 'Channels'},
+				url: {fr:'http://www.onf.ca/chaines/', en: 'http://www.nfb.ca/channels/'},					
+				callback: null, preventDefault:false, target: null, cssClass: null, tag: 'channels'
+			},
+			{title: {fr:'Blogue',  en:'Blog'},
+				url: {fr:'http://blogue.onf.ca/', en: 'http://blog.nfb.ca/'},
+				callback: null, preventDefault:false, target: null, cssClass: null, tag: 'blog'
+			},
+			{title: {fr:'Interactif', en: 'Interactive'},
+				url: {fr:'http://www.onf.ca/interactif/', en: 'http://www.nfb.ca/interactive/'},
+				callback: null, preventDefault:false, target: null, cssClass: 'active', tag: 'interative'
+			}
 		],
 		search: {
 			title: {fr: 'Recherche', en: 'Search'},
@@ -87,14 +87,14 @@
 			callback: null, preventDefault:false, target: '_blank', cssClass: null, tag: 'help'
 		},
 		translate: [
-		   {
-			title: 'Français',
-			url: 'http://interactif.onf.ca/', callback: null, preventDefault:false, target: null, cssClass: null, tag: 'lang-fr'
-		   },
-		   {
-			title: 'English',
-			url: 'http://interactive.nfb.ca/', callback: null, preventDefault:false, target: null, cssClass: null, tag: 'lang-en'
-		   }
+			{
+				title: 'Français',
+				url: 'http://interactif.onf.ca/', callback: null, preventDefault:false, target: null, cssClass: null, tag: 'lang-fr'
+			},
+			{
+				title: 'English',
+				url: 'http://interactive.nfb.ca/', callback: null, preventDefault:false, target: null, cssClass: null, tag: 'lang-en'
+			}
 		]
 	},
 	bot_defaults = {
