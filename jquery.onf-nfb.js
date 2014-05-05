@@ -19,12 +19,12 @@
 	// @see http://www.tutorialspoint.com/javascript/array_foreach.htm
 	if (!Array.prototype.forEach) {
 	  Array.prototype.forEach = function(fun) {
-	    var len = this.length, i = 0,
-	    thisp = arguments[1];
-	    if (typeof fun != "function") throw new TypeError('First parameter must be a function');
-	    for (i = 0; i < len; i++) {
-	      if (i in this) fun.call(thisp, this[i], i, this);
-	    }
+		var len = this.length, i = 0,
+		thisp = arguments[1];
+		if (typeof fun != "function") throw new TypeError('First parameter must be a function');
+		for (i = 0; i < len; i++) {
+		  if (i in this) fun.call(thisp, this[i], i, this);
+		}
 	  };
 	}
 	
@@ -53,26 +53,26 @@
 			recursive: false,
 			ready: null, // function (opts)
 			links: [
-			     {title: {fr:'Explorer', en:'Explore'}, 
-			      url: {fr:'http://www.onf.ca/explorer-tous-les-films/', en:'http://www.nfb.ca/explore-all-films/'},
-			      callback: null, preventDefault:false, target: null, cssClass: null, tag: 'explore'
-			     },
-			     {title: {fr:'Sélections', en:'Playlists'},	
-			      url: {fr:'http://onf.ca/selections/', en: 'http://www.nfb.ca/playlists/'},
-			      callback: null, preventDefault:false, target: null, cssClass: null, tag: 'playlist'
-			     },
-			     {title: {fr:'Chaînes', en: 'Channels'},
-			      url: {fr:'http://www.onf.ca/chaines/', en: 'http://www.nfb.ca/channels/'},					
-			     callback: null, preventDefault:false, target: null, cssClass: null, tag: 'channels'
-			     },
-			     {title: {fr:'Blogue',  en:'Blog'},
-			      url: {fr:'http://blogue.onf.ca/', en: 'http://blog.nfb.ca/'},
-			      callback: null, preventDefault:false, target: null, cssClass: null, tag: 'blog'
-			     },
-			     {title: {fr:'Interactif', en: 'Interactive'},
-			      url: {fr:'http://www.onf.ca/interactif/', en: 'http://www.nfb.ca/interactive/'},
-			      callback: null, preventDefault:false, target: null, cssClass: 'active', tag: 'interative'
-			     }
+				{title: {fr:'Explorer', en:'Explore'}, 
+					url: {fr:'http://www.onf.ca/explorer-tous-les-films/', en:'http://www.nfb.ca/explore-all-films/'},
+					callback: null, preventDefault:false, target: null, cssClass: null, tag: 'explore'
+				},
+				{title: {fr:'Sélections', en:'Playlists'},	
+					url: {fr:'http://onf.ca/selections/', en: 'http://www.nfb.ca/playlists/'},
+					callback: null, preventDefault:false, target: null, cssClass: null, tag: 'playlist'
+					},
+				{title: {fr:'Chaînes', en: 'Channels'},
+					url: {fr:'http://www.onf.ca/chaines/', en: 'http://www.nfb.ca/channels/'},					
+					callback: null, preventDefault:false, target: null, cssClass: null, tag: 'channels'
+				},
+				{title: {fr:'Blogue',  en:'Blog'},
+					url: {fr:'http://blogue.onf.ca/', en: 'http://blog.nfb.ca/'},
+					callback: null, preventDefault:false, target: null, cssClass: null, tag: 'blog'
+				},
+				{title: {fr:'Interactif', en: 'Interactive'},
+					url: {fr:'http://www.onf.ca/interactif/', en: 'http://www.nfb.ca/interactive/'},
+					callback: null, preventDefault:false, target: null, cssClass: 'active', tag: 'interative'
+				}
 			],
 			search: {
 				title: {fr: 'Recherche', en: 'Search'},
@@ -83,14 +83,14 @@
 				callback: null, preventDefault:false, target: '_blank', cssClass: null, tag: 'help'
 			},
 			translate: [
-		       {
-		    	title: 'Français',
-		    	url: 'http://interactif.onf.ca/', callback: null, preventDefault:false, target: null, cssClass: null, tag: 'lang-fr'
-		       },
-		       {
-		    	title: 'English',
-		    	url: 'http://interactive.nfb.ca/', callback: null, preventDefault:false, target: null, cssClass: null, tag: 'lang-en'
-		       }
+				{
+					title: 'Français',
+					url: 'http://interactif.onf.ca/', callback: null, preventDefault:false, target: null, cssClass: null, tag: 'lang-fr'
+				},
+				{
+					title: 'English',
+					url: 'http://interactive.nfb.ca/', callback: null, preventDefault:false, target: null, cssClass: null, tag: 'lang-en'
+				}
 			]
 		},
 		bot_defaults = {
@@ -100,18 +100,18 @@
 			recursive: false,
 			ready: null, // function (opts)
 			links: [
-			     {title: {fr:'Accueil',en:'Home'},		url: null, 
-			      callback: null, preventDefault:true, target: null, cssClass: 'onf-bot-cont onf-bot-border', tag: 'home'
-			     },
-			     {title: {fr:'À propos',en:'About'},	url: null,
-			      callback: null, preventDefault:true, target: null, cssClass: 'onf-bot-cont onf-bot-border', tag: 'about'
-			     },
-			     {title: {fr:'Films reliés',en:'Related movies'},url: null,
-			      callback: null, preventDefault:true, target: null, cssClass: 'onf-bot-cont onf-bot-border', tag: 'related'
-			     },
-			     {title: {fr:'Équipe',en:'Credits'},	url: null, 
-			      callback: null, preventDefault:true, target: null, cssClass: 'onf-bot-cont', tag: 'credits'
-			     }
+				 {title: {fr:'Accueil',en:'Home'},		url: null, 
+				  callback: null, preventDefault:true, target: null, cssClass: 'onf-bot-cont onf-bot-border', tag: 'home'
+				 },
+				 {title: {fr:'À propos',en:'About'},	url: null,
+				  callback: null, preventDefault:true, target: null, cssClass: 'onf-bot-cont onf-bot-border', tag: 'about'
+				 },
+				 {title: {fr:'Films reliés',en:'Related movies'},url: null,
+				  callback: null, preventDefault:true, target: null, cssClass: 'onf-bot-cont onf-bot-border', tag: 'related'
+				 },
+				 {title: {fr:'Équipe',en:'Credits'},	url: null, 
+				  callback: null, preventDefault:true, target: null, cssClass: 'onf-bot-cont', tag: 'credits'
+				 }
 			],
 			share: {
 				title: {fr: 'Partagez', en: 'Share'},
@@ -245,12 +245,12 @@
 	};
 	function getFullScreen() {
 		var el = document.documentElement,
-	    	rfs = // for newer Webkit and Firefox
-	           el.requestFullScreen
-	        || el.webkitRequestFullScreen
-	        || el.webkitEnterFullScreen
-	        || el.mozRequestFullScreen
-	        || el.msRequestFullScreen;
+			rfs = // for newer Webkit and Firefox
+			   el.requestFullScreen
+			|| el.webkitRequestFullScreen
+			|| el.webkitEnterFullScreen
+			|| el.mozRequestFullScreen
+			|| el.msRequestFullScreen;
 		return rfs;
 	};
 
@@ -279,14 +279,14 @@
 		var success = false,
 			el = document,
 			efs = // for newer Webkit and Firefox
-	           el.exitFullScreen
-	        || el.cancelFullScreen
-	        || el.webkitExitFullScreen
-	        || el.webkitCancelFullScreen
-	        || el.mozExitFullScreen
-	        || el.mozCancelFullScreen
-	        || el.msExitFullScreen
-	        || el.msExitCancelScreen;
+			   el.exitFullScreen
+			|| el.cancelFullScreen
+			|| el.webkitExitFullScreen
+			|| el.webkitCancelFullScreen
+			|| el.mozExitFullScreen
+			|| el.mozCancelFullScreen
+			|| el.msExitFullScreen
+			|| el.msExitCancelScreen;
 		
 		if(efs!=undefined && $.isFunction(efs)) {
 		  efs.call(el);
