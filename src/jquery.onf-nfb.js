@@ -819,8 +819,11 @@
 						trackPageview: function (url) {
 							// see: https://developers.google.com/analytics/devguides/collection/gajs/methods/gaJSApiBasicConfiguration
 							if (!!window._gaq && $.isFunction(_gaq.push)) {
-								_gaq.push(['_trackPageview', '/' + EV + '/' + this.params.name + '/' +  url]);
-								_gaq.push(['t2._trackPageview', '/' + EV + '/' + this.params.name + '/' +  url]);
+								var virtualUrl = '/' + EV + '/' + this.params.name + '/' +  url;
+								// remove duplicated /
+								virtualUrl = virtualUrl.replace(/\/\//gi, '/');
+								_gaq.push(['_trackPageview', virtualUrl]);
+								_gaq.push(['t2._trackPageview', virtualUrl]);
 								return true;
 							}
 							return false;
