@@ -487,18 +487,21 @@
 		lbl[show ? 'fadeOut': 'fadeIn' ].call(lbl, 400);
 		txt[show ? 'focus' : 'blur'].call(txt);
 		
-		return preventDefault(e);
+		if (show) {
+			return preventDefault(e);
+		}
+		return true;
 	},
 	searchIn = function (e) {
-		return searchToggle.call(this, e, true);
+		return searchToggle(e, true);
 	},
 	searchOut = function (e) {
-		return searchToggle.call(this, e, false);
+		return searchToggle(e, false);
 	},
 	searchKeyDown = function (e) {
 		switch (e.which) {
 			case 27 : // escape
-				searchOut.call(this);
+				searchOut(e);
 				break;
 			case 13: // enter
 				search();
