@@ -92,6 +92,18 @@ Please report all bugs via [GitHub's interface](https://github.com/DeuxHuitHuit/
 
 #### Change Log
 
+**1.2.2 - 2015-02-06**
+
+- Fix event propagation bug in IE
+
+**1.2.1 - 2014-06-06**
+
+- Various bug fixes
+
+**1.2 - 2014-04-16**
+
+- Added Mobile support (responsive)
+
 **1.1 - 2013-02-01**
 
 - Added grunt.js as build system
