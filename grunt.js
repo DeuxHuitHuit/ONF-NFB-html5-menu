@@ -65,10 +65,10 @@ module.exports = function(grunt) {
 		less: {
 			development: {
 				options: {
-					paths: ['src']
+					paths: ['dist']
 				},
 				files: {
-					'src/<%= pkg.name %>.css': 'src/<%= pkg.name %>.less'
+					'dist/<%= pkg.name %>.css': 'src/<%= pkg.name %>.less'
 				}
 			},
 			production: {
