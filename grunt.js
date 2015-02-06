@@ -78,7 +78,7 @@ module.exports = function(grunt) {
 					yuicompress: true
 				},
 				files: {
-				  'dist/<%= pkg.name %>.min.css': ['src/<%= pkg.name %>.less' ]
+					'dist/<%= pkg.name %>.min.css': ['src/<%= pkg.name %>.less' ]
 				}
 			}
 		}
